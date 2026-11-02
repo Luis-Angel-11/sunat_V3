@@ -1,0 +1,32 @@
+---
+import Icon from './Icon.astro';
+
+interface Props {
+	compact?: boolean;
+	class?: string;
+	variant?: 'header' | 'surface';
+}
+
+const { compact = false, class: className = '', variant = 'header' } = Astro.props;
+
+const tone =
+	variant === 'surface'
+		? 'border-slate-200 bg-white text-slate-700 shadow-lg hover:bg-slate-50 focus-visible:outline-slate-900 dark:border-slate-700 dark:bg-slate-900 dark:text-slate-100 dark:hover:bg-slate-800 dark:focus-visible:outline-sky-300'
+		: 'border-white/40 text-white hover:bg-white/10 focus-visible:outline-white';
+---
+
+<button
+	type="button"
+	data-theme-toggle
+	aria-label="Activar modo oscuro"
+	title="Activar modo oscuro"
+	class:list={[
+		'inline-flex h-10 shrink-0 items-center justify-center gap-2 rounded-lg border px-3 text-sm font-semibold transition',
+		tone,
+		className,
+	]}
+>
+	<span class="dark:hidden"><Icon name="moon" size={18} /></span>
+	<span class="hidden dark:inline-flex"><Icon name="sun" size={18} /></span>
+	{!compact && <span data-theme-label class="hidden sm:inline">Modo oscuro</span>}
+</button>

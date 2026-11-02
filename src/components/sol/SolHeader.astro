@@ -1,0 +1,313 @@
+---
+import Icon from '../Icon.astro'; // <-- ASEGÚRATE DE INCLUIR ESTA LÍNEA (Ajusta la ruta si es ../../components/Icon.astro)
+import ThemeToggle from '../ThemeToggle.astro';
+import type { IconName } from '../../data/icons';
+
+interface Props {
+	current: 'inicio' | 'perfil' | 'validez' | 'favoritas' | 'reclamos';
+}
+
+const { current } = Astro.props;
+
+const navItems: { id: string; label: string; href: string; icon: IconName; badge?: string }[] = [
+	{ id: 'inicio', label: 'Inicio', href: '/sol', icon: 'home' },
+	{ id: 'buzon', label: 'Buzón electrónico', href: '/sol#buzon', icon: 'inbox', badge: '2' },
+	{ id: 'favoritas', label: 'Favoritas', href: '/operaciones-favoritas', icon: 'star' },
+	{ id: 'perfil', label: 'Mi perfil', href: '/perfil', icon: 'user' },
+];
+---
+
+<header class="sticky top-0 z-40 shadow-sm">
+	<!-- BARRA PRINCIPAL AZUL OSCURO (#003366) -->
+	<div class="bg-[#003366] text-white dark:bg-slate-900 dark:shadow-[inset_0_-1px_0_rgb(51_65_85)]">
+		<div class="container-sunat flex h-16 items-center gap-3">
+			<a href="/sol" class="flex shrink-0 items-center gap-3 rounded-md" aria-label="Menú SOL, ir al inicio de mis servicios">
+				<img src="/img/escudo_blanco.1b27b421.svg" alt="" width="80" height="28" class="h-7 w-auto" />
+				<span class="hidden h-7 w-px bg-white/40 sm:block"></span>
+				<span class="leading-tight">
+					<span class="block text-base font-black tracking-tight">SUNAT</span>
+					<span class="block text-[11px] font-semibold uppercase tracking-wider text-white/80">Operaciones en línea</span>
+				</span>
+			</a>
+
+			{
+				current !== 'inicio' && (
+					<button
+						type="button"
+						data-volver
+						class="ml-1 inline-flex h-10 shrink-0 items-center gap-2 rounded-lg border border-white/30 bg-white/10 px-2.5 text-sm font-bold text-white transition hover:bg-white/20 sm:px-3"
+					>
+						<Icon name="arrow-left" size={18} />
+						<span class="hidden sm:inline">Volver</span>
+						<span class="sr-only sm:hidden">Volver a la página anterior</span>
+					</button>
+				)
+			}
+
+			<nav aria-label="Navegación de mi cuenta" class="ml-6 hidden items-center gap-1 lg:flex">
+				{
+					navItems.map((item) => (
+						<a
+							href={item.href}
+							aria-current={item.id === current ? 'page' : undefined}
+							class="sol-nav-link relative inline-flex h-10 items-center gap-2 rounded-lg px-3 text-sm font-semibold text-white/90 transition hover:bg-white/10 hover:text-white"
+						>
+							<Icon name={item.icon} size={17} />
+							{item.label}
+							{item.badge && (
+								<span data-buzon-badge class="grid h-5 min-w-5 place-items-center rounded-full bg-amber-300 px-1 text-[11px] font-black text-amber-950">
+									{item.badge}
+								</span>
+							)}
+						</a>
+					))
+				}
+			</nav>
+
+			<div class="ml-auto flex items-center gap-2">
+				<ThemeToggle compact />
+
+				<div class="relative" data-user-menu>
+					<button
+						type="button"
+						id="user-menu-button"
+						aria-haspopup="menu"
+						aria-expanded="false"
+						aria-controls="user-menu"
+						class="flex h-11 items-center gap-2 rounded-full border border-white/30 bg-white/10 py-1 pl-1 pr-2 text-left transition hover:bg-white/20 sm:pr-3"
+					>
+						<span class="grid h-9 w-9 place-items-center rounded-full bg-white text-sm font-black text-[#003366] dark:bg-sky-400 dark:text-slate-950" data-sol-field="iniciales">JC</span>
+						<span class="hidden leading-tight md:block">
+							<span class="block text-[11px] font-medium text-white/80">Bienvenido</span>
+							<span class="block max-w-40 truncate text-sm font-bold" data-sol-field="primerNombre">Javier</span>
+						</span>
+						<Icon name="chevron-down" size={16} class="hidden md:block" />
+						<span class="sr-only">Abrir menú de mi cuenta</span>
+					</button>
+
+					<!-- DESPLEGABLE HORIZONTAL -->
+					<div
+						id="user-menu"
+						role="menu"
+						aria-labelledby="user-menu-button"
+						hidden
+						class="absolute right-0 mt-2 w-80 max-w-[calc(100vw-2rem)] overflow-hidden rounded-2xl border border-slate-200 bg-white text-slate-800 shadow-2xl dark:border-slate-700 dark:bg-slate-900 dark:text-slate-100"
+					>
+						<div class="bg-[#075782] p-4 text-white">
+							<div class="flex items-center gap-3">
+								<span class="grid h-12 w-12 shrink-0 place-items-center rounded-full bg-white text-lg font-black text-[#075782] ring-4 ring-white/25 dark:bg-sky-400 dark:text-slate-950" data-sol-field="iniciales">JC</span>
+								<div class="min-w-0">
+									<p class="truncate font-bold" data-sol-field="nombreCompleto">Cordova Ramos Javier</p>
+									<p class="text-xs text-white/80">RUC: <span data-sol-field="ruc">10616288475</span></p>
+									<p class="text-xs text-white/80">Usuario SOL: <span data-sol-field="usuario">PRUEBA</span></p>
+								</div>
+							</div>
+						</div>
+
+						<ul class="p-2 text-sm space-y-1">
+							<li>
+								<a role="menuitem" href="/perfil" class="flex items-center gap-3 rounded-lg px-3 py-2.5 font-medium text-slate-700 transition hover:bg-slate-100 dark:text-slate-200 dark:hover:bg-slate-800">
+									<Icon name="user" size={18} class="shrink-0 text-slate-500 dark:text-slate-400" />
+									<span>Mi perfil</span>
+								</a>
+							</li>
+							<li>
+								<a role="menuitem" href="/perfil#datos" class="flex items-center gap-3 rounded-lg px-3 py-2.5 font-medium text-slate-700 transition hover:bg-slate-100 dark:text-slate-200 dark:hover:bg-slate-800">
+									<Icon name="id-card" size={18} class="shrink-0 text-slate-500 dark:text-slate-400" />
+									<span>Ver mis datos del RUC</span>
+								</a>
+							</li>
+							<li>
+								<a role="menuitem" href="/perfil#seguridad" class="flex items-center gap-3 rounded-lg px-3 py-2.5 font-medium text-slate-700 transition hover:bg-slate-100 dark:text-slate-200 dark:hover:bg-slate-800">
+									<Icon name="lock" size={18} class="shrink-0 text-slate-500 dark:text-slate-400" />
+									<span>Cambiar Clave SOL</span>
+								</a>
+							</li>
+							<li>
+								<a role="menuitem" href="/perfil#preferencias" class="flex items-center gap-3 rounded-lg px-3 py-2.5 font-medium text-slate-700 transition hover:bg-slate-100 dark:text-slate-200 dark:hover:bg-slate-800">
+									<Icon name="sliders" size={18} class="shrink-0 text-slate-500 dark:text-slate-400" />
+									<span>Accesibilidad y preferencias</span>
+								</a>
+							</li>
+							<li class="my-1 border-t border-slate-100 dark:border-slate-800" role="separator"></li>
+							<li>
+								<button type="button" role="menuitem" data-logout class="flex w-full items-center justify-center gap-2 rounded-lg px-3 py-2.5 font-bold text-red-600 transition hover:bg-red-50 dark:text-red-400 dark:hover:bg-red-950/50">
+									<Icon name="log-out" size={18} class="shrink-0" />
+									<span>Cerrar sesión</span>
+								</button>
+							</li>
+						</ul>
+					</div>
+				</div>
+
+				<button
+					type="button"
+					id="sol-menu-toggle"
+					aria-expanded="false"
+					aria-controls="sol-menu-movil"
+					class="grid h-10 w-10 place-items-center rounded-lg border border-white/30 transition hover:bg-white/10 lg:hidden"
+				>
+					<span data-icon-open><Icon name="menu" size={20} /></span>
+					<span data-icon-close hidden><Icon name="x" size={20} /></span>
+					<span class="sr-only">Abrir menú de navegación</span>
+				</button>
+			</div>
+		</div>
+	</div>
+
+	<!-- SUB-BARRA AZUL PETRÓLEO (#0877a7) -->
+	<div class="bg-[#0877a7] text-white dark:bg-slate-800/95">
+		<div class="container-sunat flex min-h-10 flex-wrap items-center gap-x-4 gap-y-1 py-1.5 text-xs sm:text-sm">
+			<p class="flex items-center gap-1.5">
+				<Icon name="calendar" size={15} class="text-white/80" />
+				<time id="sol-reloj" class="font-semibold">—</time>
+			</p>
+			<p class="flex items-center gap-1.5" title="Tu domicilio fiscal fue verificado por SUNAT">
+				<span class="h-2 w-2 rounded-full bg-emerald-300" aria-hidden="true"></span>
+				Domicilio fiscal: <strong data-sol-field="condicion">Habido</strong>
+			</p>
+			<p class="hidden items-center gap-1.5 md:flex" title="Por tu seguridad, la sesión se cierra si no usas el sistema">
+				<Icon name="clock" size={15} class="text-white/80" />
+				Sesión activa · se cierra por inactividad en <strong id="sol-timer" class="tabular-nums">15:00</strong>
+			</p>
+			<button
+				type="button"
+				data-logout
+				class="ml-auto inline-flex h-8 items-center gap-1.5 rounded-md bg-white/15 px-3 font-bold transition hover:bg-white/25"
+			>
+				<Icon name="log-out" size={15} />
+				Cerrar sesión
+			</button>
+		</div>
+	</div>
+
+	<!-- NAV MÓVIL -->
+	<nav
+		id="sol-menu-movil"
+		aria-label="Navegación de mi cuenta (móvil)"
+		hidden
+		class="border-b border-slate-200 bg-white shadow-lg dark:border-slate-800 dark:bg-slate-900 lg:hidden"
+	>
+		<ul class="container-sunat grid gap-1 py-3">
+			{
+				navItems.map((item) => (
+					<li>
+						<a
+							href={item.href}
+							aria-current={item.id === current ? 'page' : undefined}
+							class="sol-mobile-link flex h-12 items-center gap-3 rounded-lg px-3 font-semibold text-slate-700 hover:bg-slate-100 dark:text-slate-200 dark:hover:bg-slate-800"
+						>
+							<Icon name={item.icon} size={19} />
+							{item.label}
+							{item.badge && (
+								<span data-buzon-badge class="ml-auto grid h-6 min-w-6 place-items-center rounded-full bg-amber-300 px-1.5 text-xs font-black text-amber-950">{item.badge}</span>
+							)}
+						</a>
+					</li>
+				))
+			}
+			<li>
+				<a href="/" class="flex h-12 items-center gap-3 rounded-lg px-3 font-semibold text-slate-700 hover:bg-slate-100 dark:text-slate-200 dark:hover:bg-slate-800">
+					<Icon name="globe" size={19} />
+					Portal SUNAT (público)
+				</a>
+			</li>
+		</ul>
+	</nav>
+</header>
+
+<!-- DIÁLOGOS DE CONFIRMACIÓN -->
+<dialog 
+	id="dialogo-salir" 
+	aria-labelledby="dialogo-salir-titulo" 
+	aria-describedby="dialogo-salir-texto" 
+	class="fixed inset-0 z-50 m-auto hidden w-full max-w-md overflow-hidden rounded-3xl border border-slate-200 bg-white p-0 shadow-2xl backdrop:bg-slate-900/60 backdrop:backdrop-blur-sm dark:border-slate-800 dark:bg-slate-900 open:flex open:flex-col"
+>
+	<div class="p-6 text-left space-y-4">
+		<div class="flex items-center gap-3">
+			<span class="grid h-12 w-12 shrink-0 place-items-center rounded-2xl bg-rose-50 text-rose-600 dark:bg-rose-950/60 dark:text-rose-400 border border-rose-100 dark:border-rose-900/40 shadow-sm">
+				<Icon name="log-out" size={24} />
+			</span>
+			<div>
+				<h2 id="dialogo-salir-titulo" class="text-base font-extrabold text-slate-900 dark:text-white leading-tight">
+					¿Cerrar tu sesión?
+				</h2>
+				<span class="text-[11px] font-bold uppercase tracking-wider text-rose-600 dark:text-rose-400">
+					SUNAT Operaciones en Línea
+				</span>
+			</div>
+		</div>
+
+		<p id="dialogo-salir-texto" class="text-xs text-slate-600 dark:text-slate-300 leading-relaxed bg-slate-50 dark:bg-slate-950 p-3.5 rounded-xl border border-slate-100 dark:border-slate-800">
+			Saldrás de Operaciones en línea. Si estabas llenando un formulario, los datos que no guardaste se perderán definitivamente.
+		</p>
+
+		<div class="flex flex-col-reverse sm:flex-row items-center justify-end gap-2.5 pt-2 border-t border-slate-100 dark:border-slate-800">
+			<button 
+				type="button" 
+				data-dialog-cancel 
+				class="w-full sm:w-auto inline-flex justify-center items-center rounded-xl border border-slate-300 bg-white px-5 py-2.5 text-xs font-bold text-slate-700 transition hover:bg-slate-50 dark:border-slate-700 dark:bg-slate-950 dark:text-slate-300"
+			>
+				Seguir en mi cuenta
+			</button>
+
+			<button 
+				type="button" 
+				data-confirm-logout 
+				class="w-full sm:w-auto inline-flex justify-center items-center gap-2 rounded-xl bg-rose-600 px-5 py-2.5 text-xs font-bold text-white shadow-md transition hover:bg-rose-700"
+			>
+				<Icon name="log-out" size={16} />
+				<span>Sí, cerrar sesión</span>
+			</button>
+		</div>
+	</div>
+</dialog>
+
+<dialog 
+	id="dialogo-inactividad" 
+	aria-labelledby="dialogo-inactividad-titulo" 
+	class="fixed inset-0 z-50 m-auto hidden w-full max-w-md overflow-hidden rounded-3xl border border-slate-200 bg-white p-0 shadow-2xl backdrop:bg-slate-900/60 backdrop:backdrop-blur-sm dark:border-slate-800 dark:bg-slate-900 open:flex open:flex-col"
+>
+	<div class="p-6 text-left space-y-4">
+		<div class="flex items-center gap-3">
+			<span class="grid h-12 w-12 shrink-0 place-items-center rounded-2xl bg-amber-50 text-amber-600 dark:bg-amber-950/60 dark:text-amber-400 border border-amber-100 dark:border-amber-900/40 shadow-sm">
+				<Icon name="clock" size={24} />
+			</span>
+			<div>
+				<h2 id="dialogo-inactividad-titulo" class="text-base font-extrabold text-slate-900 dark:text-white leading-tight">
+					¿Sigues trabajando aquí?
+				</h2>
+				<span class="text-[11px] font-bold uppercase tracking-wider text-amber-600 dark:text-amber-400">
+					Control de Seguridad
+				</span>
+			</div>
+		</div>
+
+		<p class="text-xs text-slate-600 dark:text-slate-300 leading-relaxed bg-amber-50/50 dark:bg-amber-950/30 p-3.5 rounded-xl border border-amber-200/60 dark:border-amber-900/40">
+			Por tu seguridad, cerraremos la sesión en 
+			<strong id="inactividad-cuenta" class="tabular-nums font-black text-amber-700 dark:text-amber-400">60</strong> segundos 
+			debido a que no se detecta actividad.
+		</p>
+
+		<div class="flex flex-col-reverse sm:flex-row items-center justify-end gap-2.5 pt-2 border-t border-slate-100 dark:border-slate-800">
+			<button 
+				type="button" 
+				data-confirm-logout 
+				class="w-full sm:w-auto inline-flex justify-center items-center rounded-xl border border-slate-300 bg-white px-5 py-2.5 text-xs font-bold text-slate-700 transition hover:bg-slate-50 dark:border-slate-700 dark:bg-slate-950 dark:text-slate-300"
+			>
+				Cerrar sesión ahora
+			</button>
+
+			<button 
+				type="button" 
+				data-dialog-cancel 
+				class="w-full sm:w-auto inline-flex justify-center items-center gap-2 rounded-xl bg-[#0877a7] px-5 py-2.5 text-xs font-bold text-white shadow-md transition hover:bg-[#075782]"
+			>
+				<span>Seguir conectado</span>
+			</button>
+		</div>
+	</div>
+</dialog>
+
+<!-- IMPORTACIÓN DEL SCRIPT EXTERNO -->
+<script src="../../scripts/solHeader.js"></script>

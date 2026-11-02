@@ -1,0 +1,174 @@
+---
+import Icon from '../Icon.astro';
+import type { IconName } from '../../data/icons';
+
+interface Props {
+	activeMenu?: 'panel' | 'consultar' | 'emitir' | 'declarar' | 'tramites' | 'ayuda';
+}
+
+const { activeMenu = 'panel' } = Astro.props;
+
+// Estructura de menú con subopciones para redirección
+const menuItems: {
+	id: string;
+	label: string;
+	href: string;
+	icon: IconName;
+	subItems?: { label: string; href: string }[];
+}[] = [
+	{
+		id: 'panel',
+		label: 'Mi Panel SOL',
+		href: '/prueba',
+		icon: 'home',
+	},
+	{
+		id: 'consultar',
+		label: 'Consultar',
+		href: '/sol/consultar',
+		icon: 'search',
+		subItems: [
+			{ label: 'Consulta de Facturas,boleta', href: '/facturas/consulta' },
+			{ label: 'Validez del RHE', href: '/sol/rhe' },
+			{ label: 'Consulta de Validez de CPE', href: '/validez-comprobante/consultar' },
+		],
+	},
+	{
+		id: 'emitir',
+		label: 'Emitir',
+		href: '/sol/emitir',
+		icon: 'file-text',
+		subItems: [
+			{ label: 'Guía de Remisión (GRE)', href: '/guias/emitir' },
+			{ label: 'Factura Electrónica', href: '/facturas/emitir' },
+			{ label: 'Recibo por Honorarios (RHE)', href: '/recibos/emitir' },
+		],
+	},
+	{
+		id: 'declarar',
+		label: 'Declarar y Pagar',
+		href: '/sol/declarar',
+		icon: 'credit-card',
+		subItems: [
+			{ label: 'Declaración IGV - Renta', href: '/declara/igv-renta-621' },
+			{ label: 'Pago de tributos pendientes', href: '/sol/deuda' },
+			{ label: 'Historial de pagos', href: '/sol/historial' },
+		],
+	},
+	{
+		id: 'tramites',
+		label: 'Trámites y Reclamos',
+		href: '/sol/tramites',
+		icon: 'shield-check', // Ícono visible del escudo según la segunda imagen
+		subItems: [
+			{ label: 'Libro de Reclamaciones', href: '/libro-reclamaciones/registrar' },
+			{ label: 'Ficha RUC y datos', href: '/sol/ruc' },
+			{ label: 'Solicitud de Fraccionamiento', href: '/sol/deuda' },
+		],
+	},
+	{
+		id: 'ayuda',
+		label: 'Ayuda',
+		href: '/sol/ayuda',
+		icon: 'help-circle',
+		subItems: [
+			{ label: 'Cronograma de Vencimientos', href: '/sol/ayuda#cronograma' },
+			{ label: 'Guías explicativas', href: '/sol/ayuda#guias' },
+			{ label: 'Asistente Virtual Sofia', href: '/sol/ayuda#sofia' },
+		],
+	},
+];
+---
+
+<aside class="w-64 shrink-0 border-r border-slate-200 bg-white min-h-[calc(100vh-104px)] dark:border-slate-800 dark:bg-slate-900 hidden md:block select-none">
+	<div class="p-4">
+		<span class="text-[10px] font-extrabold uppercase tracking-widest text-slate-400 dark:text-slate-500">
+			MIS OPERACIONES
+		</span>
+
+		<nav class="mt-3 space-y-1" aria-label="Menú lateral de operaciones">
+			{
+				menuItems.map((item) => {
+					const isActive = item.id === activeMenu;
+					const hasSub = Boolean(item.subItems && item.subItems.length > 0);
+
+					if (!hasSub) {
+						return (
+							<a
+								href={item.href}
+								class={`flex items-center gap-3 rounded-xl px-3.5 py-3 text-xs font-bold transition ${
+									isActive
+										? 'bg-[#003366] text-white shadow-md'
+										: 'text-slate-700 hover:bg-slate-100 dark:text-slate-200 dark:hover:bg-slate-800'
+								}`}
+							>
+								<Icon name={item.icon} size={18} class={isActive ? 'text-white' : 'text-slate-500 dark:text-slate-400'} />
+								<span>{item.label}</span>
+							</a>
+						);
+					}
+
+					return (
+						<div class="sidebar-accordion group">
+							<button
+								type="button"
+								class={`flex w-full items-center justify-between rounded-xl px-3.5 py-3 text-xs font-bold transition text-left ${
+									isActive
+										? 'bg-[#003366] text-white shadow-md'
+										: 'text-slate-700 hover:bg-slate-100 dark:text-slate-200 dark:hover:bg-slate-800'
+								}`}
+								data-[#sidebar-toggle]
+							>
+								<div class="flex items-center gap-3">
+									<Icon name={item.icon} size={18} class={isActive ? 'text-white' : 'text-slate-500 dark:text-slate-400'} />
+									<span>{item.label}</span>
+								</div>
+								<span class="chevron-icon transition-transform duration-200">
+									<Icon name="chevron-right" size={14} class={isActive ? 'text-white/80' : 'text-slate-400'} />
+								</span>
+							</button>
+
+							<!-- SUBMENÚ CON LAS 3 OPCIONES SECUNDARIAS -->
+							<div class="submenu-container hidden pl-9 pr-2 py-1 space-y-1">
+								{item.subItems?.map((sub) => (
+									<a
+										href={sub.href}
+										class="block rounded-lg px-2.5 py-1.5 text-[11px] font-semibold text-slate-600 hover:bg-slate-100 hover:text-[#0877a7] dark:text-slate-400 dark:hover:bg-slate-800 dark:hover:text-sky-300 transition"
+									>
+										→ {sub.label}
+									</a>
+								))}
+							</div>
+						</div>
+					);
+				})
+			}
+		</nav>
+	</div>
+</aside>
+
+<script>
+	document.addEventListener('DOMContentLoaded', () => {
+		const toggles = document.querySelectorAll('.sidebar-accordion button');
+
+		toggles.forEach((button) => {
+			button.addEventListener('click', () => {
+				const container = button.nextElementSibling;
+				const chevron = button.querySelector('.chevron-icon');
+
+				if (container) {
+					const isHidden = container.classList.contains('hidden');
+
+					// Cerrar otros desplegables para mantenerlo ordenado
+					document.querySelectorAll('.submenu-container').forEach((el) => el.classList.add('hidden'));
+					document.querySelectorAll('.chevron-icon').forEach((el) => el.classList.remove('rotate-90'));
+
+					if (isHidden) {
+						container.classList.remove('hidden');
+						chevron?.classList.add('rotate-90');
+					}
+				}
+			});
+		});
+	});
+</script>

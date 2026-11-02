@@ -1,0 +1,96 @@
+---
+import Icon from './Icon.astro';
+
+const news = [
+	{
+		date: '12 de octubre de 2026',
+		title:
+			'Conciertos de “BTS” generan más de S/ 5.8 millones por ventas de alimentos, bebidas y merchandising',
+		summary:
+			'Los conciertos dejaron más de S/ 5.8 millones en ventas de comida, bebida y recuerdos.',
+		image: '/img/noticias/bts.jpg',
+	},
+	{
+		date: '7 de octubre de 2026',
+		title:
+			'Deuda tributaria total que contribuyentes le deben al Estado supera los S/ 123 mil millones',
+		summary:
+			'En total, personas y empresas deben al Estado más de S/ 123 mil millones.',
+		image: '/img/noticias/deuda.jpg',
+	},
+	{
+		date: '6 de octubre de 2026',
+		title:
+			'Más de 980 mil docentes y estudiantes promueven la formalización en la Semana de la Educación Tributaria 2026',
+		summary:
+			'Más de 980 mil personas participaron en actividades para aprender a cumplir con los impuestos.',
+		image: '/img/noticias/cultura.jpg',
+	},
+];
+---
+
+<section id="noticias" class="scroll-mt-4 lg:scroll-mt-20 bg-white py-12 dark:bg-slate-950" aria-labelledby="titulo-noticias">
+	<div class="container-sunat">
+		<div class="flex flex-col gap-4 sm:flex-row sm:items-end sm:justify-between">
+			<div>
+				<p class="text-sm font-bold uppercase tracking-wider text-sunat-red dark:text-rose-300">Actualidad</p>
+				<h2 id="titulo-noticias" class="mt-1 text-2xl font-bold text-slate-900 dark:text-white md:text-3xl">
+					Noticias
+				</h2>
+				<p class="mt-2 max-w-2xl text-slate-600 dark:text-slate-300">
+					Lo último que debes saber, explicado de forma sencilla.
+				</p>
+			</div>
+			<a
+				href="https://www.gob.pe/busquedas?contenido%5B%5D=noticias&institucion%5B%5D=sunat"
+				target="_blank"
+				rel="noopener noreferrer"
+				class="link-sunat inline-flex items-center gap-2 text-sm"
+			>
+				Buscar noticias
+				<Icon name="external-link" size={15} />
+			</a>
+		</div>
+
+		<ul class="mt-6 grid gap-5 md:grid-cols-3">
+			{
+				news.map((item) => (
+					<li>
+						<article class="group h-full overflow-hidden rounded-2xl border border-slate-200 bg-white shadow-sm transition hover:-translate-y-0.5 hover:shadow-lg dark:border-slate-800 dark:bg-slate-900 dark:hover:shadow-slate-950/60">
+							<a
+								href="https://www.gob.pe/busquedas?contenido%5B%5D=noticias&institucion%5B%5D=sunat"
+								target="_blank"
+								rel="noopener noreferrer"
+								class="flex h-full flex-col focus-visible:outline-offset-4"
+							>
+								<div class="aspect-[16/9] overflow-hidden bg-slate-100 dark:bg-slate-800">
+									<img
+										src={item.image}
+										alt=""
+										loading="lazy"
+										class="h-full w-full object-cover transition duration-300 group-hover:scale-[1.03]"
+									/>
+								</div>
+								<div class="flex flex-1 flex-col p-5">
+									<time class="text-xs font-semibold uppercase tracking-wide text-slate-500 dark:text-slate-400">
+										{item.date}
+									</time>
+									<h3 class="mt-2 text-base font-bold leading-snug text-slate-900 group-hover:text-sunat-blue dark:text-slate-100 dark:group-hover:text-sky-300">
+										{item.title}
+									</h3>
+									<p class="mt-2 flex-1 text-sm leading-relaxed text-slate-600 dark:text-slate-400">
+										{item.summary}
+									</p>
+									<span class="mt-4 inline-flex items-center gap-1.5 text-sm font-semibold text-sunat-blue dark:text-sky-400">
+										Leer noticia
+										<Icon name="arrow-right" size={15} />
+									</span>
+								</div>
+							</a>
+						</article>
+					</li>
+				))
+			}
+		</ul>
+	</div>
+</section>

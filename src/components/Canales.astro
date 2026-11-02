@@ -1,0 +1,252 @@
+---
+import Icon from './Icon.astro';
+
+const departments = [
+	'Amazonas',
+	'Ancash',
+	'Apurímac',
+	'Arequipa',
+	'Ayacucho',
+	'Cajamarca',
+	'Callao',
+	'Cusco',
+	'Huancavelica',
+	'Huánuco',
+	'Ica',
+	'Junín',
+	'La Libertad',
+	'Lambayeque',
+	'Lima',
+	'Loreto',
+	'Madre de Dios',
+	'Moquegua',
+	'Pasco',
+	'Piura',
+	'Puno',
+	'San Martín',
+	'Tacna',
+	'Tumbes',
+	'Ucayali',
+];
+
+const socialLinks = [
+	{ name: 'Facebook', icon: 'facebook', href: 'https://www.facebook.com/SUNAT' },
+	{ name: 'X (Twitter)', icon: 'twitter', href: 'https://twitter.com/SUNATOficial' },
+	{ name: 'Instagram', icon: 'instagram', href: 'https://www.instagram.com/sunatoficial/' },
+	{ name: 'LinkedIn', icon: 'linkedin', href: 'https://www.linkedin.com/company/sunat' },
+	{ name: 'YouTube', icon: 'youtube', href: 'https://www.youtube.com/user/sunatvideos1' },
+	{
+		name: 'Canal de WhatsApp',
+		icon: 'whatsapp',
+		href: 'https://whatsapp.com/channel/0029VawVXUN8vd1HMi5jXq2R',
+	},
+] as const;
+---
+
+<section id="contacto" class="scroll-mt-4 lg:scroll-mt-20 bg-slate-50 py-12 dark:bg-slate-900" aria-labelledby="titulo-canales">
+	<div class="container-sunat">
+		<div class="max-w-3xl">
+			<p class="text-sm font-bold uppercase tracking-wider text-sunat-blue dark:text-sky-400">Estamos cerca</p>
+			<h2 id="titulo-canales" class="mt-1 text-2xl font-bold text-slate-900 dark:text-white md:text-3xl">
+				Canales de atención y redes sociales
+			</h2>
+			<p class="mt-2 text-slate-600 dark:text-slate-300">
+				Puedes recibir ayuda en una oficina, por teléfono, por chat o en redes sociales. Revisa
+				los horarios y direcciones antes de ir.
+			</p>
+		</div>
+
+		<div class="mt-6 grid gap-5 lg:grid-cols-3">
+			<article class="rounded-2xl border border-slate-200 bg-white p-5 shadow-sm dark:border-slate-800 dark:bg-slate-950">
+				<div class="flex items-center gap-3">
+					<span class="grid h-10 w-10 place-items-center rounded-xl bg-sunat-blue/10 text-sunat-blue dark:bg-sky-500/15 dark:text-sky-300">
+						<Icon name="building" size={20} />
+					</span>
+					<h3 class="font-bold text-slate-900 dark:text-white">Oficinas de atención</h3>
+				</div>
+
+				<div class="mt-4 grid gap-3">
+					<div>
+						<label for="departamento-centros" class="mb-1 block text-xs font-bold uppercase tracking-wide text-slate-500 dark:text-slate-400">
+							Departamento
+						</label>
+						<select
+							id="departamento-centros"
+							class="h-11 w-full rounded-lg border border-slate-300 bg-white px-3 text-sm text-slate-800 dark:border-slate-700 dark:bg-slate-900 dark:text-slate-100"
+						>
+							{
+								departments.map((department) => (
+									<option selected={department === 'Cajamarca'}>{department}</option>
+								))
+							}
+						</select>
+					</div>
+					<div>
+						<label for="sede-centros" class="mb-1 block text-xs font-bold uppercase tracking-wide text-slate-500 dark:text-slate-400">
+							Sede
+						</label>
+						<select
+							id="sede-centros"
+							class="h-11 w-full rounded-lg border border-slate-300 bg-white px-3 text-sm text-slate-800 dark:border-slate-700 dark:bg-slate-900 dark:text-slate-100"
+						>
+							<option>Oficina Cajamarca</option>
+						</select>
+					</div>
+				</div>
+
+				<div class="mt-4 rounded-xl bg-slate-50 p-4 text-sm dark:bg-slate-800/60">
+					<p class="font-semibold text-slate-900 dark:text-slate-100">Oficina Cajamarca</p>
+					<p class="mt-1 leading-relaxed text-slate-600 dark:text-slate-300">
+						Av. Evitamiento Norte Lote 1A, Barrio San Antonio - Centro Comercial Real Plaza,
+						2.º piso. Cajamarca.
+					</p>
+					<p class="mt-3 flex items-start gap-2 text-slate-600 dark:text-slate-400">
+						<Icon name="clock" size={16} class="mt-0.5 shrink-0 text-sunat-blue dark:text-sky-400" />
+						Lunes a viernes de 8:30 a. m. a 5:00 p. m. y sábados de 8:30 a. m. a 1:30 p. m.
+					</p>
+					<a
+						href="https://www.google.com/maps/search/?api=1&query=MAC+Cajamarca+Real+Plaza"
+						target="_blank"
+						rel="noopener noreferrer"
+						class="mt-3 inline-flex items-center gap-1.5 font-semibold text-sunat-blue hover:underline dark:text-sky-400 dark:hover:text-sky-300"
+					>
+						<Icon name="map-pin" size={15} />
+						Ver mapa
+					</a>
+				</div>
+			</article>
+
+			<article class="rounded-2xl border border-slate-200 bg-white p-5 shadow-sm dark:border-slate-800 dark:bg-slate-950">
+				<div class="flex items-center gap-3">
+					<span class="grid h-10 w-10 place-items-center rounded-xl bg-sunat-green/10 text-sunat-green dark:bg-emerald-500/15 dark:text-emerald-300">
+						<Icon name="globe" size={20} />
+					</span>
+					<h3 class="font-bold text-slate-900 dark:text-white">Atención de aduanas</h3>
+				</div>
+
+				<div class="mt-4 grid gap-3">
+					<div>
+						<label for="departamento-aduanas" class="mb-1 block text-xs font-bold uppercase tracking-wide text-slate-500 dark:text-slate-400">
+							Departamento
+						</label>
+						<select
+							id="departamento-aduanas"
+							class="h-11 w-full rounded-lg border border-slate-300 bg-white px-3 text-sm text-slate-800 dark:border-slate-700 dark:bg-slate-900 dark:text-slate-100"
+						>
+							<option selected>Callao</option>
+							<option>Ancash</option>
+							<option>Arequipa</option>
+							<option>Cusco</option>
+							<option>Ica</option>
+							<option>La Libertad</option>
+							<option>Lambayeque</option>
+							<option>Lima</option>
+							<option>Loreto</option>
+							<option>Madre de Dios</option>
+							<option>Moquegua</option>
+							<option>Piura</option>
+							<option>Puno</option>
+							<option>San Martín</option>
+							<option>Tacna</option>
+							<option>Tumbes</option>
+							<option>Ucayali</option>
+						</select>
+					</div>
+					<div>
+						<label for="sede-aduanas" class="mb-1 block text-xs font-bold uppercase tracking-wide text-slate-500 dark:text-slate-400">
+							Sede
+						</label>
+						<select
+							id="sede-aduanas"
+							class="h-11 w-full rounded-lg border border-slate-300 bg-white px-3 text-sm text-slate-800 dark:border-slate-700 dark:bg-slate-900 dark:text-slate-100"
+						>
+							<option>Oficina de aduanas del Callao</option>
+						</select>
+					</div>
+				</div>
+
+				<div class="mt-4 rounded-xl bg-slate-50 p-4 text-sm dark:bg-slate-800/60">
+					<p class="font-semibold text-slate-900 dark:text-slate-100">Oficina de aduanas del Callao</p>
+					<p class="mt-1 leading-relaxed text-slate-600 dark:text-slate-300">Av. Agustín Gamarra 680, Callao.</p>
+					<p class="mt-3 flex items-start gap-2 text-slate-600 dark:text-slate-400">
+						<Icon name="clock" size={16} class="mt-0.5 shrink-0 text-sunat-green dark:text-emerald-400" />
+						Lunes a viernes de 8:30 a. m. a 4:30 p. m.
+					</p>
+					<a
+						href="https://www.google.com/maps/search/?api=1&query=Av.+Agust%C3%ADn+Gamarra+680+Callao+Peru"
+						target="_blank"
+						rel="noopener noreferrer"
+						class="mt-3 inline-flex items-center gap-1.5 font-semibold text-sunat-blue hover:underline dark:text-sky-400 dark:hover:text-sky-300"
+					>
+						<Icon name="map-pin" size={15} />
+						Ver mapa
+					</a>
+				</div>
+			</article>
+
+			<article class="flex flex-col rounded-2xl border border-slate-200 bg-white p-5 shadow-sm dark:border-slate-800 dark:bg-slate-950">
+				<div class="flex items-center gap-3">
+					<span class="grid h-10 w-10 place-items-center rounded-xl bg-sunat-magenta/10 text-sunat-magenta dark:bg-rose-500/15 dark:text-rose-300">
+						<Icon name="phone" size={20} />
+					</span>
+					<h3 class="font-bold text-slate-900 dark:text-white">Llámanos o escríbenos</h3>
+				</div>
+
+				<div class="mt-4 grid gap-2 text-sm">
+					<a href="tel:+5113150730" class="flex items-start gap-2 rounded-lg p-1 hover:bg-slate-50 dark:hover:bg-slate-800">
+						<Icon name="smartphone" size={16} class="mt-0.5 shrink-0 text-slate-400 dark:text-slate-500" />
+						<span>
+							<span class="block text-slate-500 dark:text-slate-400">Celulares y teléfonos fijos</span>
+							<span class="font-bold text-slate-900 dark:text-white">(01) 315 0730</span>
+						</span>
+					</a>
+					<a href="tel:080112100" class="flex items-start gap-2 rounded-lg p-1 hover:bg-slate-50 dark:hover:bg-slate-800">
+						<Icon name="phone" size={16} class="mt-0.5 shrink-0 text-slate-400 dark:text-slate-500" />
+						<span>
+							<span class="block text-slate-500 dark:text-slate-400">Fijos a nivel nacional</span>
+							<span class="font-bold text-slate-900 dark:text-white">0 801 12 100</span>
+						</span>
+					</a>
+				</div>
+
+				<div class="mt-4 rounded-xl border border-emerald-100 bg-emerald-50 p-4 dark:border-emerald-900 dark:bg-emerald-950/40">
+					<div class="flex items-center gap-2">
+						<Icon name="message" size={18} class="text-emerald-700 dark:text-emerald-300" />
+						<h4 class="font-bold text-emerald-950 dark:text-emerald-100">Chat SUNAT</h4>
+					</div>
+					<p class="mt-1 text-sm text-emerald-900 dark:text-emerald-200">¿Necesitas ayuda? Conversa con nosotros.</p>
+					<a
+						href="https://www.sunat.gob.pe/institucional/contactenos/chat-SUNAT-online.html"
+						target="_blank"
+						rel="noopener noreferrer"
+						class="mt-3 inline-flex w-full items-center justify-center gap-2 rounded-lg bg-emerald-700 px-4 py-2.5 text-sm font-bold text-white transition hover:bg-emerald-800 dark:bg-emerald-700 dark:hover:bg-emerald-800"
+					>
+						Chatea con nosotros
+						<Icon name="external-link" size={15} />
+					</a>
+				</div>
+
+				<div class="mt-5 border-t border-slate-100 pt-4 dark:border-slate-800">
+					<h4 class="text-xs font-bold uppercase tracking-wide text-slate-500 dark:text-slate-400">Redes sociales</h4>
+					<ul class="mt-3 flex flex-wrap gap-2">
+						{
+							socialLinks.map((social) => (
+								<li>
+									<a
+										href={social.href}
+										target="_blank"
+										rel="noopener noreferrer"
+										aria-label={`${social.name} de la SUNAT`}
+										class="grid h-10 w-10 place-items-center rounded-full border border-slate-200 text-slate-600 transition hover:border-sunat-blue hover:bg-sky-50 hover:text-sunat-blue dark:border-slate-700 dark:text-slate-300 dark:hover:border-sky-500 dark:hover:bg-slate-800 dark:hover:text-sky-300"
+									>
+										<Icon name={social.icon} size={18} />
+									</a>
+								</li>
+							))
+						}
+					</ul>
+				</div>
+			</article>
+		</div>
+	</div>
+</section>

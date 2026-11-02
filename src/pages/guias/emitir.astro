@@ -1,0 +1,479 @@
+---
+import Layout from '../../layouts/Layout.astro';
+import SolHeader from '../../components/sol/SolHeader.astro';
+import SolSidebar from '../../components/sol/SolSidebar.astro';
+import Icon from '../../components/Icon.astro';
+---
+
+<Layout title="Emitir Guía de Remisión Electrónica - SUNAT SOL">
+	<!-- 1. NUEVO HEADER DE SUNAT -->
+	<SolHeader current="inicio" />
+
+	<!-- 2. ESTRUCTURA FLEX DE 2 COLUMNAS (SIDEBAR + CONTENIDO) -->
+	<div class="flex min-h-[calc(100vh-104px)] bg-[#f8fafc] dark:bg-slate-950">
+		
+		<!-- SIDEBAR LATERAL (Marcado en 'emitir') -->
+		<SolSidebar activeMenu="emitir" />
+
+		<!-- CONTENIDO PRINCIPAL ENCUADRADO -->
+		<main class="flex-1 p-6 lg:p-8 max-w-7xl print:hidden">
+			<div class="space-y-6">
+				
+				<!-- Migas de Pan -->
+				<nav class="flex text-xs font-semibold text-slate-500 dark:text-slate-400 print:hidden" aria-label="Breadcrumb">
+					<ol class="inline-flex items-center gap-1.5">
+						<li><a href="/prueba" class="hover:text-[#0877a7] dark:hover:text-sky-300">Inicio SOL</a></li>
+						<li><Icon name="chevron-right" size={12} /></li>
+						<li><span class="text-slate-800 dark:text-slate-200 font-bold">Guía de Remisión Electrónica (GRE)</span></li>
+					</ol>
+				</nav>
+
+				<!-- BANNER CONTEXTUAL DE AYUDA (ESTILO FACTURAS UNIFICADO) -->
+				<div class="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-3 rounded-2xl border border-sky-200 bg-sky-50/80 p-4 dark:border-sky-900/60 dark:bg-sky-950/40 print:hidden">
+					<div class="flex items-center gap-3">
+						<span class="grid h-9 w-9 shrink-0 place-items-center rounded-xl bg-[#003366] text-white dark:bg-sky-500 dark:text-slate-950">
+							<Icon name="info" size={20} />
+						</span>
+						<div>
+							<h2 class="text-xs font-bold text-slate-900 dark:text-white">
+								¿Es tu primera vez emitiendo una Guía de Remisión o necesitas ayuda con algún campo?
+							</h2>
+							<p class="text-[11px] text-slate-600 dark:text-slate-300">
+								Consulta nuestra guía paso a paso con video tutorial integrado para resolver tus dudas antes de emitir.
+							</p>
+						</div>
+					</div>
+
+					<a href="/ayuda/guia-remision" class="inline-flex shrink-0 items-center justify-center gap-1.5 rounded-xl bg-[#0877a7] px-4 py-2 text-xs font-bold text-white shadow-sm transition hover:bg-[#075782] dark:bg-sky-600 dark:hover:bg-sky-500">
+						<span>Ver Guía y Video Tutorial</span>
+						<Icon name="arrow-right" size={14} />
+					</a>
+				</div>
+
+				<!-- INDICADOR DE PASOS (STEPPER PROGRESS BAR) -->
+				<div class="rounded-2xl border border-slate-200 bg-white p-6 shadow-sm dark:border-slate-800 dark:bg-slate-900">
+					<div class="flex items-center justify-between">
+						
+						<div class="flex items-center gap-3">
+							<div id="step-indicator-1" class="flex h-8 w-8 items-center justify-center rounded-full bg-[#0877a7] text-white font-bold text-xs ring-4 ring-sky-100 dark:ring-sky-900/40">1</div>
+							<div class="hidden sm:block">
+								<p class="text-xs font-bold text-slate-900 dark:text-white">Datos Generales</p>
+								<p class="text-[10px] text-slate-500">Motivo y Destinatario</p>
+							</div>
+						</div>
+
+						<div id="step-line-1" class="h-1 flex-1 bg-slate-200 dark:bg-slate-800 mx-4"></div>
+
+						<div class="flex items-center gap-3">
+							<div id="step-indicator-2" class="flex h-8 w-8 items-center justify-center rounded-full bg-slate-200 text-slate-600 font-bold text-xs dark:bg-slate-800 dark:text-slate-400">2</div>
+							<div class="hidden sm:block">
+								<p class="text-xs font-bold text-slate-900 dark:text-white">Puntos de Traslado</p>
+								<p class="text-[10px] text-slate-500">Partida y Llegada</p>
+							</div>
+						</div>
+
+						<div id="step-line-2" class="h-1 flex-1 bg-slate-200 dark:bg-slate-800 mx-4"></div>
+
+						<div class="flex items-center gap-3">
+							<div id="step-indicator-3" class="flex h-8 w-8 items-center justify-center rounded-full bg-slate-200 text-slate-600 font-bold text-xs dark:bg-slate-800 dark:text-slate-400">3</div>
+							<div class="hidden sm:block">
+								<p class="text-xs font-bold text-slate-900 dark:text-white">Transporte</p>
+								<p class="text-[10px] text-slate-500">Conductor y Vehículo</p>
+							</div>
+						</div>
+
+						<div id="step-line-3" class="h-1 flex-1 bg-slate-200 dark:bg-slate-800 mx-4"></div>
+
+						<div class="flex items-center gap-3">
+							<div id="step-indicator-4" class="flex h-8 w-8 items-center justify-center rounded-full bg-slate-200 text-slate-600 font-bold text-xs dark:bg-slate-800 dark:text-slate-400">4</div>
+							<div class="hidden sm:block">
+								<p class="text-xs font-bold text-slate-900 dark:text-white">Bienes a Trasladar</p>
+								<p class="text-[10px] text-slate-500">Detalle y Peso</p>
+							</div>
+						</div>
+
+					</div>
+				</div>
+
+				<!-- FORMULARIO DE GUÍA POR PASOS -->
+				<form id="form-guia" class="rounded-2xl border border-slate-200 bg-white p-6 shadow-sm dark:border-slate-800 dark:bg-slate-900 space-y-6" novalidate>
+
+					<!-- PASO 1: DATOS GENERALES Y VINCULACIÓN -->
+					<div id="step-content-1" class="space-y-5">
+						<h3 class="text-sm font-extrabold text-slate-900 dark:text-white uppercase border-b border-slate-100 pb-3 dark:border-slate-800">
+							Paso 1: Motivo de Traslado y Datos del Destinatario
+						</h3>
+
+						<div class="p-4 rounded-xl bg-slate-50 border border-slate-200 dark:bg-slate-950 dark:border-slate-800 space-y-3">
+							<label class="flex items-center gap-2 cursor-pointer">
+								<input type="checkbox" id="vincular-factura-check" class="h-4 w-4 rounded border-slate-300 text-[#0877a7] focus:ring-[#0877a7]" />
+								<span class="text-xs font-bold text-slate-900 dark:text-white">¿Desea vincular esta Guía con una Factura Electrónica emitida previamente?</span>
+							</label>
+
+							<div id="container-factura-info" class="hidden pt-2">
+								<div class="flex items-center gap-2 max-w-md">
+									<input type="text" id="input-num-factura" placeholder="Escriba F001-42" class="h-9 w-full rounded-lg border border-slate-300 px-3 text-xs dark:border-slate-700 dark:bg-slate-900 dark:text-white" />
+									<button type="button" id="btn-buscar-factura" class="h-9 shrink-0 px-4 rounded-lg bg-[#0877a7] text-xs font-bold text-white hover:bg-[#075782]">
+										Vincular Factura
+									</button>
+								</div>
+								<p id="feedback-factura" class="mt-2 text-xs font-semibold hidden"></p>
+							</div>
+						</div>
+
+						<div class="grid grid-cols-1 md:grid-cols-2 gap-4 text-xs">
+							<div>
+								<label class="block font-bold mb-1 text-slate-700 dark:text-slate-300">Motivo del Traslado <span class="text-rose-500">*</span></label>
+								<select id="motivo-traslado" class="h-9 w-full rounded-lg border border-slate-300 px-3 text-xs dark:border-slate-700 dark:bg-slate-950 dark:text-white">
+									<option value="01">01 - VENTA</option>
+									<option value="02">02 - COMPRA</option>
+									<option value="04">04 - TRASLADO ENTRE ESTABLECIMIENTOS DE LA MISMA EMPRESA</option>
+									<option value="13">13 - OTROS</option>
+								</select>
+							</div>
+
+							<div>
+								<label class="block font-bold mb-1 text-slate-700 dark:text-slate-300">Fecha de Inicio del Traslado <span class="text-rose-500">*</span></label>
+								<input type="date" id="fec-inicio-traslado" class="h-9 w-full rounded-lg border border-slate-300 px-3 text-xs dark:border-slate-700 dark:bg-slate-950 dark:text-white font-semibold" />
+								<p id="err-fec-inicio-traslado" class="text-[11px] font-semibold text-rose-600 dark:text-rose-400 mt-1 hidden"></p>
+							</div>
+
+							<div>
+								<label class="block font-bold mb-1 text-slate-700 dark:text-slate-300">RUC del Destinatario <span class="text-rose-500">*</span></label>
+								<input type="text" id="ruc-destinatario" maxlength="11" placeholder="Ingrese 11 dígitos numéricos" class="h-9 w-full rounded-lg border border-slate-300 px-3 text-xs dark:border-slate-700 dark:bg-slate-950 dark:text-white" />
+								<p id="err-ruc-destinatario" class="text-[11px] font-semibold text-rose-600 dark:text-rose-400 mt-1 hidden"></p>
+							</div>
+
+							<div>
+								<label class="block font-bold mb-1 text-slate-700 dark:text-slate-300">Razón Social Destinatario <span class="text-rose-500">*</span></label>
+								<input type="text" id="nom-destinatario" placeholder="Nombre completo o Razón Social" class="h-9 w-full rounded-lg border border-slate-300 px-3 text-xs dark:border-slate-700 dark:bg-slate-950 dark:text-white" />
+								<p id="err-nom-destinatario" class="text-[11px] font-semibold text-rose-600 dark:text-rose-400 mt-1 hidden"></p>
+							</div>
+						</div>
+					</div>
+
+					<!-- PASO 2: PUNTOS DE TRASLADO -->
+					<div id="step-content-2" class="space-y-5 hidden">
+						<h3 class="text-sm font-extrabold text-slate-900 dark:text-white uppercase border-b border-slate-100 pb-3 dark:border-slate-800">
+							Paso 2: Datos del Origen y Destino
+						</h3>
+
+						<div class="grid grid-cols-1 md:grid-cols-2 gap-4 text-xs">
+							<div>
+								<label class="block font-bold mb-1 text-slate-700 dark:text-slate-300">Punto de Partida (Dirección Completa) <span class="text-rose-500">*</span></label>
+								<input type="text" id="dir-partida" value="AV. UNIVERSITARIA NRO. 8411 DPTO. 1536 INT. 01 (COMAS LIMA)" class="h-9 w-full rounded-lg border border-slate-300 px-3 text-xs dark:border-slate-700 dark:bg-slate-950 dark:text-white" />
+								<p id="err-dir-partida" class="text-[11px] font-semibold text-rose-600 dark:text-rose-400 mt-1 hidden"></p>
+							</div>
+
+							<div>
+								<label class="block font-bold mb-1 text-slate-700 dark:text-slate-300">Punto de Llegada (Dirección Completa) <span class="text-rose-500">*</span></label>
+								<input type="text" id="dir-llegada" placeholder="Dirección exacta de destino" class="h-9 w-full rounded-lg border border-slate-300 px-3 text-xs dark:border-slate-700 dark:bg-slate-950 dark:text-white" />
+								<p id="err-dir-llegada" class="text-[11px] font-semibold text-rose-600 dark:text-rose-400 mt-1 hidden"></p>
+							</div>
+						</div>
+					</div>
+
+					<!-- PASO 3: MODALIDAD DE TRANSPORTE Y CONDUCTOR -->
+					<div id="step-content-3" class="space-y-5 hidden">
+						<h3 class="text-sm font-extrabold text-slate-900 dark:text-white uppercase border-b border-slate-100 pb-3 dark:border-slate-800">
+							Paso 3: Datos del Transporte y Vehículo
+						</h3>
+
+						<div class="space-y-4 text-xs">
+							<div>
+								<label class="block font-bold mb-1 text-slate-700 dark:text-slate-300">Modalidad de Transporte <span class="text-rose-500">*</span></label>
+								<select id="modalidad-transporte" class="h-9 w-full rounded-lg border border-slate-300 px-3 text-xs dark:border-slate-700 dark:bg-slate-950 dark:text-white font-semibold">
+									<option value="02">02 - TRANSPORTE PRIVADO (Vehículo propio / Conductor)</option>
+									<option value="01">01 - TRANSPORTE PÚBLICO (Empresa de transportes contratada)</option>
+								</select>
+							</div>
+
+							<!-- Sección Transporte Privado -->
+							<div id="sec-transporte-privado" class="grid grid-cols-1 md:grid-cols-3 gap-3 p-4 rounded-xl bg-slate-50 border border-slate-200 dark:bg-slate-950 dark:border-slate-800">
+								<div>
+									<label class="block font-bold mb-1 text-slate-700 dark:text-slate-300">DNI / Brevete Conductor <span class="text-rose-500">*</span></label>
+									<input type="text" id="conductor-doc" maxlength="10" placeholder="Solo números" class="h-9 w-full rounded-lg border border-slate-300 px-3 text-xs dark:border-slate-700 dark:bg-slate-900 dark:text-white" />
+									<p id="err-conductor-doc" class="text-[11px] font-semibold text-rose-600 dark:text-rose-400 mt-1 hidden"></p>
+								</div>
+								<div>
+									<label class="block font-bold mb-1 text-slate-700 dark:text-slate-300">Nombre del Conductor <span class="text-rose-500">*</span></label>
+									<input type="text" id="conductor-nombre" placeholder="Nombre completo" class="h-9 w-full rounded-lg border border-slate-300 px-3 text-xs dark:border-slate-700 dark:bg-slate-900 dark:text-white" />
+									<p id="err-conductor-nombre" class="text-[11px] font-semibold text-rose-600 dark:text-rose-400 mt-1 hidden"></p>
+								</div>
+								<div>
+									<label class="block font-bold mb-1 text-slate-700 dark:text-slate-300">Placa del Vehículo <span class="text-rose-500">*</span></label>
+									<input type="text" id="vehiculo-placa" placeholder="Ej: ABC-123" class="h-9 w-full rounded-lg border border-slate-300 px-3 text-xs dark:border-slate-700 dark:bg-slate-900 dark:text-white uppercase" />
+									<p id="err-vehiculo-placa" class="text-[11px] font-semibold text-rose-600 dark:text-rose-400 mt-1 hidden"></p>
+								</div>
+							</div>
+
+							<!-- Sección Transporte Público -->
+							<div id="sec-transporte-publico" class="hidden grid grid-cols-1 md:grid-cols-2 gap-3 p-4 rounded-xl bg-slate-50 border border-slate-200 dark:bg-slate-950 dark:border-slate-800">
+								<div>
+									<label class="block font-bold mb-1 text-slate-700 dark:text-slate-300">RUC Empresa de Transportes <span class="text-rose-500">*</span></label>
+									<input type="text" id="transp-ruc" maxlength="11" placeholder="11 dígitos numéricos" class="h-9 w-full rounded-lg border border-slate-300 px-3 text-xs dark:border-slate-700 dark:bg-slate-900 dark:text-white" />
+									<p id="err-transp-ruc" class="text-[11px] font-semibold text-rose-600 dark:text-rose-400 mt-1 hidden"></p>
+								</div>
+								<div>
+									<label class="block font-bold mb-1 text-slate-700 dark:text-slate-300">Razón Social Transportista <span class="text-rose-500">*</span></label>
+									<input type="text" id="transp-nombre" placeholder="Nombre de la empresa" class="h-9 w-full rounded-lg border border-slate-300 px-3 text-xs dark:border-slate-700 dark:bg-slate-900 dark:text-white" />
+									<p id="err-transp-nombre" class="text-[11px] font-semibold text-rose-600 dark:text-rose-400 mt-1 hidden"></p>
+								</div>
+							</div>
+						</div>
+					</div>
+
+					<!-- PASO 4: PESO Y DETALLE DE BIENES -->
+					<div id="step-content-4" class="space-y-5 hidden">
+						<h3 class="text-sm font-extrabold text-slate-900 dark:text-white uppercase border-b border-slate-100 pb-3 dark:border-slate-800">
+							Paso 4: Datos de Carga y Bienes a Trasladar
+						</h3>
+
+						<div class="grid grid-cols-1 md:grid-cols-2 gap-4 text-xs bg-slate-50 p-4 rounded-xl border border-slate-200 dark:bg-slate-950 dark:border-slate-800">
+							<div>
+								<label class="block font-bold mb-1 text-slate-700 dark:text-slate-300">Peso Total Bruto (KGM) <span class="text-rose-500">*</span></label>
+								<input type="number" id="peso-total" placeholder="0.00" step="0.01" class="h-9 w-full rounded-lg border border-slate-300 px-3 text-xs dark:border-slate-700 dark:bg-slate-900 dark:text-white font-bold" />
+								<p id="err-peso-total" class="text-[11px] font-semibold text-rose-600 dark:text-rose-400 mt-1 hidden"></p>
+							</div>
+
+							<div>
+								<label class="block font-bold mb-1 text-slate-700 dark:text-slate-300">Número de Bultos / Palets (Calculado Automáticamente)</label>
+								<input type="number" id="cant-bultos" value="0" readonly class="h-9 w-full rounded-lg border border-slate-200 bg-slate-100 px-3 text-xs font-bold text-slate-700 dark:border-slate-800 dark:bg-slate-900 dark:text-slate-400" />
+							</div>
+						</div>
+
+						<div class="flex items-center justify-between pt-2">
+							<h4 class="text-xs font-bold text-slate-800 dark:text-slate-200 uppercase">Detalle de Bienes</h4>
+							<button type="button" id="btn-agregar-bien" class="inline-flex items-center gap-1.5 rounded-xl bg-[#0877a7] px-4 py-2 text-xs font-bold text-white shadow-sm hover:bg-[#075782] transition">
+								<span>+ Agregar Bien Manual</span>
+							</button>
+						</div>
+
+						<div class="overflow-x-auto rounded-xl border border-slate-200 dark:border-slate-800">
+							<table class="w-full text-left text-xs">
+								<thead class="bg-slate-50 text-slate-700 dark:bg-slate-800 dark:text-slate-300 font-bold">
+									<tr>
+										<th class="p-3">Código</th>
+										<th class="p-3">Descripción del Bien</th>
+										<th class="p-3">Unidad Medida</th>
+										<th class="p-3 text-center">Cantidad</th>
+										<th class="p-3 text-center">Acciones</th>
+									</tr>
+								</thead>
+								<tbody id="tabla-bienes" class="divide-y divide-slate-100 dark:divide-slate-800">
+								</tbody>
+							</table>
+						</div>
+					</div>
+
+					<!-- BOTONES DE NAVEGACIÓN Y ACCIONES -->
+					<div class="flex items-center justify-between pt-4 border-t border-slate-100 dark:border-slate-800">
+						<button type="button" id="btn-prev-step" class="hidden rounded-xl border border-slate-300 bg-white px-5 py-2.5 text-xs font-bold text-slate-700 transition hover:bg-slate-50 dark:border-slate-700 dark:bg-slate-950 dark:text-slate-300">
+							<div class="flex items-center gap-2">
+								<Icon name="arrow-left" size={16} />
+								<span>Paso Anterior</span>
+							</div>
+						</button>
+
+						<div class="ml-auto flex items-center gap-2">
+							<button type="button" id="btn-next-step" class="rounded-xl bg-[#0877a7] px-6 py-2.5 text-xs font-bold text-white shadow-md transition hover:bg-[#075782]">
+								<div class="flex items-center gap-2">
+									<span>Siguiente Paso</span>
+									<Icon name="arrow-right" size={16} />
+								</div>
+							</button>
+
+							<button type="button" id="btn-vista-previa-gre" class="hidden rounded-xl bg-emerald-600 px-5 py-2.5 text-xs font-bold text-white shadow-md transition hover:bg-emerald-700">
+								<div class="flex items-center gap-2">
+									<Icon name="file-text" size={16} />
+									<span>Vista Previa</span>
+								</div>
+							</button>
+
+							<button type="submit" id="btn-submit-guia" class="hidden rounded-xl bg-[#0877a7] px-6 py-2.5 text-xs font-bold text-white shadow-md transition hover:bg-[#075782]">
+								<div class="flex items-center gap-2">
+									<Icon name="check" size={16} />
+									<span>Generar Guía de Remisión (GRE)</span>
+								</div>
+							</button>
+						</div>
+					</div>
+
+				</form>
+
+				<!-- MODAL AGREGAR / EDITAR BIEN MANUAL -->
+				<div id="modal-bien" class="hidden fixed inset-0 z-50 flex items-center justify-center bg-slate-900/60 p-4 backdrop-blur-sm overflow-y-auto print:hidden">
+					<div class="w-full max-w-lg rounded-2xl border border-slate-200 bg-white p-6 shadow-2xl dark:border-slate-800 dark:bg-slate-900 space-y-4 my-8">
+						<div class="flex items-center justify-between border-b border-slate-100 pb-3 dark:border-slate-800">
+							<h3 id="modal-bien-titulo" class="text-base font-bold text-slate-900 dark:text-white">Agregar Bien al Traslado</h3>
+							<button type="button" id="btn-cerrar-bien" class="text-slate-400 font-bold">✕</button>
+						</div>
+
+						<div id="feedback-bien" class="hidden text-xs font-semibold p-2.5 rounded-lg"></div>
+
+						<div class="space-y-3 text-xs">
+							<div>
+								<label class="block font-bold mb-1 text-slate-700 dark:text-slate-300">Código del Bien / Producto</label>
+								<input type="text" id="m-bien-codigo" placeholder="Ej: PROD-102" class="h-9 w-full rounded border border-slate-300 px-3 dark:border-slate-700 dark:bg-slate-950 dark:text-white" />
+							</div>
+							<div>
+								<label class="block font-bold mb-1 text-slate-700 dark:text-slate-300">Descripción del Bien <span class="text-rose-500">*</span></label>
+								<input type="text" id="m-bien-desc" placeholder="Descripción detallada de la mercadería" class="h-9 w-full rounded border border-slate-300 px-3 dark:border-slate-700 dark:bg-slate-950 dark:text-white" />
+							</div>
+							<div class="grid grid-cols-2 gap-2">
+								<div>
+									<label class="block font-bold mb-1 text-slate-700 dark:text-slate-300">Unidad</label>
+									<select id="m-bien-unidad" class="h-9 w-full rounded border border-slate-300 px-2 dark:border-slate-700 dark:bg-slate-950 dark:text-white">
+										<option value="NIU">Unidad (NIU)</option>
+										<option value="KGM">Kilogramo (KGM)</option>
+										<option value="BX">Caja (BX)</option>
+									</select>
+								</div>
+								<div>
+									<label class="block font-bold mb-1 text-slate-700 dark:text-slate-300">Cantidad <span class="text-rose-500">*</span></label>
+									<input type="number" id="m-bien-cant" value="1" min="1" class="h-9 w-full rounded border border-slate-300 px-3 dark:border-slate-700 dark:bg-slate-950 dark:text-white" />
+								</div>
+							</div>
+						</div>
+
+						<div class="flex justify-end gap-2 pt-3 border-t border-slate-100 dark:border-slate-800">
+							<button type="button" id="btn-cancelar-bien" class="rounded-xl border border-slate-300 px-4 py-2 text-xs font-bold">Cancelar</button>
+							<button type="button" id="btn-guardar-bien" class="rounded-xl bg-[#0877a7] px-5 py-2 text-xs font-bold text-white hover:bg-[#075782]">Guardar Bien</button>
+						</div>
+					</div>
+				</div>
+
+			</div>
+		</main>
+	</div>
+
+	<!-- MODAL PREVISUALIZACIÓN IMPRESA DE LA GUÍA -->
+	<div id="modal-vista-previa-gre" class="hidden fixed inset-0 z-50 flex items-center justify-center bg-slate-900/70 p-4 backdrop-blur-sm overflow-y-auto print:flex print:static print:bg-white print:p-0 print:w-full print:h-auto">
+		<div id="documento-impreso-gre" class="w-full max-w-3xl rounded-2xl border border-slate-200 bg-white p-8 shadow-2xl space-y-4 my-8 text-slate-900 text-[11px] font-sans print:m-0 print:border-none print:shadow-none print:w-full print:p-0">
+			
+			<div class="flex justify-between items-start pb-2">
+				<div class="flex gap-4 items-start">
+					<div class="h-16 w-16 bg-slate-800 text-white font-black flex flex-col items-center justify-center rounded text-center text-xs p-1">
+						<span>JC</span>
+						
+					</div>
+					<div>
+						<h2 class="font-extrabold text-sm uppercase">Cordova Ramos Javier</h2>
+						<p class="font-bold">RUC 10616288475</p>
+						<p class="text-[10px] text-slate-600">AV. UNIVERSITARIA NRO. 8411 DPTO. 1536 INT. 01 (COMAS LIMA)</p>
+						<p class="text-[10px] text-slate-600">gerente.gen.2025@gmail.com</p>
+						<p class="text-[10px] text-slate-600">932547945</p>
+					</div>
+				</div>
+				<div class="border border-slate-400 p-4 text-center min-w-[240px] rounded">
+					<p class="font-extrabold text-xs">GUIA DE REMISIÓN REMITENTE</p>
+					<p class="font-extrabold text-sm text-rose-600 mt-1">T001-00000012</p>
+				</div>
+			</div>
+
+			<div class="border border-slate-300 p-2.5 rounded space-y-0.5">
+				<p class="font-extrabold border-b border-slate-200 pb-1 mb-1 text-[11px]">DESTINATARIO</p>
+				<p><strong>Razón Social:</strong> <span id="pv-gre-dest-nom">-</span></p>
+				<p><strong>RUC:</strong> <span id="pv-gre-dest-ruc">-</span></p>
+				<p><strong>Dirección:</strong> <span id="pv-gre-dest-dir">-</span></p>
+				<p><strong>Vendedor:</strong> LIC</p>
+			</div>
+
+			<div class="border border-slate-300 p-2.5 rounded space-y-0.5">
+				<p class="font-extrabold border-b border-slate-200 pb-1 mb-1 text-[11px]">DOCUMENTOS RELACIONADOS</p>
+				<p id="pv-gre-doc-rel">Sin documento relacionado</p>
+			</div>
+
+			<div class="border border-slate-300 p-2.5 rounded space-y-1">
+				<p class="font-extrabold border-b border-slate-200 pb-1 mb-1 text-[11px]">ENVIO</p>
+				<div class="grid grid-cols-2 gap-x-4">
+					<p><strong>Fecha Emisión:</strong> <span id="pv-gre-fec-emision">2026-10-31</span></p>
+					<p><strong>Fecha Inicio de Traslado:</strong> <span id="pv-gre-fec-inicio">2026-10-31</span></p>
+					<p><strong>Motivo Traslado:</strong> <span id="pv-gre-motivo">Venta</span></p>
+					<p><strong>Modalidad de Transporte:</strong> <span id="pv-gre-modalidad">Transporte privado</span></p>
+					<p><strong>Peso Bruto Total(KGM):</strong> <span id="pv-gre-peso">1.30</span></p>
+					<p><strong>Número de Bultos:</strong> <span id="pv-gre-bultos">2</span></p>
+				</div>
+				<p class="pt-1"><strong>P.Partida:</strong> <span id="pv-gre-partida">-</span></p>
+				<p><strong>P.Llegada:</strong> <span id="pv-gre-llegada">-</span></p>
+			</div>
+
+			<div class="border border-slate-300 p-2.5 rounded space-y-0.5">
+				<p class="font-extrabold border-b border-slate-200 pb-1 mb-1 text-[11px]">TRANSPORTE</p>
+				<p id="pv-gre-transporte">Indicador de traslado en vehículos de categoría M1 o L: NO</p>
+			</div>
+
+			<div class="border border-slate-300 rounded overflow-hidden">
+				<table class="w-full text-left text-[11px]">
+					<thead class="bg-slate-100 font-bold border-b border-slate-300">
+						<tr>
+							<th class="py-1.5 px-2 text-center w-12">Item</th>
+							<th class="py-1.5 px-2 w-24">Código</th>
+							<th class="py-1.5 px-2">Descripción</th>
+							<th class="py-1.5 px-2 text-center w-20">Unidad</th>
+							<th class="py-1.5 px-2 text-right w-20">Cantidad</th>
+						</tr>
+					</thead>
+					<tbody id="pv-gre-tabla-body">
+					</tbody>
+				</table>
+			</div>
+
+			<div class="flex justify-between items-end pt-2 print:hidden">
+				<div class="h-20 w-20 border border-slate-800 p-1 flex items-center justify-center bg-slate-100 font-sans text-[8px] text-center font-bold">
+					[ QR GRE SUNAT ]
+				</div>
+				<button type="button" id="btn-cerrar-pv-gre" class="rounded-xl border border-slate-300 px-5 py-2 text-xs font-bold font-sans hover:bg-slate-50 transition">
+					Cerrar Vista Previa
+				</button>
+			</div>
+		</div>
+	</div>
+
+	<!-- MODAL CONFIRMACIÓN ÉXITO GRE CON BOTONES DE DESCARGA -->
+	<div id="modal-exito-gre" class="hidden fixed inset-0 z-50 flex items-center justify-center bg-slate-900/60 p-4 backdrop-blur-sm print:hidden">
+		<div class="w-full max-w-lg rounded-2xl border border-slate-200 bg-white p-6 shadow-2xl dark:border-slate-800 dark:bg-slate-900 space-y-5 text-slate-900 dark:text-slate-100">
+			<div class="flex items-center justify-between border-b border-slate-100 pb-3 dark:border-slate-800">
+				<h3 class="text-base font-bold text-slate-900 dark:text-white">Guía de Remisión: T001-00000012</h3>
+				<button type="button" id="btn-cerrar-exito-gre" class="text-slate-400 hover:text-slate-600 font-bold">✕</button>
+			</div>
+
+			<div class="flex items-center gap-3 rounded-xl border border-emerald-200 bg-emerald-50 p-4 text-xs font-semibold text-emerald-800 dark:border-emerald-900 dark:bg-emerald-950/60 dark:text-emerald-200">
+				<span class="grid h-6 w-6 shrink-0 place-items-center rounded-full bg-emerald-500 text-white font-black">✓</span>
+				<span>La Guía de Remisión T001-00000012 ha sido aceptada por la SUNAT con Código QR emitido.</span>
+			</div>
+
+			<div class="grid grid-cols-3 gap-3 pt-2">
+				<button type="button" id="btn-descarga-a4-gre" class="flex flex-col items-center justify-center gap-2 rounded-2xl bg-[#0877a7] p-4 text-white shadow-md transition hover:bg-[#075782]">
+					<span class="grid h-9 w-9 place-items-center rounded-xl bg-white/20">
+						<Icon name="file-text" size={20} />
+					</span>
+					<span class="text-xs font-extrabold uppercase">Formato A4</span>
+				</button>
+
+				<button type="button" id="btn-descarga-80mm-gre" class="flex flex-col items-center justify-center gap-2 rounded-2xl bg-[#0877a7] p-4 text-white shadow-md transition hover:bg-[#075782]">
+					<span class="grid h-9 w-9 place-items-center rounded-xl bg-white/20">
+						<Icon name="credit-card" size={20} />
+					</span>
+					<span class="text-xs font-extrabold uppercase">Ticket 80MM</span>
+				</button>
+
+				<button type="button" id="btn-descarga-a5-gre" class="flex flex-col items-center justify-center gap-2 rounded-2xl bg-[#0877a7] p-4 text-white shadow-md transition hover:bg-[#075782]">
+					<span class="grid h-9 w-9 place-items-center rounded-xl bg-white/20">
+						<Icon name="file-text" size={20} />
+					</span>
+					<span class="text-xs font-extrabold uppercase">Formato A5</span>
+				</button>
+			</div>
+
+			<div class="flex justify-end pt-3 border-t border-slate-100 dark:border-slate-800">
+				<button type="button" onclick="document.getElementById('btn-cerrar-exito-gre').click()" class="rounded-xl border border-slate-300 px-5 py-2 text-xs font-bold text-slate-700 dark:border-slate-700 dark:text-slate-300">
+					Aceptar y Finalizar
+				</button>
+			</div>
+		</div>
+	</div>
+
+	<!-- SCRIPT EXTERNO CON LÓGICA Y AUDIO -->
+	<script src="../../scripts/guia-remision.js"></script>
+</Layout>

@@ -1,0 +1,304 @@
+---
+import Layout from '../layouts/Layout.astro';
+import SolHeader from '../components/sol/SolHeader.astro';
+import SolSidebar from '../components/sol/SolSidebar.astro';
+import Icon from '../components/Icon.astro';
+import type { IconName } from '../data/icons';
+
+const secciones: { id: string; label: string; icon: IconName }[] = [
+	{ id: 'datos', label: 'Datos del RUC', icon: 'id-card' },
+	{ id: 'domicilio', label: 'Domicilio fiscal', icon: 'map-pin' },
+	{ id: 'contacto', label: 'Datos de contacto', icon: 'phone' },
+	{ id: 'seguridad', label: 'Seguridad y Clave SOL', icon: 'lock' },
+	{ id: 'preferencias', label: 'Accesibilidad y preferencias', icon: 'sliders' },
+];
+
+const reglasClave = [
+	{ id: 'largo', texto: 'Entre 8 y 12 caracteres' },
+	{ id: 'letra', texto: 'Al menos una letra' },
+	{ id: 'numero', texto: 'Al menos un número' },
+	{ id: 'distinta', texto: 'Diferente a tu clave actual' },
+];
+---
+
+<Layout title="Mi perfil - SUNAT SOL" description="Revisa y actualiza tus datos como contribuyente.">
+	<!-- HEADER UNIFICADO -->
+	<SolHeader current="perfil" />
+
+	<!-- CONTENEDOR FLEX PRINCIPAL -->
+	<div class="flex min-h-[calc(100vh-104px)] bg-[#f8fafc] dark:bg-slate-950">
+		
+		<!-- SIDEBAR LATERAL -->
+		<SolSidebar activeMenu="perfil" />
+
+		<!-- CONTENIDO PRINCIPAL -->
+		<main class="flex-1 p-6 lg:p-8 max-w-7xl">
+			<div class="space-y-6">
+				
+				<!-- Migas de Pan -->
+				<nav class="flex text-xs font-semibold text-slate-500 dark:text-slate-400" aria-label="Ruta de navegación">
+					<ol class="inline-flex items-center gap-1.5">
+						<li><a href="/prueba" class="hover:text-[#0877a7] dark:hover:text-sky-300">Inicio</a></li>
+						<li><Icon name="chevron-right" size={12} /></li>
+						<li><span class="text-slate-800 dark:text-slate-200 font-bold">Mi perfil</span></li>
+					</ol>
+				</nav>
+
+				<!-- Cabecera de perfil con color institucional corregido -->
+				<section class="overflow-hidden rounded-3xl border border-slate-200 bg-white shadow-sm dark:border-slate-800 dark:bg-slate-900" aria-labelledby="titulo-perfil">
+					<!-- Cabecera con degradado institucional azul SUNAT -->
+					<div class="h-28 bg-gradient-to-r from-[#003366] via-[#075782] to-[#0877a7] p-6 text-white relative">
+						<span class="absolute top-4 right-4 text-[11px] font-bold uppercase tracking-wider bg-white/10 px-3 py-1 rounded-full backdrop-blur-sm">
+							Portal Operaciones en Línea
+						</span>
+					</div>
+
+					<div class="flex flex-col gap-5 px-5 pb-6 md:flex-row md:items-end md:px-8">
+						<!-- Avatar con iniciales o escudo -->
+						<span class="-mt-12 grid h-24 w-24 shrink-0 place-items-center rounded-3xl bg-white text-3xl font-black text-[#003366] shadow-xl ring-4 ring-white dark:bg-slate-800 dark:text-sky-400 dark:ring-slate-900 border border-slate-200 dark:border-slate-700" data-sol-field="iniciales">
+							JC
+						</span>
+						
+						<div class="min-w-0 flex-1">
+							<h1 id="titulo-perfil" class="text-2xl font-black tracking-tight text-slate-900 dark:text-white md:text-3xl" data-sol-field="nombreCompleto">
+								Cordova Ramos Javier
+							</h1>
+							<p class="mt-1 text-sm text-slate-600 dark:text-slate-400 flex items-center gap-2">
+								<span>RUC <strong class="text-slate-800 dark:text-slate-200" data-sol-field="ruc">10616288475</strong></span>
+								<span>·</span>
+								<span data-sol-field="tipo">Persona natural con negocio</span>
+							</p>
+							<ul class="mt-3 flex flex-wrap gap-2 text-xs font-bold">
+								<li class="inline-flex items-center gap-1.5 rounded-lg bg-emerald-50 px-2.5 py-1 text-emerald-700 dark:bg-emerald-950/60 dark:text-emerald-300 border border-emerald-200 dark:border-emerald-900/40">
+									<Icon name="shield-check" size={14} />RUC <span data-sol-field="estado">Activo</span>
+								</li>
+								<li class="inline-flex items-center gap-1.5 rounded-lg bg-emerald-50 px-2.5 py-1 text-emerald-700 dark:bg-emerald-950/60 dark:text-emerald-300 border border-emerald-200 dark:border-emerald-900/40">
+									<Icon name="map-pin" size={14} />Domicilio <span data-sol-field="condicion">Habido</span>
+								</li>
+							</ul>
+						</div>
+
+						<div class="w-full md:w-64 bg-slate-50 dark:bg-slate-950/50 p-4 rounded-2xl border border-slate-100 dark:border-slate-800">
+							<div class="flex items-center justify-between text-xs">
+								<span class="font-bold text-slate-700 dark:text-slate-300">Perfil completo</span>
+								<strong id="perfil-progreso-texto" class="text-[#0877a7] dark:text-sky-400 font-black">—</strong>
+							</div>
+							<div class="mt-2 h-2.5 overflow-hidden rounded-full bg-slate-200 dark:bg-slate-800" role="progressbar" aria-labelledby="perfil-progreso-texto" aria-valuemin="0" aria-valuemax="100" id="perfil-progreso">
+								<div class="h-full rounded-full bg-gradient-to-r from-emerald-500 to-emerald-400 transition-all" id="perfil-progreso-barra" style="width: 0%"></div>
+							</div>
+							<p id="perfil-progreso-ayuda" class="mt-2 text-[11px] text-slate-500 dark:text-slate-400"></p>
+						</div>
+					</div>
+				</section>
+
+				<!-- SECCIONES DE CONTENIDO -->
+				<div class="grid grid-cols-1 gap-6 lg:grid-cols-[240px_minmax(0,1fr)]">
+					
+					<!-- Menú lateral interno de secciones -->
+					<nav aria-label="Secciones de mi perfil" class="min-w-0 lg:sticky lg:top-24 lg:self-start">
+						<ul class="flex gap-2 overflow-x-auto pb-2 lg:grid lg:gap-1.5 lg:overflow-visible lg:pb-0">
+							{
+								secciones.map((s) => (
+									<li class="shrink-0">
+										<a 
+											href={`#${s.id}`} 
+											data-seccion-link={s.id} 
+											class="flex h-11 items-center gap-2.5 rounded-xl px-3.5 text-xs font-bold text-slate-600 transition hover:bg-white hover:text-[#0877a7] shadow-sm dark:text-slate-400 dark:hover:bg-slate-900 dark:hover:text-sky-300 border border-transparent hover:border-slate-200 dark:hover:border-slate-800"
+										>
+											<Icon name={s.icon} size={16} />
+											<span>{s.label}</span>
+										</a>
+									</li>
+								))
+							}
+						</ul>
+					</nav>
+
+					<!-- Paneles -->
+					<div class="grid min-w-0 gap-6">
+						
+						<!-- Datos del RUC -->
+						<section id="datos" class="rounded-2xl border border-slate-200 bg-white p-6 shadow-sm dark:border-slate-800 dark:bg-slate-900 scroll-mt-24 space-y-4" aria-labelledby="titulo-datos" data-seccion>
+							<div class="flex flex-wrap items-start justify-between gap-3">
+								<div>
+									<h2 id="titulo-datos" class="text-base font-extrabold text-slate-900 dark:text-white">Datos del RUC</h2>
+									<p class="text-xs text-slate-600 dark:text-slate-400">Así te tiene registrado SUNAT. Solo puedes cambiarlos con el Formulario 3128.</p>
+								</div>
+								<div class="flex flex-wrap gap-2">
+									<button type="button" class="inline-flex items-center gap-1.5 rounded-xl border border-slate-300 bg-white px-3.5 py-2 text-xs font-bold text-slate-700 hover:bg-slate-50 dark:border-slate-700 dark:bg-slate-950 dark:text-slate-300 transition" data-simular="Descargando tu Ficha RUC en PDF… (simulación)">
+										<Icon name="download" size={15} />Ficha RUC
+									</button>
+									<button type="button" class="inline-flex items-center gap-1.5 rounded-xl bg-[#0877a7] px-3.5 py-2 text-xs font-bold text-white shadow-md hover:bg-[#075782] transition" data-simular="Abriendo «Modificar datos del RUC»… (simulación)">
+										<Icon name="edit" size={15} />Modificar datos
+									</button>
+								</div>
+							</div>
+							<dl class="grid gap-x-6 gap-y-3 sm:grid-cols-2 text-xs pt-2">
+								<div class="rounded-xl bg-slate-50 p-3 dark:bg-slate-950/50 border border-slate-100 dark:border-slate-800"><dt class="text-slate-500 font-medium">Número de RUC</dt><dd class="font-bold text-slate-900 dark:text-white mt-0.5" data-sol-field="ruc">10616288475</dd></div>
+								<div class="rounded-xl bg-slate-50 p-3 dark:bg-slate-950/50 border border-slate-100 dark:border-slate-800"><dt class="text-slate-500 font-medium">Tipo de contribuyente</dt><dd class="font-bold text-slate-900 dark:text-white mt-0.5" data-sol-field="tipo">Persona natural con negocio</dd></div>
+								<div class="rounded-xl bg-slate-50 p-3 dark:bg-slate-950/50 border border-slate-100 dark:border-slate-800"><dt class="text-slate-500 font-medium">Apellidos y nombres</dt><dd class="font-bold text-slate-900 dark:text-white mt-0.5" data-sol-field="nombreCompleto">Cordova Ramos Javier</dd></div>
+								<div class="rounded-xl bg-slate-50 p-3 dark:bg-slate-950/50 border border-slate-100 dark:border-slate-800"><dt class="text-slate-500 font-medium">Documento de identidad</dt><dd class="font-bold text-slate-900 dark:text-white mt-0.5">DNI <span data-sol-field="dni">74881174</span></dd></div>
+								<div class="rounded-xl bg-slate-50 p-3 dark:bg-slate-950/50 border border-slate-100 dark:border-slate-800"><dt class="text-slate-500 font-medium">Estado del contribuyente</dt><dd class="font-bold text-slate-900 dark:text-white mt-0.5"><span class="text-emerald-600 dark:text-emerald-400">Activo</span></dd></div>
+								<div class="rounded-xl bg-slate-50 p-3 dark:bg-slate-950/50 border border-slate-100 dark:border-slate-800"><dt class="text-slate-500 font-medium">Sistema de emisión</dt><dd class="font-bold text-slate-900 dark:text-white mt-0.5">Electrónico (SEE - SOL)</dd></div>
+								<div class="rounded-xl bg-slate-50 p-3 dark:bg-slate-950/50 border border-slate-100 dark:border-slate-800 sm:col-span-2"><dt class="text-slate-500 font-medium">Actividad económica principal</dt><dd class="font-bold text-slate-900 dark:text-white mt-0.5" data-sol-field="actividad">Venta al por menor de muebles y enseres</dd></div>
+							</dl>
+						</section>
+
+						<!-- Domicilio -->
+						<section id="domicilio" class="rounded-2xl border border-slate-200 bg-white p-6 shadow-sm dark:border-slate-800 dark:bg-slate-900 scroll-mt-24 space-y-4" aria-labelledby="titulo-domicilio" data-seccion>
+							<h2 id="titulo-domicilio" class="text-base font-extrabold text-slate-900 dark:text-white">Domicilio fiscal</h2>
+							<p class="text-xs text-slate-600 dark:text-slate-400">Es la dirección donde SUNAT puede notificarte en forma física.</p>
+							<div class="flex flex-col gap-4 rounded-xl bg-slate-50 p-4 dark:bg-slate-950/50 border border-slate-100 dark:border-slate-800 sm:flex-row sm:items-center">
+								<span class="grid h-12 w-12 shrink-0 place-items-center rounded-xl bg-emerald-100 text-emerald-700 dark:bg-emerald-950/50 dark:text-emerald-300">
+									<Icon name="map-pin" size={22} />
+								</span>
+								<div class="flex-1 text-xs">
+									<p class="font-bold text-slate-900 dark:text-white" data-sol-field="domicilio">AV. LARCO NRO. 123 INT. 402 - MIRAFLORES - LIMA - LIMA</p>
+									<p class="mt-1 text-slate-600 dark:text-slate-400">
+										Condición: <strong class="text-emerald-700 dark:text-emerald-300" data-sol-field="condicion">Habido</strong>. SUNAT pudo verificar tu dirección.
+									</p>
+								</div>
+								<button type="button" class="inline-flex items-center gap-1.5 rounded-xl border border-slate-300 bg-white px-3.5 py-2 text-xs font-bold text-slate-700 hover:bg-slate-50 dark:border-slate-700 dark:bg-slate-900 dark:text-slate-300 transition" data-simular="Abriendo el cambio de domicilio fiscal… (simulación)">
+									<Icon name="edit" size={15} />Cambiar domicilio
+								</button>
+							</div>
+						</section>
+
+						<!-- Contacto -->
+						<section id="contacto" class="rounded-2xl border border-slate-200 bg-white p-6 shadow-sm dark:border-slate-800 dark:bg-slate-900 scroll-mt-24 space-y-4" aria-labelledby="titulo-contacto" data-seccion>
+							<h2 id="titulo-contacto" class="text-base font-extrabold text-slate-900 dark:text-white">Datos de contacto</h2>
+							<p class="text-xs text-slate-600 dark:text-slate-400">Los usamos para enviarte avisos de vencimientos y de mensajes nuevos en tu buzón.</p>
+							<form id="form-contacto" class="mt-4 grid gap-4 sm:grid-cols-2 text-xs" novalidate>
+								<div>
+									<label for="correo" class="block font-bold mb-1.5 text-slate-700 dark:text-slate-300">Correo electrónico</label>
+									<input id="correo" name="correo" type="email" autocomplete="email" inputmode="email" placeholder="nombre@correo.com" aria-describedby="correo-estado" class="h-9 w-full rounded-lg border border-slate-300 px-3 font-medium text-slate-900 dark:border-slate-700 dark:bg-slate-950 dark:text-white" />
+									<p id="correo-estado" class="mt-1 text-[11px] font-semibold" aria-live="polite"></p>
+								</div>
+								<div>
+									<label for="celular" class="block font-bold mb-1.5 text-slate-700 dark:text-slate-300">Celular</label>
+									<div class="flex">
+										<span class="inline-flex items-center rounded-l-lg border border-r-0 border-slate-300 bg-slate-100 px-3 text-xs font-bold text-slate-600 dark:border-slate-700 dark:bg-slate-800 dark:text-slate-300">+51</span>
+										<input id="celular" name="celular" type="tel" inputmode="numeric" autocomplete="tel-national" maxlength="9" placeholder="987654321" aria-describedby="celular-ayuda celular-estado" class="h-9 w-full rounded-r-lg border border-slate-300 px-3 font-bold text-slate-900 dark:border-slate-700 dark:bg-slate-950 dark:text-white" />
+									</div>
+									<p id="celular-ayuda" class="mt-1 text-[11px] text-slate-500 dark:text-slate-400">9 dígitos, empieza con 9.</p>
+									<p id="celular-estado" class="mt-1 text-[11px] font-semibold" aria-live="polite"></p>
+								</div>
+								<div class="flex flex-wrap gap-2.5 sm:col-span-2 pt-2">
+									<button type="submit" class="inline-flex items-center gap-1.5 rounded-xl bg-[#0877a7] px-4 py-2 text-xs font-bold text-white shadow-md hover:bg-[#075782] transition"><Icon name="check" size={15} />Guardar cambios</button>
+									<button type="reset" class="inline-flex items-center gap-1.5 rounded-xl border border-slate-300 bg-white px-4 py-2 text-xs font-bold text-slate-700 hover:bg-slate-50 dark:border-slate-700 dark:bg-slate-950 dark:text-slate-300 transition">Deshacer</button>
+								</div>
+							</form>
+						</section>
+
+						<!-- Seguridad -->
+						<section id="seguridad" class="rounded-2xl border border-slate-200 bg-white p-6 shadow-sm dark:border-slate-800 dark:bg-slate-900 scroll-mt-24 space-y-4" aria-labelledby="titulo-seguridad" data-seccion>
+							<h2 id="titulo-seguridad" class="text-base font-extrabold text-slate-900 dark:text-white">Seguridad y Clave SOL</h2>
+							<p class="text-xs text-slate-600 dark:text-slate-400">Protege tu cuenta. Nunca compartas tu Clave SOL.</p>
+
+							<dl class="grid gap-4 sm:grid-cols-3 text-xs">
+								<div class="rounded-xl bg-slate-50 p-3 dark:bg-slate-950/50 border border-slate-100 dark:border-slate-800">
+									<dt class="text-slate-500 font-medium">Usuario SOL</dt>
+									<dd class="font-bold text-slate-900 dark:text-white mt-0.5" data-sol-field="usuario">PRUEBA</dd>
+								</div>
+								<div class="rounded-xl bg-slate-50 p-3 dark:bg-slate-950/50 border border-slate-100 dark:border-slate-800">
+									<dt class="text-slate-500 font-medium">Ingreso actual</dt>
+									<dd class="font-bold text-slate-900 dark:text-white mt-0.5" id="hora-ingreso-real">Calculando hora...</dd>
+								</div>
+								<div class="rounded-xl bg-slate-50 p-3 dark:bg-slate-950/50 border border-slate-100 dark:border-slate-800">
+									<dt class="text-slate-500 font-medium">Clave SOL actual</dt>
+									<dd class="flex items-center justify-between mt-0.5">
+										<span id="txt-clave-actual-mask" class="font-bold text-slate-900 dark:text-white tracking-widest">••••••••</span>
+										<button type="button" id="btn-toggle-perfil-pass" class="text-[11px] font-bold text-[#0877a7] hover:underline dark:text-sky-400">
+											Mostrar
+										</button>
+									</dd>
+								</div>
+							</dl>
+
+							<form id="form-clave" class="grid gap-4 rounded-xl border border-slate-200 p-4 dark:border-slate-800 md:grid-cols-2 md:p-5 text-xs bg-slate-50/50 dark:bg-slate-950/30" novalidate>
+								<h3 class="font-bold text-slate-900 dark:text-white md:col-span-2 text-sm border-b border-slate-200 dark:border-slate-800 pb-2">Cambiar Clave SOL</h3>
+								
+								<div>
+									<label for="clave-nueva" class="block font-bold mb-1.5 text-slate-700 dark:text-slate-300">Nueva clave</label>
+									<div class="relative">
+										<input id="clave-nueva" type="password" autocomplete="new-password" maxlength="12" aria-describedby="clave-reglas" class="h-9 w-full rounded-lg border border-slate-300 px-3 pr-20 font-medium text-slate-900 dark:border-slate-700 dark:bg-slate-950 dark:text-white" />
+										<button type="button" data-ver-clave="clave-nueva" aria-pressed="false" class="absolute inset-y-1 right-1 rounded-md px-2.5 text-xs font-bold text-[#0877a7] hover:bg-sky-50 dark:text-sky-400 dark:hover:bg-slate-800">Mostrar</button>
+									</div>
+									<div class="mt-2 h-1.5 overflow-hidden rounded-full bg-slate-200 dark:bg-slate-800" aria-hidden="true">
+										<div id="clave-fuerza" class="h-full w-0 rounded-full transition-all"></div>
+									</div>
+								</div>
+								<div>
+									<label for="clave-confirmar" class="block font-bold mb-1.5 text-slate-700 dark:text-slate-300">Repite la nueva clave</label>
+									<input id="clave-confirmar" type="password" autocomplete="new-password" maxlength="12" aria-describedby="clave-confirmar-estado" class="h-9 w-full rounded-lg border border-slate-300 px-3 font-medium text-slate-900 dark:border-slate-700 dark:bg-slate-950 dark:text-white" />
+									<p id="clave-confirmar-estado" class="mt-1 text-[11px] font-semibold" aria-live="polite"></p>
+								</div>
+								<ul id="clave-reglas" class="grid gap-1.5 text-xs sm:grid-cols-2 md:col-span-2 pt-2" aria-label="Requisitos de la nueva clave">
+									{
+										reglasClave.map((r) => (
+											<li data-regla={r.id} class="flex items-center gap-2 text-slate-500 dark:text-slate-400">
+												<span class="grid h-4 w-4 place-items-center rounded-full border border-slate-400 text-slate-400"><Icon name="check" size={10} strokeWidth={3} /></span>
+												<span>{r.texto}</span>
+											</li>
+										))
+									}
+								</ul>
+								<div class="flex flex-wrap gap-2.5 md:col-span-2 pt-2 border-t border-slate-200 dark:border-slate-800">
+									<button type="submit" class="inline-flex items-center gap-1.5 rounded-xl bg-[#0877a7] px-4 py-2 text-xs font-bold text-white shadow-md hover:bg-[#075782] transition"><Icon name="key" size={15} />Actualizar clave</button>
+									<button type="button" data-logout class="inline-flex items-center gap-1.5 rounded-xl border border-rose-300 bg-rose-50 px-4 py-2 text-xs font-bold text-rose-700 hover:bg-rose-100 dark:border-rose-900 dark:bg-rose-950/50 dark:text-rose-300 transition"><Icon name="log-out" size={15} />Cerrar sesión</button>
+								</div>
+							</form>
+						</section>
+
+						<!-- Preferencias -->
+						<section id="preferencias" class="rounded-2xl border border-slate-200 bg-white p-6 shadow-sm dark:border-slate-800 dark:bg-slate-900 scroll-mt-24 space-y-4" aria-labelledby="titulo-preferencias" data-seccion>
+							<h2 id="titulo-preferencias" class="text-base font-extrabold text-slate-900 dark:text-white">Accesibilidad y preferencias</h2>
+							<p class="text-xs text-slate-600 dark:text-slate-400">Adapta el sistema a tu forma de trabajar. Los cambios se aplican al instante y se guardan en este dispositivo.</p>
+
+							<div class="mt-4 grid gap-5 text-xs">
+								<fieldset class="space-y-2">
+									<legend class="font-bold text-slate-700 dark:text-slate-300">Apariencia</legend>
+									<div class="grid gap-2 sm:grid-cols-3">
+										<label class="flex items-center gap-2.5 rounded-xl border border-slate-200 p-3 font-bold text-slate-700 cursor-pointer hover:bg-slate-50 dark:border-slate-800 dark:text-slate-300 dark:hover:bg-slate-800/50"><input type="radio" name="tema" value="light" class="accent-[#0877a7]" /><Icon name="sun" size={16} />Modo claro</label>
+										<label class="flex items-center gap-2.5 rounded-xl border border-slate-200 p-3 font-bold text-slate-700 cursor-pointer hover:bg-slate-50 dark:border-slate-800 dark:text-slate-300 dark:hover:bg-slate-800/50"><input type="radio" name="tema" value="dark" class="accent-[#0877a7]" /><Icon name="moon" size={16} />Modo oscuro</label>
+										<label class="flex items-center gap-2.5 rounded-xl border border-slate-200 p-3 font-bold text-slate-700 cursor-pointer hover:bg-slate-50 dark:border-slate-800 dark:text-slate-300 dark:hover:bg-slate-800/50"><input type="radio" name="tema" value="system" class="accent-[#0877a7]" /><Icon name="monitor" size={16} />Igual que mi equipo</label>
+									</div>
+								</fieldset>
+
+								<fieldset class="space-y-2">
+									<legend class="font-bold text-slate-700 dark:text-slate-300">Tamaño del texto</legend>
+									<div class="grid gap-2 sm:grid-cols-3">
+										<label class="flex items-center gap-2.5 rounded-xl border border-slate-200 p-3 font-bold text-slate-700 cursor-pointer hover:bg-slate-50 dark:border-slate-800 dark:text-slate-300 dark:hover:bg-slate-800/50"><input type="radio" name="texto" value="normal" class="accent-[#0877a7]" /><span class="font-black">Aa</span> Normal</label>
+										<label class="flex items-center gap-2.5 rounded-xl border border-slate-200 p-3 font-bold text-slate-700 cursor-pointer hover:bg-slate-50 dark:border-slate-800 dark:text-slate-300 dark:hover:bg-slate-800/50"><input type="radio" name="texto" value="grande" class="accent-[#0877a7]" /><span class="text-base font-black">Aa</span> Grande</label>
+										<label class="flex items-center gap-2.5 rounded-xl border border-slate-200 p-3 font-bold text-slate-700 cursor-pointer hover:bg-slate-50 dark:border-slate-800 dark:text-slate-300 dark:hover:bg-slate-800/50"><input type="radio" name="texto" value="extra" class="accent-[#0877a7]" /><span class="text-lg font-black">Aa</span> Muy grande</label>
+									</div>
+								</fieldset>
+							</div>
+						</section>
+
+					</div>
+				</div>
+
+			</div>
+		</main>
+	</div>
+
+	<!-- MODAL GENERAL ESTÉTICO CENTRADO (NOTIFICACIONES / ÉXITO) -->
+	<div id="modal-sol-exito" class="fixed inset-0 z-50 hidden items-center justify-center bg-slate-900/60 backdrop-blur-sm p-4">
+		<div class="w-full max-w-sm rounded-3xl bg-white p-6 shadow-2xl dark:bg-slate-900 dark:border dark:border-slate-800 text-center space-y-4 animate-in fade-in zoom-in duration-200">
+			<div class="mx-auto grid h-12 w-12 place-items-center rounded-2xl bg-emerald-100 text-emerald-600 dark:bg-emerald-950 dark:text-emerald-400">
+				<Icon name="check" size={24} strokeWidth={3} />
+			</div>
+			<div>
+				<h3 id="modal-sol-titulo" class="text-base font-black text-slate-900 dark:text-white">¡Operación exitosa!</h3>
+				<p id="modal-sol-mensaje" class="mt-1 text-xs text-slate-600 dark:text-slate-400">Mensaje del sistema.</p>
+			</div>
+			<button type="button" id="btn-cerrar-modal-sol" class="w-full rounded-xl bg-[#0877a7] py-2.5 text-xs font-bold text-white shadow-md hover:bg-[#075782] transition">
+				Entendido
+			</button>
+		</div>
+	</div>
+
+	<!-- IMPORTACIÓN DEL SCRIPT EXTERNO -->
+	<script src="../scripts/perfil.js"></script>
+</Layout>

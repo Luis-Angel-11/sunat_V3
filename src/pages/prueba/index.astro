@@ -1,0 +1,334 @@
+---
+import Layout from '../../layouts/Layout.astro';
+import SolHeader from '../../components/sol/SolHeader.astro';
+import SolSidebar from '../../components/sol/SolSidebar.astro';
+import BuzonModal from '../../components/sol/BuzonModal.astro';
+import Icon from '../../components/Icon.astro';
+---
+
+<Layout title="Mi Panel SOL - SUNAT Operaciones en Línea">
+	<SolHeader current="inicio" />
+
+	<div class="flex min-h-[calc(100vh-104px)] bg-[#f8fafc] dark:bg-slate-950">
+		<SolSidebar activeMenu="panel" />
+
+		<main class="flex-1 p-6 lg:p-8">
+			<div class="mx-auto max-w-7xl grid gap-8 xl:grid-cols-[1fr_320px]">
+				
+				<!-- COLUMNA PRINCIPAL -->
+				<div class="space-y-6">
+					
+					<!-- BREADCRUMB & FECHA -->
+					<div class="flex flex-wrap items-center justify-between gap-4 text-xs text-slate-500 dark:text-slate-400">
+						<nav class="flex items-center gap-1.5 font-medium">
+							<span>Inicio</span>
+							<Icon name="chevron-right" size={12} />
+							<span class="font-bold text-slate-800 dark:text-slate-200">Mi Panel SOL</span>
+						</nav>
+
+						
+					</div>
+
+					<!-- SALUDO INSTITUCIONAL -->
+					<div>
+						<span class="text-[10px] font-extrabold uppercase tracking-widest text-red-700 dark:text-red-400">
+							PANEL PRINCIPAL
+						</span>
+						<h1 class="text-2xl lg:text-3xl font-black tracking-tight text-[#003366] dark:text-white mt-1">
+							Buenos días, Javier Cordova
+						</h1>
+						<p class="text-xs text-slate-500 dark:text-slate-400 mt-0.5">
+							Gestiona tus principales operaciones tributarias desde un solo lugar.
+						</p>
+					</div>
+
+					<!-- BUSCADOR PREDICTIVO MEJORADO -->
+					<section class="rounded-2xl border border-slate-200 bg-white p-6 shadow-sm dark:border-slate-800 dark:bg-slate-900">
+						<h2 class="text-xl font-extrabold text-slate-900 dark:text-white">
+							Te ayudamos a encontrar tu trámite
+						</h2>
+						<p class="text-xs text-slate-500 dark:text-slate-400 mt-1">
+							No necesitas recordar nombres técnicos. Escribe lo que buscas y te guiamos paso a paso.
+						</p>
+
+						<form id="form-buscador-sol" class="relative mt-4 flex flex-col gap-3 sm:flex-row sm:items-center">
+							<div class="relative flex-1 flex items-center rounded-2xl border border-slate-300 bg-white px-4 py-2.5 shadow-sm transition focus-within:border-[#0877a7] focus-within:ring-2 focus-within:ring-[#0877a7]/20 dark:border-slate-700 dark:bg-slate-800">
+								<Icon name="search" size={20} class="text-slate-400 shrink-0" />
+								<input
+									type="text"
+									id="buscador-sol"
+									class="w-full bg-transparent px-3 py-1 text-sm font-medium text-slate-900 outline-none placeholder:text-slate-400 dark:text-white dark:placeholder:text-slate-500"
+									placeholder="Buscar trámites, consultas y formularios..."
+									autocomplete="off"
+								/>
+							</div>
+
+							<button
+								type="submit"
+								class="rounded-xl bg-[#0877a7] px-6 py-3 text-sm font-bold text-white shadow transition hover:bg-[#075782] shrink-0"
+							>
+								Buscar
+							</button>
+
+							<div
+								id="resultados-busqueda-sol"
+								class="hidden absolute left-0 right-0 top-full z-50 mt-2 rounded-2xl border border-slate-200 bg-white p-2 shadow-2xl space-y-1 dark:border-slate-800 dark:bg-slate-900"
+							></div>
+						</form>
+					</section>
+
+					<!-- TRÁMITES FRECUENTES: 6 TARJETAS CORREGIDAS -->
+<section>
+	<div class="flex items-center justify-between">
+		<div>
+			<span class="text-[10px] font-bold uppercase tracking-widest text-red-700 dark:text-red-400">ACCESOS DIRECTOS</span>
+			<h2 class="text-lg font-extrabold text-slate-900 dark:text-white">Trámites Frecuentes</h2>
+		</div>
+		<a href="/operaciones-favoritas" class="text-xs font-bold text-[#0877a7] hover:underline dark:text-sky-400 flex items-center gap-1">
+			Ver todos los servicios <Icon name="arrow-right" size={14} />
+		</a>
+	</div>
+
+	<div class="mt-4 grid gap-4 sm:grid-cols-2 lg:grid-cols-3">
+		<!-- 1. Consultar Comprobantes -->
+		<div class="relative flex flex-col justify-between rounded-2xl border border-slate-200 bg-white p-5 shadow-sm transition hover:shadow-md dark:border-slate-800 dark:bg-slate-900">
+			<div class="flex items-start justify-between">
+				<div class="grid h-10 w-10 place-items-center rounded-xl bg-sky-50 text-[#0877a7] dark:bg-sky-950 dark:text-sky-300">
+					<Icon name="search" size={20} />
+				</div>
+				<button type="button" data-fav-btn="comprobantes" class="p-1" title="Añadir a Favoritos">☆</button>
+			</div>
+			<div class="mt-3">
+				<h3 class="text-sm font-bold text-slate-900 dark:text-white">Consultar Comprobantes</h3>
+				<p class="mt-1 text-xs text-slate-500 dark:text-slate-400">Facturas, boletas y recibos electrónicos</p>
+			</div>
+			<a href="/sol/comprobantes" class="mt-4 inline-flex items-center gap-1 text-xs font-bold text-[#0877a7] hover:underline dark:text-sky-400">
+				Consultar <Icon name="arrow-right" size={14} />
+			</a>
+		</div>
+
+		<!-- 2. Emitir Guía de Remisión -->
+		<div class="relative flex flex-col justify-between rounded-2xl border border-slate-200 bg-white p-5 shadow-sm transition hover:shadow-md dark:border-slate-800 dark:bg-slate-900">
+			<div class="flex items-start justify-between">
+				<div class="grid h-10 w-10 place-items-center rounded-xl bg-sky-50 text-[#0877a7] dark:bg-sky-950 dark:text-sky-300">
+					<Icon name="file-text" size={20} />
+				</div>
+				<button type="button" data-fav-btn="gre" class="p-1" title="Añadir a Favoritos">☆</button>
+			</div>
+			<div class="mt-3">
+				<h3 class="text-sm font-bold text-slate-900 dark:text-white">Emitir Guía de Remisión</h3>
+				<p class="mt-1 text-xs text-slate-500 dark:text-slate-400">Genera una GRE para el traslado de bienes</p>
+			</div>
+			<a href="/sol/gre" class="mt-4 inline-flex items-center gap-1 text-xs font-bold text-[#0877a7] hover:underline dark:text-sky-400">
+				Emitir GRE <Icon name="arrow-right" size={14} />
+			</a>
+		</div>
+
+		<!-- 3. Validar RHE (Ícono corregido a shield-check) -->
+		<div class="relative flex flex-col justify-between rounded-2xl border border-slate-200 bg-white p-5 shadow-sm transition hover:shadow-md dark:border-slate-800 dark:bg-slate-900">
+			<div class="flex items-start justify-between">
+				<div class="grid h-10 w-10 place-items-center rounded-xl bg-sky-50 text-[#0877a7] dark:bg-sky-950 dark:text-sky-300">
+					<Icon name="shield-check" size={20} />
+				</div>
+				<button type="button" data-fav-btn="rhe" class="p-1" title="Añadir a Favoritos">☆</button>
+			</div>
+			<div class="mt-3">
+				<h3 class="text-sm font-bold text-slate-900 dark:text-white">Validar RHE</h3>
+				<p class="mt-1 text-xs text-slate-500 dark:text-slate-400">Verifica recibos por honorarios electrónicos</p>
+			</div>
+			<a href="/sol/rhe" class="mt-4 inline-flex items-center gap-1 text-xs font-bold text-[#0877a7] hover:underline dark:text-sky-400">
+				Validar <Icon name="arrow-right" size={14} />
+			</a>
+		</div>
+
+		<!-- 4. Declaración Jurada y Pago -->
+		<div class="relative flex flex-col justify-between rounded-2xl border border-slate-200 bg-white p-5 shadow-sm transition hover:shadow-md dark:border-slate-800 dark:bg-slate-900">
+			<div class="flex items-start justify-between">
+				<div class="grid h-10 w-10 place-items-center rounded-xl bg-red-50 text-red-600 dark:bg-red-950/60 dark:text-red-400">
+					<Icon name="credit-card" size={20} />
+				</div>
+				<button type="button" data-fav-btn="declarar" class="p-1" title="Añadir a Favoritos">☆</button>
+			</div>
+			<div class="mt-3">
+				<h3 class="text-sm font-bold text-slate-900 dark:text-white">Declaración Jurada y Pago</h3>
+				<p class="mt-1 text-xs text-slate-500 dark:text-slate-400">Presenta tus declaraciones y realiza pagos</p>
+			</div>
+			<a href="/sol/declarar" class="mt-4 inline-flex items-center gap-1 text-xs font-bold text-[#0877a7] hover:underline dark:text-sky-400">
+				Declarar <Icon name="arrow-right" size={14} />
+			</a>
+		</div>
+
+		<!-- 5. Emitir Factura Electrónica (Ícono corregido a file-text) -->
+		<div class="relative flex flex-col justify-between rounded-2xl border border-slate-200 bg-white p-5 shadow-sm transition hover:shadow-md dark:border-slate-800 dark:bg-slate-900">
+			<div class="flex items-start justify-between">
+				<div class="grid h-10 w-10 place-items-center rounded-xl bg-sky-50 text-[#0877a7] dark:bg-sky-950 dark:text-sky-300">
+					<Icon name="file-text" size={20} />
+				</div>
+				<button type="button" data-fav-btn="factura" class="p-1" title="Añadir a Favoritos">☆</button>
+			</div>
+			<div class="mt-3">
+				<h3 class="text-sm font-bold text-slate-900 dark:text-white">Emitir Factura Electrónica</h3>
+				<p class="mt-1 text-xs text-slate-500 dark:text-slate-400">Emisión directa en el sistema SOL</p>
+			</div>
+			<a href="/sol/factura" class="mt-4 inline-flex items-center gap-1 text-xs font-bold text-[#0877a7] hover:underline dark:text-sky-400">
+				Emitir <Icon name="arrow-right" size={14} />
+			</a>
+		</div>
+
+		<!-- 6. Ficha RUC y Domicilio -->
+		<div class="relative flex flex-col justify-between rounded-2xl border border-slate-200 bg-white p-5 shadow-sm transition hover:shadow-md dark:border-slate-800 dark:bg-slate-900">
+			<div class="flex items-start justify-between">
+				<div class="grid h-10 w-10 place-items-center rounded-xl bg-sky-50 text-[#0877a7] dark:bg-sky-950 dark:text-sky-300">
+					<Icon name="id-card" size={20} />
+				</div>
+				<button type="button" data-fav-btn="ruc" class="p-1" title="Añadir a Favoritos">☆</button>
+			</div>
+			<div class="mt-3">
+				<h3 class="text-sm font-bold text-slate-900 dark:text-white">Ficha RUC y Domicilio</h3>
+				<p class="mt-1 text-xs text-slate-500 dark:text-slate-400">Consulta datos y condición de Habido</p>
+			</div>
+			<a href="/sol/ruc" class="mt-4 inline-flex items-center gap-1 text-xs font-bold text-[#0877a7] hover:underline dark:text-sky-400">
+				Ver Ficha <Icon name="arrow-right" size={14} />
+			</a>
+		</div>
+	</div>
+</section>
+
+					<!-- HISTORIAL RECIENTE -->
+					<section class="rounded-2xl border border-slate-200 bg-white p-6 shadow-sm dark:border-slate-800 dark:bg-slate-900">
+						<div class="flex items-center justify-between border-b border-slate-100 pb-4 dark:border-slate-800">
+							<div>
+								<span class="text-[10px] font-bold uppercase tracking-widest text-red-700 dark:text-red-400">TU ACTIVIDAD</span>
+								<h2 class="text-lg font-extrabold text-slate-900 dark:text-white">Historial Reciente</h2>
+							</div>
+							<a href="/sol/historial" class="text-xs font-bold text-[#0877a7] hover:underline dark:text-sky-400 flex items-center gap-1">
+								Ver historial completo <Icon name="arrow-right" size={14} />
+							</a>
+						</div>
+
+						<div class="mt-4 overflow-x-auto">
+							<table class="w-full text-left text-xs">
+								<thead>
+									<tr class="text-[10px] font-bold uppercase tracking-wider text-slate-400 border-b border-slate-100 dark:border-slate-800">
+										<th class="pb-3">FECHA</th>
+										<th class="pb-3">TRÁMITE / OPERACIÓN</th>
+										<th class="pb-3 text-right">ESTADO / ACCIONES</th>
+									</tr>
+								</thead>
+								<tbody class="divide-y divide-slate-100 dark:divide-slate-800">
+									<tr>
+										<td class="py-3.5 font-semibold text-slate-900 dark:text-white">
+											14 Nov 2025 <span class="block text-[10px] font-normal text-slate-400">10:42 a. m.</span>
+										</td>
+										<td class="py-3.5">
+											<p class="font-bold text-slate-800 dark:text-slate-200">Emisión de Guía de Remisión Electrónica</p>
+											<p class="text-[10px] text-slate-400">GRE N.° T001-00001824</p>
+										</td>
+										<td class="py-3.5 text-right">
+											<span class="inline-flex items-center gap-1 rounded-full bg-emerald-100 px-2.5 py-0.5 text-[10px] font-black text-emerald-800 dark:bg-emerald-950 dark:text-emerald-300">
+												✓ COMPLETADO
+											</span>
+										</td>
+									</tr>
+									<tr>
+										<td class="py-3.5 font-semibold text-slate-900 dark:text-white">
+											12 Nov 2025 <span class="block text-[10px] font-normal text-slate-400">04:18 p. m.</span>
+										</td>
+										<td class="py-3.5">
+											<p class="font-bold text-slate-800 dark:text-slate-200">Declaración mensual IGV - Renta</p>
+											<p class="text-[10px] text-slate-400">Formulario virtual 621</p>
+										</td>
+										<td class="py-3.5 text-right">
+											<span class="inline-flex items-center gap-1 rounded-full bg-emerald-100 px-2.5 py-0.5 text-[10px] font-black text-emerald-800 dark:bg-emerald-950 dark:text-emerald-300">
+												✓ PRESENTADO
+											</span>
+										</td>
+									</tr>
+								</tbody>
+							</table>
+						</div>
+					</section>
+
+				</div>
+
+				<!-- COLUMNA DERECHA -->
+				<aside class="space-y-6">
+					
+					<!-- TUS ACCESOS / FAVORITOS -->
+					<div class="rounded-2xl border border-slate-200 bg-white p-6 shadow-sm dark:border-slate-800 dark:bg-slate-900">
+						<div class="flex items-center gap-2">
+							<span class="text-amber-500 text-lg">☆</span>
+							<h3 class="text-base font-extrabold text-slate-900 dark:text-white">Tus accesos</h3>
+						</div>
+						<p class="text-xs text-slate-500 dark:text-slate-400 mt-1">
+							Lo que guardaste y lo que abriste hace poco.
+						</p>
+
+						<div class="mt-4 border-t border-slate-100 pt-4 dark:border-slate-800">
+							<h4 class="text-[10px] font-bold uppercase tracking-wider text-slate-400 mb-2">FAVORITOS</h4>
+							<div id="lista-favoritos-panel"></div>
+						</div>
+					</div>
+
+					<!-- LIBRO DE RECLAMACIONES -->
+					<a
+						href="/libro-reclamaciones"
+						class="flex items-center gap-3 rounded-2xl border border-slate-200 bg-white p-4 shadow-sm transition hover:shadow-md dark:border-slate-800 dark:bg-slate-900"
+					>
+						<div class="grid h-10 w-10 place-items-center rounded-xl bg-sky-50 text-[#0877a7] dark:bg-sky-950 dark:text-sky-300">
+							<Icon name="book-open" size={20} />
+						</div>
+						<span class="text-sm font-extrabold text-slate-900 dark:text-white">
+							Libro de reclamaciones
+						</span>
+					</a>
+
+					<!-- ALERTA BUZÓN ELECTRÓNICO (SINCRONIZADO A 2 NO LEÍDOS) -->
+					<button
+						type="button"
+						data-open-buzon
+						class="w-full text-left flex items-start gap-3 rounded-2xl bg-red-600 p-4 text-white shadow-lg transition hover:bg-red-700"
+					>
+						<div class="relative grid h-10 w-10 shrink-0 place-items-center rounded-xl bg-amber-500/30 text-amber-300">
+							<Icon name="inbox" size={22} />
+							<span class="absolute -right-1 -top-1 grid h-5 w-5 place-items-center rounded-full bg-amber-400 text-[11px] font-black text-slate-900">
+								2
+							</span>
+						</div>
+						<div>
+							<h4 class="text-sm font-black leading-tight">Tienes 2 nuevos en tu buzón</h4>
+							<p class="mt-1 text-xs text-red-100 leading-snug">
+								Son avisos oficiales de SUNAT. Toca aquí para leerlos.
+							</p>
+						</div>
+					</button>
+
+					<!-- AYUDA PASO A PASO -->
+					<div class="rounded-2xl bg-[#075782] p-6 text-white shadow-md">
+						<div class="flex items-center gap-2">
+							<Icon name="help-circle" size={20} class="text-sky-300" />
+							<h3 class="text-base font-bold">¿No encuentras un trámite?</h3>
+						</div>
+						<p class="text-xs text-sky-100 mt-2 leading-relaxed">
+							Llámanos y te guiamos paso a paso.
+						</p>
+						<a
+							href="tel:080112100"
+							class="mt-4 inline-flex items-center gap-2 rounded-xl bg-white px-4 py-2.5 text-xs font-bold text-[#075782] shadow transition hover:bg-sky-50"
+						>
+							<Icon name="phone" size={16} />
+							0801-12100
+						</a>
+					</div>
+
+				</aside>
+
+			</div>
+		</main>
+	</div>
+
+	<!-- MODAL DEL BUZÓN ELECTRÓNICO -->
+	<BuzonModal />
+
+	<script src="../../scripts/solDashboard.js"></script>
+</Layout>

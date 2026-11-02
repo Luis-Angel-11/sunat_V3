@@ -1,0 +1,296 @@
+---
+import Icon from './Icon.astro';
+
+const tabs = [
+	{ id: 'sol', label: 'Con Clave SOL' },
+	{ id: 'personas', label: 'Personas' },
+	{ id: 'negocios', label: 'Negocios y empresas' },
+	{ id: 'aduanas', label: 'Aduanas' },
+] as const;
+
+const urlServicio = (title: string) =>
+	title === 'Obtener clave SOL'
+		? '/clave-sol'
+		: `https://www.gob.pe/busquedas?institucion%5B%5D=sunat&term=${encodeURIComponent(title)}`;
+
+const esExterno = (title: string) => title !== 'Obtener clave SOL';
+
+const services = {
+	personas: [
+		{
+			title: 'Emitir recibo por honorarios electrónico',
+			description:
+				'Si trabajas por tu cuenta, emite el recibo que tu cliente necesita para pagarte.',
+			action: 'Ir al servicio',
+		},
+		{
+			title: 'Obtener clave SOL',
+			description:
+				'Crea o recupera la contraseña con la que entras a los servicios de SUNAT.',
+			action: 'Iniciar trámite',
+		},
+		{
+			title: 'Obtener Reporte Tributario para Terceros',
+			description:
+				'Pide el documento que muestra a un banco o entidad si estás al día con tus impuestos.',
+			action: 'Iniciar trámite',
+		},
+	],
+	negocios: [
+		{
+			title: 'Emitir factura electrónica - SEE-SOL',
+			description:
+				'Si vendes a una empresa, emite la factura electrónica que respalda esa venta.',
+			action: 'Iniciar trámite',
+		},
+		{
+			title: 'Obtener ficha RUC electrónica',
+			description:
+				'Descarga el documento con tus datos de RUC y la actividad de tu negocio.',
+			action: 'Ir al servicio',
+		},
+		{
+			title: 'Emitir boleta de venta electrónica',
+			description:
+				'Entrega una boleta electrónica a tus clientes cuando les vendes un producto o servicio.',
+			action: 'Iniciar trámite',
+		},
+	],
+	aduanas: [
+		{
+			title: 'Consultar Declaración Aduanera de Mercancías',
+			description:
+				'Revisa en qué estado está el trámite de tu importación o exportación.',
+			action: 'Ir al servicio',
+		},
+		{
+			title: 'Acceder al Sistema de Despacho Aduanero',
+			description:
+				'Entra al sistema donde se registra y libera la mercancía que llega o sale del país.',
+			action: 'Ir al servicio',
+		},
+		{
+			title: 'Mercancías restringidas y prohibidas',
+			description:
+				'Antes de importar o exportar, revisa si tu producto necesita permiso o no se puede enviar.',
+			action: 'Leer más',
+		},
+	],
+} as const;
+---
+
+<section id="tramites-y-servicios" class="scroll-mt-4 lg:scroll-mt-20 bg-slate-50 py-12 dark:bg-slate-900" aria-labelledby="titulo-tramites">
+	<div class="container-sunat">
+		<div class="flex flex-col gap-4 sm:flex-row sm:items-end sm:justify-between">
+			<div>
+				<p class="text-sm font-bold uppercase tracking-wider text-sunat-blue dark:text-sky-400">Servicios en línea</p>
+				<h2 id="titulo-tramites" class="mt-1 text-2xl font-bold text-slate-900 dark:text-white md:text-3xl">
+					Orientación, trámites y servicios más visitados
+				</h2>
+				<p class="mt-2 max-w-2xl text-slate-600 dark:text-slate-300">
+					Elige una categoría. Cada opción incluye una explicación sencilla para que sepas
+					qué puedes hacer.
+				</p>
+			</div>
+			<a
+				href="https://www.gob.pe/busquedas?contenido%5B%5D=tramites&institucion%5B%5D=sunat"
+				target="_blank"
+				rel="noopener noreferrer"
+				class="link-sunat inline-flex items-center gap-2 text-sm"
+			>
+				Ver todos los trámites y servicios
+				<Icon name="external-link" size={15} />
+			</a>
+		</div>
+
+		<div class="mt-6 border-b border-slate-200 dark:border-slate-700">
+			<div role="tablist" aria-label="Categorías de trámites" class="flex gap-1 overflow-x-auto">
+				{
+					tabs.map((tab, index) => (
+						<button
+							type="button"
+							role="tab"
+							id={`tab-${tab.id}`}
+							aria-controls={`panel-${tab.id}`}
+							aria-selected={index === 0 ? 'true' : 'false'}
+							tabindex={index === 0 ? 0 : -1}
+							data-tab
+							class="shrink-0 border-b-[3px] border-transparent px-4 py-3 text-sm font-semibold text-slate-600 transition hover:bg-white hover:text-sunat-blue aria-selected:border-sunat-magenta aria-selected:text-sunat-magenta dark:text-slate-400 dark:hover:bg-slate-950 dark:hover:text-sky-300"
+						>
+							{tab.label}
+						</button>
+					))
+				}
+			</div>
+		</div>
+
+		<div class="mt-6">
+			<div
+				id="panel-sol"
+				role="tabpanel"
+				aria-labelledby="tab-sol"
+				tabindex="0"
+				data-panel
+			>
+				<div
+					class="grid gap-6 rounded-2xl border border-sky-100 bg-gradient-to-br from-sky-50 via-white to-white p-6 dark:border-sky-900 dark:from-sky-950/50 dark:via-slate-900 dark:to-slate-900 md:grid-cols-[minmax(0,1fr)_auto] md:items-center md:p-8"
+				>
+					<div>
+						<span
+							class="inline-flex items-center gap-2 rounded-full bg-sunat-blue/10 px-3 py-1 text-xs font-bold uppercase tracking-wide text-sunat-blue dark:bg-sky-500/15 dark:text-sky-300"
+						>
+							<Icon name="key" size={14} />
+							Con tu Clave SOL
+						</span>
+						<h3 class="mt-3 text-xl font-bold text-slate-900 dark:text-white md:text-2xl">
+							Haz tus trámites de SUNAT por internet
+						</h3>
+						<p class="mt-2 max-w-2xl text-slate-600 dark:text-slate-300">
+							Entra a SUNAT Operaciones en Línea (SOL) para presentar declaraciones, hacer
+							pagos y revisar tus documentos. Está disponible las 24 horas.
+						</p>
+						<div class="mt-4 rounded-xl border border-sky-200 bg-white/80 p-4 dark:border-sky-800 dark:bg-slate-900/80">
+							<p class="flex items-center gap-2 font-bold text-sunat-blue dark:text-sky-300">
+								<Icon name="key" size={17} />
+								¿Qué es la Clave SOL?
+							</p>
+							<p class="mt-1 text-sm leading-relaxed text-slate-700 dark:text-slate-300">
+								Es tu contraseña personal para entrar a los servicios de SUNAT. Funciona como
+								la llave de tu información: sirve para declarar, pagar y revisar tus
+								documentos. No la compartas con nadie.
+							</p>
+						</div>
+						<ul class="mt-4 grid gap-2 text-sm font-medium text-slate-700 dark:text-slate-200 sm:grid-cols-3">
+							<li class="flex items-center gap-2">
+								<Icon name="check" size={16} class="text-emerald-600 dark:text-emerald-400" />
+								Declarar y pagar tus impuestos
+							</li>
+							<li class="flex items-center gap-2">
+								<Icon name="check" size={16} class="text-emerald-600 dark:text-emerald-400" />
+								Revisar tus comprobantes
+							</li>
+							<li class="flex items-center gap-2">
+								<Icon name="check" size={16} class="text-emerald-600 dark:text-emerald-400" />
+								Pedir constancias y consultar tus datos
+							</li>
+						</ul>
+					</div>
+					<div class="flex flex-col gap-2 md:min-w-56">
+						<a
+							href="/login"
+							class="inline-flex items-center justify-center gap-2 rounded-lg bg-sunat-blue px-5 py-3 text-sm font-bold text-white transition hover:bg-sunat-blue-dark dark:bg-sky-700 dark:hover:bg-sky-800"
+						>
+							<Icon name="log-in" size={18} />
+							Entrar con mi Clave SOL
+						</a>
+						<a
+							href="/clave-sol"
+							class="inline-flex items-center justify-center gap-2 rounded-lg border border-sunat-blue/30 bg-white px-5 py-3 text-sm font-bold text-sunat-blue transition hover:bg-sky-50 dark:border-sky-700 dark:bg-slate-900 dark:text-sky-300 dark:hover:bg-slate-800"
+						>
+							Crear mi Clave SOL
+						</a>
+					</div>
+				</div>
+			</div>
+
+			{
+				(['personas', 'negocios', 'aduanas'] as const).map((key) => (
+					<div
+						id={`panel-${key}`}
+						role="tabpanel"
+						aria-labelledby={`tab-${key}`}
+						tabindex="0"
+						data-panel
+						hidden
+					>
+						<div class="grid gap-4 md:grid-cols-2 xl:grid-cols-3">
+							{services[key].map((service) => (
+								<article class="flex h-full flex-col rounded-2xl border border-slate-200 bg-white p-5 shadow-sm transition hover:-translate-y-0.5 hover:border-sunat-blue/30 hover:shadow-md dark:border-slate-800 dark:bg-slate-950 dark:hover:border-sky-500/40">
+									<h3 class="text-base font-bold leading-snug text-slate-900 dark:text-slate-100">
+										<a
+											href={urlServicio(service.title)}
+											target={esExterno(service.title) ? '_blank' : undefined}
+											rel={esExterno(service.title) ? 'noopener noreferrer' : undefined}
+											class="hover:text-sunat-blue hover:underline dark:hover:text-sky-300"
+										>
+											{service.title}
+										</a>
+									</h3>
+									<p class="mt-2 flex-1 text-sm leading-relaxed text-slate-600 dark:text-slate-300">
+										{service.description}
+									</p>
+									<div class="mt-5 flex items-center justify-between gap-3 border-t border-slate-100 pt-4 dark:border-slate-800">
+										<a
+											href={urlServicio(service.title)}
+											target={esExterno(service.title) ? '_blank' : undefined}
+											rel={esExterno(service.title) ? 'noopener noreferrer' : undefined}
+											class="text-sm font-semibold text-slate-600 hover:text-sunat-blue hover:underline dark:text-slate-400 dark:hover:text-sky-300"
+										>
+											Leer más
+										</a>
+										<a
+											href={service.title === 'Obtener clave SOL' ? '/clave-sol' : service.action === 'Leer más' ? urlServicio(service.title) : '/login'}
+											class="inline-flex items-center gap-1.5 text-sm font-bold text-sunat-blue hover:underline dark:text-sky-400 dark:hover:text-sky-300"
+										>
+											{service.action}
+											<Icon name="arrow-right" size={15} />
+										</a>
+									</div>
+								</article>
+							))}
+						</div>
+						<div class="mt-5">
+							<a
+								href="https://www.gob.pe/busquedas?contenido%5B%5D=tramites&institucion%5B%5D=sunat"
+								target="_blank"
+								rel="noopener noreferrer"
+								class="link-sunat inline-flex items-center gap-2 text-sm"
+							>
+								Ver todos los trámites y servicios de {key === 'personas' ? 'Personas' : key === 'negocios' ? 'Negocios y empresas' : 'Aduanas'}
+								<Icon name="arrow-right" size={15} />
+							</a>
+						</div>
+					</div>
+				))
+			}
+		</div>
+	</div>
+</section>
+
+<script is:inline>
+	const tablist = document.querySelector('[role="tablist"]');
+	const tabs = Array.from(document.querySelectorAll('[data-tab]'));
+	const panels = Array.from(document.querySelectorAll('[data-panel]'));
+
+	function activateTab(tab) {
+		tabs.forEach((item) => {
+			const selected = item === tab;
+			item.setAttribute('aria-selected', String(selected));
+			item.tabIndex = selected ? 0 : -1;
+		});
+
+		panels.forEach((panel) => {
+			panel.hidden = panel.id !== `panel-${tab.id.replace('tab-', '')}`;
+		});
+	}
+
+	tabs.forEach((tab) => {
+		tab.addEventListener('click', () => activateTab(tab));
+	});
+
+	tablist?.addEventListener('keydown', (event) => {
+		const index = tabs.indexOf(document.activeElement);
+		if (index === -1) return;
+
+		let nextIndex = index;
+		if (event.key === 'ArrowRight') nextIndex = (index + 1) % tabs.length;
+		else if (event.key === 'ArrowLeft') nextIndex = (index - 1 + tabs.length) % tabs.length;
+		else if (event.key === 'Home') nextIndex = 0;
+		else if (event.key === 'End') nextIndex = tabs.length - 1;
+		else return;
+
+		event.preventDefault();
+		activateTab(tabs[nextIndex]);
+		tabs[nextIndex].focus();
+	});
+</script>

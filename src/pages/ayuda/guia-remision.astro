@@ -1,0 +1,255 @@
+---
+import Layout from '../../layouts/Layout.astro';
+import SolHeader from '../../components/sol/SolHeader.astro';
+import SolSidebar from '../../components/sol/SolSidebar.astro';
+import Icon from '../../components/Icon.astro';
+
+const pasosGuia = [
+	{
+		numero: 1,
+		titulo: 'Datos del traslado y modalidad',
+		descripcion: 'Selecciona el motivo de traslado (Venta, Traslado entre establecimientos, etc.) y la modalidad (Transporte Privado o Público).',
+		tiempoVideo: '0:20',
+	},
+	{
+		numero: 2,
+		titulo: 'Punto de partida y llegada',
+		descripcion: 'Ingresa la dirección exacta con su código de Ubigeo tanto para la dirección del remitente como para la del destinatario.',
+		tiempoVideo: '0:50',
+	},
+	{
+		numero: 3,
+		titulo: 'Datos del transportista o vehículo',
+		descripcion: 'Registra el RUC de la empresa de transporte o la placa del vehículo junto con la licencia de conducir del chofer.',
+		tiempoVideo: '1:25',
+	},
+	{
+		numero: 4,
+		titulo: 'Detalle de los bienes a trasladar',
+		descripcion: 'Añade la descripción de la carga, cantidad, unidad de medida y el peso total bruto estimado en kilogramos.',
+		tiempoVideo: '1:55',
+	},
+];
+
+const preguntasFrecuentes = [
+	{ q: '¿Cuándo es obligatorio emitir la Guía de Remisión Electrónica?', a: 'Es obligatoria antes de iniciar el traslado de bienes cuando se realiza en vehículos de transporte de carga o por exigencia tributaria de SUNAT.' },
+	{ q: '¿Qué hago si el transporte sufre un cambio de ruta o vehículo?', a: 'Deberás emitir una nueva Guía de Remisión Electrónica señalando el evento o motivo de la contingencia en las observaciones.' },
+];
+---
+
+<Layout title="Ayuda: Guía de Remisión Electrónica - SUNAT SOL" description="Centro de ayuda interactivo para la emisión de Guías de Remisión Electrónicas (GRE).">
+	<SolHeader current="ayuda" />
+
+	<div class="flex min-h-[calc(100vh-104px)] bg-[#f8fafc] dark:bg-slate-950">
+		<SolSidebar activeMenu="ayuda" />
+
+		<main class="flex-1 p-6 lg:p-8 max-w-7xl">
+			<div class="space-y-6">
+				
+				<!-- Migas de Pan -->
+				<nav class="flex text-xs font-semibold text-slate-500 dark:text-slate-400" aria-label="Ruta de navegación">
+					<ol class="inline-flex items-center gap-1.5">
+						<li><a href="/prueba" class="hover:text-[#0877a7] dark:hover:text-sky-300">Inicio</a></li>
+						<li><Icon name="chevron-right" size={12} /></li>
+						<li><span class="text-slate-500 dark:text-slate-400">Centro de Ayuda</span></li>
+						<li><Icon name="chevron-right" size={12} /></li>
+						<li><span class="text-slate-800 dark:text-slate-200 font-bold">Emitir Guía de Remisión</span></li>
+					</ol>
+				</nav>
+
+				<!-- Cabecera de la Guía -->
+				<div class="flex flex-col md:flex-row md:items-center md:justify-between gap-4 rounded-3xl border border-slate-200 bg-white p-6 shadow-sm dark:border-slate-800 dark:bg-slate-900">
+					<div>
+						<span class="inline-flex items-center gap-1.5 rounded-lg bg-sky-50 px-2.5 py-1 text-xs font-bold text-[#0877a7] dark:bg-sky-950/60 dark:text-sky-300 border border-sky-100 dark:border-sky-900/40">
+							<Icon name="play" size={14} /> Tutorial Interactivo
+						</span>
+						<h1 class="mt-2 text-2xl font-black text-slate-900 dark:text-white md:text-3xl">
+							Cómo emitir una Guía de Remisión Electrónica
+						</h1>
+						<p class="mt-1 text-xs text-slate-600 dark:text-slate-400">
+							Aprende paso a paso a registrar el traslado legal de bienes y mercancías en el portal SOL.
+						</p>
+					</div>
+
+					<div class="flex items-center gap-2">
+						<a 
+							href="/comprobantes/guia-remision" 
+							class="inline-flex items-center gap-2 rounded-xl bg-[#0877a7] px-4 py-2.5 text-xs font-bold text-white shadow-md hover:bg-[#075782] transition shrink-0"
+						>
+							<Icon name="file-text" size={16} />
+							<span>Ir a emitir Guía</span>
+						</a>
+					</div>
+				</div>
+
+				<!-- GRID PRINCIPAL: VIDEO + GUÍA PASO A PASO -->
+				<div class="grid grid-cols-1 gap-6 lg:grid-cols-12">
+					
+					<!-- COLUMNA IZQUIERDA: VIDEO Y TRANSCRIPCIÓN (7 COLS) -->
+					<div class="lg:col-span-7 space-y-6">
+						
+						<!-- Reproductor de Video YouTube sin Cookies -->
+						<div class="overflow-hidden rounded-3xl border border-slate-200 bg-slate-900 shadow-lg dark:border-slate-800">
+							<div class="relative aspect-video bg-slate-950">
+								<iframe 
+									id="video-youtube"
+									class="h-full w-full border-0"
+									src="https://www.youtube-nocookie.com/embed/JG_XBl-1TeE?enablejsapi=1&cc_load_policy=1" 
+									title="Tutorial Emisión de Guía de Remisión Electrónica SUNAT"
+									allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
+									allowfullscreen
+								></iframe>
+
+								<!-- Overlay de Subtítulos -->
+								<div id="subtitulos-overlay" class="hidden absolute bottom-12 left-4 right-4 text-center pointer-events-none">
+									<span class="inline-block rounded-lg bg-slate-950/85 px-3 py-1.5 text-xs font-semibold text-amber-300 backdrop-blur-sm border border-white/10 shadow-lg">
+										[Subtítulos activados] Registra los datos del vehículo y los puntos de origen y destino.
+									</span>
+								</div>
+							</div>
+
+							<!-- Controles e información del video -->
+							<div class="p-4 bg-slate-900 text-white flex flex-wrap items-center justify-between gap-3 border-t border-slate-800">
+								<div class="flex items-center gap-2">
+									<!-- BOTÓN DE SUBTÍTULOS (CC) SIN MODAL -->
+									<button 
+										type="button" 
+										id="btn-toggle-subtitulos" 
+										class="inline-flex items-center gap-1.5 rounded-xl border border-slate-700 bg-slate-800 px-3 py-1.5 text-xs font-bold text-slate-300 hover:bg-slate-700 hover:text-white transition"
+										aria-pressed="false"
+									>
+										<span class="rounded bg-white/20 px-1 py-0.5 text-[10px] font-black">CC</span>
+										<span id="txt-subtitulos">Subtítulos: OFF</span>
+									</button>
+								</div>
+
+								<button type="button" id="btn-toggle-transcripcion-top" class="text-xs font-bold text-sky-400 hover:underline">
+									Ver transcripción completa
+								</button>
+							</div>
+						</div>
+
+						<!-- Transcripción del Video -->
+						<div class="rounded-3xl border border-slate-200 bg-white p-6 shadow-sm dark:border-slate-800 dark:bg-slate-900 space-y-4">
+							<div class="flex items-center justify-between border-b border-slate-100 dark:border-slate-800 pb-3">
+								<h2 class="text-base font-extrabold text-slate-900 dark:text-white flex items-center gap-2">
+									<Icon name="file-text" size={18} class="text-[#0877a7] dark:text-sky-400" />
+									Transcripción del audio
+								</h2>
+								<button type="button" id="btn-copiar-transcripcion" class="text-xs font-bold text-slate-500 hover:text-[#0877a7] dark:text-slate-400 dark:hover:text-sky-400 transition flex items-center gap-1">
+									<Icon name="copy" size={14} /> Copiar texto
+								</button>
+							</div>
+
+							<div class="space-y-3 text-xs leading-relaxed text-slate-600 dark:text-slate-300 max-h-60 overflow-y-auto pr-2 custom-scrollbar" id="contenedor-transcripcion">
+								<p><strong class="font-bold text-[#0877a7] dark:text-sky-400">[00:00]</strong> Bienvenido a la Guía Rápida de Remisión Electrónica. Ingresa a la sección 'Guías de Remisión' dentro del Portal SOL.</p>
+								<p><strong class="font-bold text-[#0877a7] dark:text-sky-400">[00:20]</strong> Paso 1: Indica el motivo del traslado (venta, compra o traslado de bienes) y la modalidad de transporte (privado o público).</p>
+								<p><strong class="font-bold text-[#0877a7] dark:text-sky-400">[00:50]</strong> Paso 2: Selecciona la dirección de partida registrada en tu Ficha RUC e ingresa la dirección completa del punto de llegada del destinatario.</p>
+								<p><strong class="font-bold text-[#0877a7] dark:text-sky-400">[01:25]</strong> Paso 3: Registra el número de documento del chofer y la placa del vehículo en transporte privado, o el RUC de la empresa contratada si es público.</p>
+								<p><strong class="font-bold text-[#0877a7] dark:text-sky-400">[01:55]</strong> Paso 4: Detalla cada uno de los bienes indicando la cantidad, descripción y el peso bruto total. Revisa la información y emite la guía legal.</p>
+							</div>
+						</div>
+
+					</div>
+
+					<!-- COLUMNA DERECHA: GUÍA PASO A PASO INTERACTIVA (5 COLS) -->
+					<div class="lg:col-span-5 space-y-6">
+						
+						<div class="rounded-3xl border border-slate-200 bg-white p-6 shadow-sm dark:border-slate-800 dark:bg-slate-900 space-y-5">
+							<div class="flex items-center justify-between border-b border-slate-100 dark:border-slate-800 pb-3">
+								<div>
+									<h2 class="text-base font-extrabold text-slate-900 dark:text-white">Pasos guiados</h2>
+									<p class="text-xs text-slate-500 dark:text-slate-400">Sigue el proceso en pantalla</p>
+								</div>
+								<span class="text-xs font-black text-[#0877a7] dark:text-sky-400 bg-sky-50 dark:bg-sky-950/60 px-3 py-1 rounded-xl border border-sky-100 dark:border-sky-900/40">
+									4 Pasos
+								</span>
+							</div>
+
+							<!-- Lista de Pasos -->
+							<ol class="space-y-4" id="lista-pasos-guiados">
+								{
+									pasosGuia.map((paso) => (
+										<li class="relative flex gap-4 p-3.5 rounded-2xl border border-slate-100 bg-slate-50/50 dark:border-slate-800 dark:bg-slate-950/40 hover:bg-slate-100/60 dark:hover:bg-slate-800/40 transition cursor-pointer group" data-paso-item={paso.numero}>
+											<span class="grid h-8 w-8 shrink-0 place-items-center rounded-xl bg-[#003366] text-white font-black text-xs shadow-sm dark:bg-slate-900 group-hover:scale-105 transition">
+												{paso.numero}
+											</span>
+											<div class="flex-1 space-y-1">
+												<div class="flex items-center justify-between">
+													<h3 class="text-xs font-bold text-slate-900 dark:text-white group-hover:text-[#0877a7] dark:group-hover:text-sky-400 transition">
+														{paso.titulo}
+													</h3>
+													<span class="text-[10px] font-mono text-slate-400 flex items-center gap-1">
+														<Icon name="clock" size={10} /> {paso.tiempoVideo}
+													</span>
+												</div>
+												<p class="text-[11px] text-slate-600 dark:text-slate-400 leading-normal">
+													{paso.descripcion}
+												</p>
+											</div>
+										</li>
+									))
+								}
+							</ol>
+
+							<div class="pt-2">
+								<button type="button" id="btn-marcar-completado" class="w-full inline-flex items-center justify-center gap-2 rounded-xl bg-emerald-600 py-3 text-xs font-bold text-white shadow-md hover:bg-emerald-700 transition">
+									<Icon name="check-circle" size={16} />
+									<span>Marcar guía como aprendida</span>
+								</button>
+							</div>
+						</div>
+
+						<!-- Preguntas Frecuentes Relacionadas -->
+						<div class="rounded-3xl border border-slate-200 bg-white p-6 shadow-sm dark:border-slate-800 dark:bg-slate-900 space-y-4">
+							<h3 class="text-sm font-extrabold text-slate-900 dark:text-white flex items-center gap-2">
+								<Icon name="help-circle" size={16} class="text-[#0877a7] dark:text-sky-400" />
+								Preguntas frecuentes
+							</h3>
+
+							<div class="space-y-3">
+								{
+									preguntasFrecuentes.map((faq) => (
+										<details class="group rounded-xl border border-slate-200 bg-slate-50/50 p-3 text-xs dark:border-slate-800 dark:bg-slate-950/40 [&_summary::-webkit-details-marker]:hidden">
+											<summary class="flex items-center justify-between font-bold text-slate-800 dark:text-slate-200 cursor-pointer">
+												<span>{faq.q}</span>
+												<span class="transition group-open:-rotate-180 text-slate-400">
+													<Icon name="chevron-down" size={14} />
+												</span>
+											</summary>
+											<p class="mt-2 text-slate-600 dark:text-slate-400 leading-normal border-t border-slate-200/60 dark:border-slate-800 pt-2">
+												{faq.a}
+											</p>
+										</details>
+									))
+								}
+							</div>
+						</div>
+
+					</div>
+
+				</div>
+
+			</div>
+		</main>
+	</div>
+
+	<!-- MODAL ESTÉTICO CENTRADO DE CONFIRMACIÓN DE AYUDA -->
+	<div id="modal-ayuda-exito" class="fixed inset-0 z-50 hidden items-center justify-center bg-slate-900/60 backdrop-blur-sm p-4">
+		<div class="w-full max-w-sm rounded-3xl bg-white p-6 shadow-2xl dark:bg-slate-900 dark:border dark:border-slate-800 text-center space-y-4">
+			<div class="mx-auto grid h-12 w-12 place-items-center rounded-2xl bg-emerald-100 text-emerald-600 dark:bg-emerald-950 dark:text-emerald-400">
+				<Icon name="check" size={24} strokeWidth={3} />
+			</div>
+			<div>
+				<h3 id="modal-ayuda-titulo" class="text-base font-black text-slate-900 dark:text-white">¡Guía completada!</h3>
+				<p id="modal-ayuda-mensaje" class="mt-1 text-xs text-slate-600 dark:text-slate-400">Has revisado todos los pasos para emitir guías de remisión electrónicas.</p>
+			</div>
+			<button type="button" id="btn-cerrar-modal-ayuda" class="w-full rounded-xl bg-[#0877a7] py-2.5 text-xs font-bold text-white shadow-md hover:bg-[#075782] transition">
+				Entendido
+			</button>
+		</div>
+	</div>
+
+	<!-- REUTILIZA EL MISMO SCRIPT DE AYUDA -->
+	<script src="../../scripts/ayuda.js"></script>
+</Layout>

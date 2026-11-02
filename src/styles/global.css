@@ -1,0 +1,160 @@
+@import 'tailwindcss';
+
+@custom-variant dark (&:where(.dark, .dark *));
+
+@theme {
+  --font-sans:
+    'Inter', 'Segoe UI', system-ui, -apple-system, BlinkMacSystemFont, 'Helvetica Neue', Arial,
+    sans-serif;
+  --color-sunat-red: #d91009;
+  --color-sunat-red-dark: #b00d07;
+  --color-sunat-magenta: #ae0d41;
+  --color-sunat-blue: #0877a7;
+  --color-sunat-blue-dark: #075782;
+  --color-sunat-green: #2e7d32;
+  --color-sunat-ink: #0f172a;
+}
+
+@layer base {
+  :root {
+    color-scheme: light;
+  }
+
+  .dark {
+    color-scheme: dark;
+  }
+
+  html {
+    scroll-behavior: smooth;
+    @apply bg-white dark:bg-slate-950;
+  }
+
+  body {
+    @apply bg-[#f5f8fa] font-sans text-slate-800 antialiased dark:bg-slate-950 dark:text-slate-100;
+  }
+
+  :focus-visible {
+    outline: 3px solid #0877a7;
+    outline-offset: 2px;
+    border-radius: 6px;
+  }
+
+  .dark :focus-visible {
+    outline-color: #38bdf8;
+  }
+
+  ::selection {
+    background: #cfe3f7;
+    color: #075782;
+  }
+
+  .dark ::selection {
+    background: #0c4a6e;
+    color: #e0f2fe;
+  }
+}
+
+/* UTILIDADES GLOBALES REUTILIZABLES */
+@utility container-sunat {
+  @apply mx-auto w-full max-w-7xl px-4 lg:px-8;
+}
+
+@utility link-sunat {
+  @apply font-semibold text-[#0877a7] underline decoration-[#0877a7]/40 underline-offset-2 transition hover:text-[#075782] hover:decoration-[#0877a7] dark:text-sky-400 dark:decoration-sky-400/40 dark:hover:text-sky-300;
+}
+
+/* ESTILOS DE COMPONENTES DEL FIGMA */
+@layer components {
+  /* Logo Identificador */
+  .logo-mark {
+    position: relative;
+    display: grid;
+    place-items: center;
+    overflow: hidden;
+    color: white;
+    font-weight: 900;
+    box-shadow: inset 0 0 0 1px rgba(255, 255, 255, 0.28);
+  }
+
+  /* Fondo del Hero con Gradiente del Prototipo */
+  .hero-grid {
+    background-color: #075782;
+    background-image: 
+      linear-gradient(110deg, rgba(7, 87, 130, 0.98), rgba(4, 61, 95, 0.94)),
+      radial-gradient(circle at 1px 1px, rgba(255, 255, 255, 0.15) 1px, transparent 0);
+    background-size: auto, 24px 24px;
+  }
+
+  /* Controles de Formulario Genéricos */
+  .sol-panel {
+    @apply rounded-2xl border border-slate-200 bg-white p-5 shadow-sm dark:border-slate-800 dark:bg-slate-900;
+  }
+
+  .sol-btn-primary {
+    @apply inline-flex h-10 items-center justify-center gap-2 rounded-xl bg-[#0877a7] px-4 text-xs font-bold text-white transition hover:bg-[#075782] dark:bg-sky-600 dark:hover:bg-sky-700;
+  }
+}
+
+/* ACCESIBILIDAD Y ENLACES DE SALTO */
+.skip-link {
+  position: fixed;
+  top: 0.5rem;
+  left: 0.5rem;
+  z-index: 100;
+  transform: translateY(-200%);
+  border-radius: 0.5rem;
+  background: #fff;
+  padding: 0.75rem 1rem;
+  font-weight: 700;
+  color: #0877a7;
+  box-shadow: 0 8px 24px rgb(0 0 0 / 0.2);
+  transition: transform 0.15s ease-in-out;
+}
+
+.skip-link:focus {
+  transform: translateY(0);
+}
+
+/* VALIDACIÓN REACTIVA EN CAMPOS DE FORMULARIO */
+.field-invalid {
+  border-color: #dc2626 !important;
+  background-color: #fef2f2 !important;
+  color: #7f1d1d !important;
+}
+
+.dark .field-invalid {
+  border-color: #f87171 !important;
+  background-color: rgba(69, 10, 10, 0.35) !important;
+  color: #fecaca !important;
+}
+
+.field-valid {
+  border-color: #059669 !important;
+  background-color: #ecfdf5 !important;
+  color: #064e3b !important;
+}
+
+.dark .field-valid {
+  border-color: #34d399 !important;
+  background-color: rgba(6, 78, 59, 0.35) !important;
+  color: #a7f3d0 !important;
+}
+
+/* TRANSICIONES DE TEMA */
+html.theme-transition *,
+html.theme-transition *::before,
+html.theme-transition *::after {
+  transition:
+    background-color 300ms ease,
+    border-color 300ms ease,
+    color 300ms ease,
+    box-shadow 300ms ease !important;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  html.theme-transition *,
+  html.theme-transition *::before,
+  html.theme-transition *::after {
+    transition: none !important;
+  }
+}

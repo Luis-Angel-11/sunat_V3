@@ -1,0 +1,217 @@
+---
+import Icon from '../components/Icon.astro';
+import SolLayout from '../layouts/SolLayout.astro';
+---
+
+<SolLayout
+	title="Consultar la validez de un comprobante de pago"
+	description="Aprende para qué sirve y cómo consultar si una factura, boleta o recibo fue informado a SUNAT."
+	current="validez"
+>
+	<div class="container-sunat py-6">
+		<nav aria-label="Ruta de navegación" class="text-sm">
+			<ol class="flex flex-wrap items-center gap-1.5 text-slate-500 dark:text-slate-400">
+				<li><a href="/sol" class="link-sunat">Inicio</a></li>
+				<li aria-hidden="true"><Icon name="chevron-right" size={14} /></li>
+				<li>Comprobantes de pago</li>
+				<li aria-hidden="true"><Icon name="chevron-right" size={14} /></li>
+				<li aria-current="page" class="font-semibold text-slate-800 dark:text-slate-200">Consultar validez</li>
+			</ol>
+		</nav>
+
+		<div class="mt-4 grid gap-6 lg:grid-cols-[minmax(0,1fr)_300px]">
+			<article class="sol-panel min-w-0" aria-labelledby="titulo-validez">
+				<p class="text-xs font-bold uppercase tracking-wider text-sunat-blue dark:text-sky-300">Comprobantes de pago</p>
+				<h1 id="titulo-validez" class="mt-2 text-2xl font-black tracking-tight text-slate-900 dark:text-white sm:text-3xl">
+					Consultar la validez de un comprobante de pago
+				</h1>
+				<p class="mt-3 text-base leading-relaxed text-slate-600 dark:text-slate-300">
+					Revisa si una factura, boleta o recibo es real y está registrado en SUNAT.
+					Te sirve para no pagar ni declarar un documento falso o con errores.
+				</p>
+
+				<div class="mt-5 flex flex-wrap items-center gap-3">
+					<a href="/validez-comprobante/consultar" class="sol-btn-primary h-12 px-5 text-base">
+						Ir al servicio
+						<Icon name="arrow-right" size={18} />
+					</a>
+					<p class="text-xs text-slate-500 dark:text-slate-400">Es gratis. Para revisar uno solo, no necesitas Clave SOL.</p>
+				</div>
+
+				<section class="mt-8" aria-labelledby="datos-necesarios">
+					<h2 id="datos-necesarios" class="text-lg font-bold text-slate-900 dark:text-white">Ten a la mano</h2>
+					<p class="mt-1 text-sm text-slate-600 dark:text-slate-400">Todo está impreso en el documento que quieres revisar.</p>
+					<ul class="mt-4 grid gap-2 text-sm sm:grid-cols-2">
+						<li class="flex items-center gap-2 rounded-xl bg-slate-50 p-3 text-slate-700 dark:bg-slate-800/60 dark:text-slate-200">
+							<Icon name="check" size={16} class="shrink-0 text-emerald-600 dark:text-emerald-400" />
+							El número de RUC de quien lo emitió
+						</li>
+						<li class="flex items-center gap-2 rounded-xl bg-slate-50 p-3 text-slate-700 dark:bg-slate-800/60 dark:text-slate-200">
+							<Icon name="check" size={16} class="shrink-0 text-emerald-600 dark:text-emerald-400" />
+							El tipo de documento
+						</li>
+						<li class="flex items-center gap-2 rounded-xl bg-slate-50 p-3 text-slate-700 dark:bg-slate-800/60 dark:text-slate-200">
+							<Icon name="check" size={16} class="shrink-0 text-emerald-600 dark:text-emerald-400" />
+							La serie y el número
+						</li>
+						<li class="flex items-center gap-2 rounded-xl bg-slate-50 p-3 text-slate-700 dark:bg-slate-800/60 dark:text-slate-200">
+							<Icon name="check" size={16} class="shrink-0 text-emerald-600 dark:text-emerald-400" />
+							La fecha y el monto total
+						</li>
+					</ul>
+
+					<div class="mt-4 rounded-2xl bg-amber-50 p-4 text-sm text-amber-900 dark:bg-amber-500/10 dark:text-amber-200">
+						<p class="flex items-center gap-2 font-bold"><Icon name="info" size={17} />Importante</p>
+						<p class="mt-1">
+							Si el documento es electrónico, escribe el monto tal como aparece, con dos decimales.
+							Ejemplo: <strong>3500.00</strong>.
+						</p>
+					</div>
+				</section>
+
+				<section class="mt-8 rounded-2xl border border-slate-200 p-5 dark:border-slate-800" aria-labelledby="te-sirvio">
+					<h2 id="te-sirvio" class="text-base font-bold text-slate-900 dark:text-white">¿Te sirvió esta información?</h2>
+					<p id="util-ayuda" class="mt-1 text-sm text-slate-600 dark:text-slate-400">Tu respuesta nos ayuda a mejorar.</p>
+					<div class="mt-3 flex flex-wrap gap-2">
+						<button type="button" data-util="si" class="sol-btn-primary">
+							<Icon name="check" size={16} />Sí, me sirvió
+						</button>
+						<button type="button" data-util="no" class="sol-btn-secondary">
+							<Icon name="x" size={16} />No me sirvió
+						</button>
+					</div>
+					<p id="util-estado" role="status" aria-live="polite" class="mt-3 text-sm font-semibold text-emerald-700 dark:text-emerald-300"></p>
+				</section>
+
+				<div class="mt-6 flex flex-wrap items-center gap-4 border-t border-slate-200 pt-5 text-sm dark:border-slate-800">
+					<button type="button" data-accion="imprimir" class="inline-flex items-center gap-2 font-semibold text-sunat-blue hover:underline dark:text-sky-300">
+						<Icon name="printer" size={17} />Imprimir
+					</button>
+					<button type="button" data-accion="compartir" class="inline-flex items-center gap-2 font-semibold text-sunat-blue hover:underline dark:text-sky-300">
+						<Icon name="external-link" size={17} />Compartir
+					</button>
+					<button type="button" data-accion="guardar" class="inline-flex items-center gap-2 font-semibold text-sunat-blue hover:underline dark:text-sky-300">
+						<Icon name="star" size={17} /><span data-guardar-texto>Guardar</span>
+					</button>
+				</div>
+			</article>
+
+			<aside class="grid content-start gap-4" aria-label="Información adicional">
+				<section class="sol-panel" aria-labelledby="enlaces-relacionados">
+					<h2 id="enlaces-relacionados" class="font-bold text-slate-900 dark:text-white">Enlaces relacionados</h2>
+					<ul class="mt-3 grid gap-2 text-sm">
+						<li>
+							<a href="/validez-comprobante/consultar" class="link-sunat inline-flex items-center gap-1">
+								Consultar ahora <Icon name="arrow-right" size={14} />
+							</a>
+						</li>
+						<li>
+							<a href="/sol" class="link-sunat inline-flex items-center gap-1">
+								Volver al Menú SOL <Icon name="arrow-right" size={14} />
+							</a>
+						</li>
+					</ul>
+				</section>
+
+				<section class="sol-panel" aria-labelledby="ayuda-validez">
+					<h2 id="ayuda-validez" class="flex items-center gap-2 font-bold text-slate-900 dark:text-white">
+						<Icon name="help-circle" size={18} class="text-sunat-blue dark:text-sky-300" />
+						¿Necesitas ayuda?
+					</h2>
+					<p class="mt-2 text-sm text-slate-600 dark:text-slate-300">Si no encuentras algún dato, llámanos.</p>
+					<a href="tel:080112100" class="sol-btn-secondary mt-3 w-full">
+						<Icon name="phone" size={16} />0801-12100
+					</a>
+				</section>
+			</aside>
+		</div>
+	</div>
+
+	<script>
+		import { alternarOperacion, esFavorita } from '../lib/operaciones-favoritas';
+
+		(() => {
+			const sol = window.sunatSol;
+			const toast = (message) => {
+				if (sol?.toast) sol.toast(message);
+			};
+
+			const KEY = 'sunat-validez-util';
+			const botones = [...document.querySelectorAll('[data-util]')];
+			const estado = document.querySelector('#util-estado');
+			const pintarUtil = (value) => {
+				botones.forEach((boton) => {
+					const activo = boton.dataset.util === value;
+					boton.setAttribute('aria-pressed', String(activo));
+				});
+				if (value) {
+					estado.textContent = value === 'si' ? '¡Gracias! Nos alegra que te haya servido.' : 'Gracias por avisarnos. Revisaremos esta guía.';
+				}
+			};
+			let util = null;
+			try {
+				util = localStorage.getItem(KEY);
+			} catch {
+			}
+			pintarUtil(util);
+
+			botones.forEach((boton) =>
+				boton.addEventListener('click', () => {
+					util = boton.dataset.util;
+					try {
+						localStorage.setItem(KEY, util);
+					} catch {
+					}
+					pintarUtil(util);
+				}),
+			);
+
+			const guardarTexto = document.querySelector('[data-guardar-texto]');
+			const guardarBoton = document.querySelector('[data-accion="guardar"]');
+			const OPERACION = {
+				id: 'validez-comprobante',
+				titulo: 'Consultar la validez de un comprobante de pago',
+				descripcion: 'Revisa si una factura, boleta o recibo es real y está registrado en SUNAT.',
+				href: '/validez-comprobante/consultar',
+				icon: 'shield-check',
+			};
+			const sincronizarGuardado = () => {
+				const guardada = esFavorita(OPERACION.id);
+				if (guardarTexto) guardarTexto.textContent = guardada ? 'Guardado' : 'Guardar';
+				if (guardarBoton) {
+					guardarBoton.setAttribute('aria-pressed', String(guardada));
+					guardarBoton.classList.toggle('text-sunat-blue', !guardada);
+					guardarBoton.classList.toggle('dark:text-sky-300', !guardada);
+					guardarBoton.classList.toggle('text-emerald-700', guardada);
+					guardarBoton.classList.toggle('dark:text-emerald-300', guardada);
+				}
+			};
+			sincronizarGuardado();
+			window.addEventListener('storage', (event) => {
+				if (event.key === 'sunat-operaciones-favoritas') sincronizarGuardado();
+			});
+
+			document.addEventListener('click', async (event) => {
+				const boton = event.target instanceof Element ? event.target.closest('[data-accion]') : null;
+				if (!boton) return;
+				if (boton.dataset.accion === 'imprimir') {
+					window.print();
+				} else if (boton.dataset.accion === 'compartir') {
+					try {
+						if (navigator.share) {
+							await navigator.share({ title: document.title, url: location.href });
+						} else {
+							await navigator.clipboard.writeText(location.href);
+							toast('Copiamos el enlace. Ya puedes compartirlo.');
+						}
+					} catch {
+					}
+				} else if (boton.dataset.accion === 'guardar') {
+					const guardada = alternarOperacion(OPERACION);
+					sincronizarGuardado();
+					toast(guardada ? 'Guardamos esta operación en favoritas.' : 'Quitamos esta operación de favoritas.');
+				}
+			});
+		})();
+	</script>
+</SolLayout>

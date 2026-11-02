@@ -1,0 +1,254 @@
+---
+import Layout from '../../layouts/Layout.astro';
+import SolHeader from '../../components/sol/SolHeader.astro';
+import SolSidebar from '../../components/sol/SolSidebar.astro';
+import Icon from '../../components/Icon.astro';
+
+const pasosGuia = [
+	{
+		numero: 1,
+		titulo: 'Datos del cliente (Receptor)',
+		descripcion: 'Ingresa el RUC del cliente. El sistema completará automáticamente la Razón Social y el domicilio fiscal.',
+		tiempoVideo: '0:15',
+	},
+	{
+		numero: 2,
+		titulo: 'Agregar productos o servicios',
+		descripcion: 'Selecciona "Adicionar", define el tipo (Bien o Servicio), cantidad, unidad de medida y precio unitario.',
+		tiempoVideo: '0:45',
+	},
+	{
+		numero: 3,
+		titulo: 'Forma de pago e impuestos',
+		descripcion: 'Selecciona si la venta es al Contado o Crédito. Verifica la aplicación automática del IGV (18%).',
+		tiempoVideo: '1:20',
+	},
+	{
+		numero: 4,
+		titulo: 'Previsualizar y emitir',
+		descripcion: 'Revisa el borrador final. Si todo está correcto, haz clic en "Emitir Factura" para generar el comprobante legal.',
+		tiempoVideo: '1:50',
+	},
+];
+
+const preguntasFrecuentes = [
+	{ q: '¿Puedo anular una factura emitida por error?', a: 'Sí, mediante una Nota de Crédito Electrónica emitida dentro de los plazos establecidos por SUNAT.' },
+	{ q: '¿Es obligatorio imprimir la factura?', a: 'No. La representación digital (PDF/XML) enviada por correo o descargada tiene plena validez tributaria.' },
+];
+---
+
+<Layout title="Ayuda: Emisión de Facturas - SUNAT SOL" description="Centro de ayuda interactivo para la emisión de Factura Electrónica.">
+	<SolHeader current="ayuda" />
+
+	<div class="flex min-h-[calc(100vh-104px)] bg-[#f8fafc] dark:bg-slate-950">
+		<SolSidebar activeMenu="ayuda" />
+
+		<main class="flex-1 p-6 lg:p-8 max-w-7xl">
+			<div class="space-y-6">
+				
+				<!-- Migas de Pan -->
+				<nav class="flex text-xs font-semibold text-slate-500 dark:text-slate-400" aria-label="Ruta de navegación">
+					<ol class="inline-flex items-center gap-1.5">
+						<li><a href="/prueba" class="hover:text-[#0877a7] dark:hover:text-sky-300">Inicio</a></li>
+						<li><Icon name="chevron-right" size={12} /></li>
+						<li><span class="text-slate-500 dark:text-slate-400">Centro de Ayuda</span></li>
+						<li><Icon name="chevron-right" size={12} /></li>
+						<li><span class="text-slate-800 dark:text-slate-200 font-bold">Emitir Factura Electrónica</span></li>
+					</ol>
+				</nav>
+
+				<!-- Cabecera de la Guía -->
+				<div class="flex flex-col md:flex-row md:items-center md:justify-between gap-4 rounded-3xl border border-slate-200 bg-white p-6 shadow-sm dark:border-slate-800 dark:bg-slate-900">
+					<div>
+						<span class="inline-flex items-center gap-1.5 rounded-lg bg-sky-50 px-2.5 py-1 text-xs font-bold text-[#0877a7] dark:bg-sky-950/60 dark:text-sky-300 border border-sky-100 dark:border-sky-900/40">
+							<Icon name="play" size={14} /> Tutorial Interactivo
+						</span>
+						<h1 class="mt-2 text-2xl font-black text-slate-900 dark:text-white md:text-3xl">
+							Cómo emitir una Factura Electrónica
+						</h1>
+						<p class="mt-1 text-xs text-slate-600 dark:text-slate-400">
+							Aprende paso a paso a generar comprobantes de pago electrónicos desde el portal SOL.
+						</p>
+					</div>
+
+					<div class="flex items-center gap-2">
+						<a 
+							href="/facturas/emitir" 
+							class="inline-flex items-center gap-2 rounded-xl bg-[#0877a7] px-4 py-2.5 text-xs font-bold text-white shadow-md hover:bg-[#075782] transition shrink-0"
+						>
+							<Icon name="file-text" size={16} />
+							<span>Ir a emitir Factura</span>
+						</a>
+					</div>
+				</div>
+
+				<!-- GRID PRINCIPAL: VIDEO + GUÍA PASO A PASO -->
+				<div class="grid grid-cols-1 gap-6 lg:grid-cols-12">
+					
+					<!-- COLUMNA IZQUIERDA: VIDEO Y TRANSCRIPCIÓN (7 COLS) -->
+					<div class="lg:col-span-7 space-y-6">
+						
+						<!-- Reproductor de Video YouTube sin Cookies -->
+						<div class="overflow-hidden rounded-3xl border border-slate-200 bg-slate-900 shadow-lg dark:border-slate-800">
+							<div class="relative aspect-video bg-slate-950">
+								<iframe 
+									id="video-youtube"
+									class="h-full w-full border-0"
+									src="https://www.youtube-nocookie.com/embed/JG_XBl-1TeE?enablejsapi=1&cc_load_policy=1" 
+									title="Tutorial Emisión de Factura Electrónica SUNAT"
+									allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
+									allowfullscreen
+								></iframe>
+
+								<!-- Overlay opcional de indicación visual -->
+								<div id="subtitulos-overlay" class="hidden absolute bottom-12 left-4 right-4 text-center pointer-events-none">
+									<span class="inline-block rounded-lg bg-slate-950/85 px-3 py-1.5 text-xs font-semibold text-amber-300 backdrop-blur-sm border border-white/10 shadow-lg">
+										[Subtítulos activados] Digita el RUC de tu cliente para validar en SUNAT.
+									</span>
+								</div>
+							</div>
+
+							<!-- Controles e información del video -->
+							<div class="p-4 bg-slate-900 text-white flex flex-wrap items-center justify-between gap-3 border-t border-slate-800">
+								<div class="flex items-center gap-2">
+									<!-- BOTÓN DE SUBTÍTULOS (CC) SIN MODAL -->
+									<button 
+										type="button" 
+										id="btn-toggle-subtitulos" 
+										class="inline-flex items-center gap-1.5 rounded-xl border border-slate-700 bg-slate-800 px-3 py-1.5 text-xs font-bold text-slate-300 hover:bg-slate-700 hover:text-white transition"
+										aria-pressed="false"
+									>
+										<span class="rounded bg-white/20 px-1 py-0.5 text-[10px] font-black">CC</span>
+										<span id="txt-subtitulos">Subtítulos: OFF</span>
+									</button>
+								</div>
+
+								<button type="button" id="btn-toggle-transcripcion-top" class="text-xs font-bold text-sky-400 hover:underline">
+									Ver transcripción completa
+								</button>
+							</div>
+						</div>
+
+						<!-- Transcripción del Video -->
+						<div class="rounded-3xl border border-slate-200 bg-white p-6 shadow-sm dark:border-slate-800 dark:bg-slate-900 space-y-4">
+							<div class="flex items-center justify-between border-b border-slate-100 dark:border-slate-800 pb-3">
+								<h2 class="text-base font-extrabold text-slate-900 dark:text-white flex items-center gap-2">
+									<Icon name="file-text" size={18} class="text-[#0877a7] dark:text-sky-400" />
+									Transcripción del audio
+								</h2>
+								<button type="button" id="btn-copiar-transcripcion" class="text-xs font-bold text-slate-500 hover:text-[#0877a7] dark:text-slate-400 dark:hover:text-sky-400 transition flex items-center gap-1">
+									<Icon name="copy" size={14} /> Copiar texto
+								</button>
+							</div>
+
+							<div class="space-y-3 text-xs leading-relaxed text-slate-600 dark:text-slate-300 max-h-60 overflow-y-auto pr-2 custom-scrollbar" id="contenedor-transcripcion">
+								<p><strong class="font-bold text-[#0877a7] dark:text-sky-400">[00:00]</strong> Bienvenido a la Guía Rápida SUNAT. Para emitir una factura electrónica, ingresa al menú lateral y selecciona 'Emisión de Factura'.</p>
+								<p><strong class="font-bold text-[#0877a7] dark:text-sky-400">[00:15]</strong> Paso 1: Digita el RUC de la empresa cliente. El sistema validará automáticamente en la base de datos de SUNAT que el contribuyente esté Activo y Habido.</p>
+								<p><strong class="font-bold text-[#0877a7] dark:text-sky-400">[00:45]</strong> Paso 2: Presiona 'Adicionar' para incluir los ítems de tu factura. Ingresa la descripción clara del servicio o producto, el tipo de afectación al IGV y la cantidad.</p>
+								<p><strong class="font-bold text-[#0877a7] dark:text-sky-400">[01:20]</strong> Paso 3: Define la forma de pago. Si eliges 'A crédito', deberás registrar las fechas de vencimiento de las cuotas acordadas.</p>
+								<p><strong class="font-bold text-[#0877a7] dark:text-sky-400">[01:50]</strong> Paso 4: Revisa la vista previa de la Factura Borrador. Si los montos e impuestos son correctos, presiona 'Emitir' y descarga tu comprobante en formato PDF o XML.</p>
+							</div>
+						</div>
+
+					</div>
+
+					<!-- COLUMNA DERECHA: GUÍA PASO A PASO INTERACTIVA (5 COLS) -->
+					<div class="lg:col-span-5 space-y-6">
+						
+						<div class="rounded-3xl border border-slate-200 bg-white p-6 shadow-sm dark:border-slate-800 dark:bg-slate-900 space-y-5">
+							<div class="flex items-center justify-between border-b border-slate-100 dark:border-slate-800 pb-3">
+								<div>
+									<h2 class="text-base font-extrabold text-slate-900 dark:text-white">Pasos guiados</h2>
+									<p class="text-xs text-slate-500 dark:text-slate-400">Sigue el proceso en pantalla</p>
+								</div>
+								<span class="text-xs font-black text-[#0877a7] dark:text-sky-400 bg-sky-50 dark:bg-sky-950/60 px-3 py-1 rounded-xl border border-sky-100 dark:border-sky-900/40">
+									4 Pasos
+								</span>
+							</div>
+
+							<!-- Lista de Pasos -->
+							<ol class="space-y-4" id="lista-pasos-guiados">
+								{
+									pasosGuia.map((paso) => (
+										<li class="relative flex gap-4 p-3.5 rounded-2xl border border-slate-100 bg-slate-50/50 dark:border-slate-800 dark:bg-slate-950/40 hover:bg-slate-100/60 dark:hover:bg-slate-800/40 transition cursor-pointer group" data-paso-item={paso.numero}>
+											<span class="grid h-8 w-8 shrink-0 place-items-center rounded-xl bg-[#003366] text-white font-black text-xs shadow-sm dark:bg-slate-900 group-hover:scale-105 transition">
+												{paso.numero}
+											</span>
+											<div class="flex-1 space-y-1">
+												<div class="flex items-center justify-between">
+													<h3 class="text-xs font-bold text-slate-900 dark:text-white group-hover:text-[#0877a7] dark:group-hover:text-sky-400 transition">
+														{paso.titulo}
+													</h3>
+													<span class="text-[10px] font-mono text-slate-400 flex items-center gap-1">
+														<Icon name="clock" size={10} /> {paso.tiempoVideo}
+													</span>
+												</div>
+												<p class="text-[11px] text-slate-600 dark:text-slate-400 leading-normal">
+													{paso.descripcion}
+												</p>
+											</div>
+										</li>
+									))
+								}
+							</ol>
+
+							<div class="pt-2">
+								<button type="button" id="btn-marcar-completado" class="w-full inline-flex items-center justify-center gap-2 rounded-xl bg-emerald-600 py-3 text-xs font-bold text-white shadow-md hover:bg-emerald-700 transition">
+									<Icon name="check-circle" size={16} />
+									<span>Marcar guía como aprendida</span>
+								</button>
+							</div>
+						</div>
+
+						<!-- Preguntas Frecuentes Relacionadas -->
+						<div class="rounded-3xl border border-slate-200 bg-white p-6 shadow-sm dark:border-slate-800 dark:bg-slate-900 space-y-4">
+							<h3 class="text-sm font-extrabold text-slate-900 dark:text-white flex items-center gap-2">
+								<Icon name="help-circle" size={16} class="text-[#0877a7] dark:text-sky-400" />
+								Preguntas frecuentes
+							</h3>
+
+							<div class="space-y-3">
+								{
+									preguntasFrecuentes.map((faq) => (
+										<details class="group rounded-xl border border-slate-200 bg-slate-50/50 p-3 text-xs dark:border-slate-800 dark:bg-slate-950/40 [&_summary::-webkit-details-marker]:hidden">
+											<summary class="flex items-center justify-between font-bold text-slate-800 dark:text-slate-200 cursor-pointer">
+												<span>{faq.q}</span>
+												<span class="transition group-open:-rotate-180 text-slate-400">
+													<Icon name="chevron-down" size={14} />
+												</span>
+											</summary>
+											<p class="mt-2 text-slate-600 dark:text-slate-400 leading-normal border-t border-slate-200/60 dark:border-slate-800 pt-2">
+												{faq.a}
+											</p>
+										</details>
+									))
+								}
+							</div>
+						</div>
+
+					</div>
+
+				</div>
+
+			</div>
+		</main>
+	</div>
+
+	<!-- MODAL ESTÉTICO CENTRADO DE CONFIRMACIÓN DE AYUDA -->
+	<div id="modal-ayuda-exito" class="fixed inset-0 z-50 hidden items-center justify-center bg-slate-900/60 backdrop-blur-sm p-4">
+		<div class="w-full max-w-sm rounded-3xl bg-white p-6 shadow-2xl dark:bg-slate-900 dark:border dark:border-slate-800 text-center space-y-4">
+			<div class="mx-auto grid h-12 w-12 place-items-center rounded-2xl bg-emerald-100 text-emerald-600 dark:bg-emerald-950 dark:text-emerald-400">
+				<Icon name="check" size={24} strokeWidth={3} />
+			</div>
+			<div>
+				<h3 id="modal-ayuda-titulo" class="text-base font-black text-slate-900 dark:text-white">¡Guía completada!</h3>
+				<p id="modal-ayuda-mensaje" class="mt-1 text-xs text-slate-600 dark:text-slate-400">Has revisado todos los pasos para emitir facturas electrónicas.</p>
+			</div>
+			<button type="button" id="btn-cerrar-modal-ayuda" class="w-full rounded-xl bg-[#0877a7] py-2.5 text-xs font-bold text-white shadow-md hover:bg-[#075782] transition">
+				Entendido
+			</button>
+		</div>
+	</div>
+
+	<script src="../../scripts/ayuda.js"></script>
+</Layout>

@@ -1,0 +1,346 @@
+---
+import Layout from '../../layouts/Layout.astro';
+import SolHeader from '../../components/sol/SolHeader.astro';
+import SolSidebar from '../../components/sol/SolSidebar.astro';
+import Icon from '../../components/Icon.astro';
+---
+
+<Layout title="Libro de Reclamaciones - SUNAT SOL">
+	<!-- 1. HEADER UNIFICADO -->
+	<SolHeader current="inicio" />
+
+	<!-- 2. CONTENEDOR FLEX PRINCIPAL -->
+	<div class="flex min-h-[calc(100vh-104px)] bg-[#f8fafc] dark:bg-slate-950">
+		
+		<!-- SIDEBAR LATERAL (Activado en 'tramites') -->
+		<SolSidebar activeMenu="tramites" />
+
+		<!-- CONTENIDO PRINCIPAL ENCUADRADO -->
+		<main class="flex-1 p-6 lg:p-8 max-w-7xl print:hidden">
+			<div class="space-y-6">
+				
+				<!-- Migas de Pan -->
+				<nav class="flex text-xs font-semibold text-slate-500 dark:text-slate-400 print:hidden" aria-label="Breadcrumb">
+					<ol class="inline-flex items-center gap-1.5">
+						<li><a href="/prueba" class="hover:text-[#0877a7] dark:hover:text-sky-300">Inicio SOL</a></li>
+						<li><Icon name="chevron-right" size={12} /></li>
+						<li><a href="/sol/tramites" class="hover:text-[#0877a7] dark:hover:text-sky-300">Trámites</a></li>
+						<li><Icon name="chevron-right" size={12} /></li>
+						<li><span class="text-slate-800 dark:text-slate-200 font-bold">Libro de Reclamaciones</span></li>
+					</ol>
+				</nav>
+
+				<!-- BANNER CONTEXTUAL DE AYUDA -->
+				<div class="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-3 rounded-2xl border border-sky-200 bg-sky-50/80 p-4 dark:border-sky-900/60 dark:bg-sky-950/40 print:hidden">
+					<div class="flex items-center gap-3">
+						<span class="grid h-9 w-9 shrink-0 place-items-center rounded-xl bg-[#003366] text-white dark:bg-sky-500 dark:text-slate-950">
+							<Icon name="info" size={20} />
+						</span>
+						<div>
+							<h2 class="text-xs font-bold text-slate-900 dark:text-white">
+								Sistema Oficial de Quejas y Sugerencias - SUNAT
+							</h2>
+							<p class="text-[11px] text-slate-600 dark:text-slate-300">
+								Formule su disconformidad o iniciativa sobre los servicios prestados por la administración tributaria o aduanera.
+							</p>
+						</div>
+					</div>
+
+					<a href="/guias/emitir" class="inline-flex shrink-0 items-center justify-center gap-1.5 rounded-xl bg-[#0877a7] px-4 py-2 text-xs font-bold text-white shadow-sm transition hover:bg-[#075782] dark:bg-sky-600 dark:hover:bg-sky-500">
+						<span>Guía de Trámite</span>
+						<Icon name="arrow-right" size={14} />
+					</a>
+				</div>
+
+				<!-- INDICADOR DE PASOS (STEPPER PROGRESS BAR) -->
+				<div class="rounded-2xl border border-slate-200 bg-white p-6 shadow-sm dark:border-slate-800 dark:bg-slate-900">
+					<div class="flex items-center justify-between">
+						
+						<div class="flex items-center gap-3">
+							<div id="step-indicator-1" class="flex h-8 w-8 items-center justify-center rounded-full bg-[#0877a7] text-white font-bold text-xs ring-4 ring-sky-100 dark:ring-sky-900/40">1</div>
+							<div class="hidden sm:block">
+								<p class="text-xs font-bold text-slate-900 dark:text-white">Identificación</p>
+								<p class="text-[10px] text-slate-500">Presentante y Titular</p>
+							</div>
+						</div>
+
+						<div id="step-line-1" class="h-1 flex-1 bg-slate-200 dark:bg-slate-800 mx-4"></div>
+
+						<div class="flex items-center gap-3">
+							<div id="step-indicator-2" class="flex h-8 w-8 items-center justify-center rounded-full bg-slate-200 text-slate-600 font-bold text-xs dark:bg-slate-800 dark:text-slate-400">2</div>
+							<div class="hidden sm:block">
+								<p class="text-xs font-bold text-slate-900 dark:text-white">Tipo y Tema</p>
+								<p class="text-[10px] text-slate-500">Categoría Tributaria</p>
+							</div>
+						</div>
+
+						<div id="step-line-2" class="h-1 flex-1 bg-slate-200 dark:bg-slate-800 mx-4"></div>
+
+						<div class="flex items-center gap-3">
+							<div id="step-indicator-3" class="flex h-8 w-8 items-center justify-center rounded-full bg-slate-200 text-slate-600 font-bold text-xs dark:bg-slate-800 dark:text-slate-400">3</div>
+							<div class="hidden sm:block">
+								<p class="text-xs font-bold text-slate-900 dark:text-white">Detalle</p>
+								<p class="text-[10px] text-slate-500">Contenido del Reclamo</p>
+							</div>
+						</div>
+
+						<div id="step-line-3" class="h-1 flex-1 bg-slate-200 dark:bg-slate-800 mx-4"></div>
+
+						<div class="flex items-center gap-3">
+							<div id="step-indicator-4" class="flex h-8 w-8 items-center justify-center rounded-full bg-slate-200 text-slate-600 font-bold text-xs dark:bg-slate-800 dark:text-slate-400">4</div>
+							<div class="hidden sm:block">
+								<p class="text-xs font-bold text-slate-900 dark:text-white">Adjuntos</p>
+								<p class="text-[10px] text-slate-500">Evidencias y Envío</p>
+							</div>
+						</div>
+
+					</div>
+				</div>
+
+				<!-- FORMULARIO DE RECLAMACIÓN POR PASOS -->
+				<form id="form-libro-reclamaciones" class="rounded-2xl border border-slate-200 bg-white p-6 shadow-sm dark:border-slate-800 dark:bg-slate-900 space-y-6" novalidate>
+
+					<!-- PASO 1: IDENTIFICACIÓN DEL PRESENTANTE Y TITULAR -->
+					<div id="step-content-1" class="space-y-5">
+						<h3 class="text-sm font-extrabold text-slate-900 dark:text-white uppercase border-b border-slate-100 pb-3 dark:border-slate-800">
+							Paso 1: Datos de Identificación y Domicilio
+						</h3>
+
+						<!-- Datos del Presentante -->
+						<div class="space-y-3">
+							<h4 class="text-xs font-bold text-[#0877a7] uppercase tracking-wider">I. Identificación de la Persona que Presenta</h4>
+							<div class="grid grid-cols-1 md:grid-cols-2 gap-4 text-xs">
+								<div>
+									<label class="block font-bold mb-1 text-slate-700 dark:text-slate-300">Tipo de Documento</label>
+									<select id="pres-tipo-doc" class="h-9 w-full rounded-lg border border-slate-300 px-3 text-xs dark:border-slate-700 dark:bg-slate-950 dark:text-white font-medium">
+										<option value="RUC">REG. ÚNICO DE CONTRIBUYENTES (RUC)</option>
+										<option value="DNI">DNI</option>
+									</select>
+								</div>
+								<div>
+									<label class="block font-bold mb-1 text-slate-700 dark:text-slate-300">Número Documento</label>
+									<input type="text" id="pres-num-doc" value="10616288475" readonly class="h-9 w-full rounded-lg border border-slate-200 bg-slate-100 px-3 text-xs font-bold text-slate-700 dark:border-slate-800 dark:bg-slate-950 dark:text-slate-300" />
+								</div>
+							</div>
+
+							<div class="grid grid-cols-1 md:grid-cols-3 gap-4 text-xs">
+								<div class="md:col-span-2">
+									<label class="block font-bold mb-1 text-slate-700 dark:text-slate-300">Apellidos y Nombres / Razón Social</label>
+									<input type="text" id="pres-nombre" value="Cordova Ramos Javier" readonly class="h-9 w-full rounded-lg border border-slate-200 bg-slate-100 px-3 text-xs font-bold text-slate-700 dark:border-slate-800 dark:bg-slate-950 dark:text-slate-300" />
+								</div>
+								<div>
+									<label class="block font-bold mb-1 text-slate-700 dark:text-slate-300">Teléfono Celular <span class="text-rose-500">*</span></label>
+									<input type="text" id="pres-celular" maxlength="9" placeholder="987654321" class="h-9 w-full rounded-lg border border-slate-300 px-3 text-xs dark:border-slate-700 dark:bg-slate-950 dark:text-white" />
+									<p id="err-pres-celular" class="text-[11px] font-semibold text-rose-600 dark:text-rose-400 mt-1 hidden"></p>
+								</div>
+							</div>
+
+							<div class="grid grid-cols-1 md:grid-cols-2 gap-4 text-xs">
+								<div>
+									<label class="block font-bold mb-1 text-slate-700 dark:text-slate-300">Correo Electrónico <span class="text-rose-500">*</span></label>
+									<input type="email" id="pres-correo" placeholder="ejemplo@correo.com" class="h-9 w-full rounded-lg border border-slate-300 px-3 text-xs dark:border-slate-700 dark:bg-slate-950 dark:text-white" />
+									<p id="err-pres-correo" class="text-[11px] font-semibold text-rose-600 dark:text-rose-400 mt-1 hidden"></p>
+								</div>
+								<div>
+									<label class="block font-bold mb-1 text-slate-700 dark:text-slate-300">Teléfono Fijo / Anexo (Opcional)</label>
+									<input type="text" id="pres-fijo" placeholder="01 2345678" class="h-9 w-full rounded-lg border border-slate-300 px-3 text-xs dark:border-slate-700 dark:bg-slate-950 dark:text-white" />
+								</div>
+							</div>
+						</div>
+
+						<!-- Datos del Titular -->
+						<div class="space-y-3 pt-4 border-t border-slate-100 dark:border-slate-800">
+							<h4 class="text-xs font-bold text-[#0877a7] uppercase tracking-wider">II. Identificación del Titular y Domicilio Fiscal</h4>
+							<div class="grid grid-cols-1 md:grid-cols-3 gap-4 text-xs">
+								<div class="md:col-span-2">
+									<label class="block font-bold mb-1 text-slate-700 dark:text-slate-300">Domicilio Fiscal</label>
+									<input type="text" id="tit-domicilio" value="AV. UNIVERSITARIA NRO. 8411 DPTO. 1536 INT. 01" readonly class="h-9 w-full rounded-lg border border-slate-200 bg-slate-100 px-3 text-xs font-bold text-slate-700 dark:border-slate-800 dark:bg-slate-950 dark:text-slate-300" />
+								</div>
+								<div>
+									<label class="block font-bold mb-1 text-slate-700 dark:text-slate-300">Distrito / Provincia / Dep.</label>
+									<input type="text" id="tit-ubigeo" value="COMAS / LIMA / LIMA" readonly class="h-9 w-full rounded-lg border border-slate-200 bg-slate-100 px-3 text-xs font-bold text-slate-700 dark:border-slate-800 dark:bg-slate-950 dark:text-slate-300" />
+								</div>
+							</div>
+						</div>
+					</div>
+
+					<!-- PASO 2: TIPO Y SELECCIÓN DE TEMA -->
+					<div id="step-content-2" class="space-y-5 hidden">
+						<h3 class="text-sm font-extrabold text-slate-900 dark:text-white uppercase border-b border-slate-100 pb-3 dark:border-slate-800">
+							Paso 2: Tipo de Registro y Tema de la Solicitud
+						</h3>
+
+						<div class="flex items-center gap-6 bg-slate-50 p-4 rounded-xl border border-slate-200 dark:bg-slate-950 dark:border-slate-800">
+							<span class="text-xs font-bold text-slate-800 dark:text-slate-200">Tipo de Trámite:</span>
+							<label class="flex items-center gap-2 cursor-pointer text-xs font-bold text-slate-700 dark:text-slate-300">
+								<input type="radio" name="tipo-registro" value="Queja" checked class="h-4 w-4 text-[#0877a7] focus:ring-[#0877a7]" /> Queja
+							</label>
+							<label class="flex items-center gap-2 cursor-pointer text-xs font-bold text-slate-700 dark:text-slate-300">
+								<input type="radio" name="tipo-registro" value="Sugerencia" class="h-4 w-4 text-[#0877a7] focus:ring-[#0877a7]" /> Sugerencia
+							</label>
+						</div>
+
+						<div>
+							<label class="block font-bold mb-2 text-xs text-slate-700 dark:text-slate-300">
+								Seleccione el Tema Principal <span class="text-rose-500">*</span>
+							</label>
+							<div class="grid grid-cols-1 md:grid-cols-2 gap-2 max-h-72 overflow-y-auto p-2 border border-slate-200 rounded-xl dark:border-slate-800 bg-slate-50/50 dark:bg-slate-950/40" id="contenedor-temas">
+								<button type="button" class="btn-tema text-left p-3 rounded-lg border border-slate-200 bg-white dark:bg-slate-900 dark:border-slate-800 hover:border-[#0877a7] text-xs font-semibold text-slate-800 dark:text-slate-200 transition">ACCIONES DE FISCALIZACIÓN</button>
+								<button type="button" class="btn-tema text-left p-3 rounded-lg border border-slate-200 bg-white dark:bg-slate-900 dark:border-slate-800 hover:border-[#0877a7] text-xs font-semibold text-slate-800 dark:text-slate-200 transition">ADUANAS</button>
+								<button type="button" class="btn-tema text-left p-3 rounded-lg border border-slate-200 bg-white dark:bg-slate-900 dark:border-slate-800 hover:border-[#0877a7] text-xs font-semibold text-slate-800 dark:text-slate-200 transition">COBRANZA COACTIVA</button>
+								<button type="button" class="btn-tema text-left p-3 rounded-lg border border-slate-200 bg-white dark:bg-slate-900 dark:border-slate-800 hover:border-[#0877a7] text-xs font-semibold text-slate-800 dark:text-slate-200 transition">COMPROBANTE DE PAGO</button>
+								<button type="button" class="btn-tema text-left p-3 rounded-lg border border-slate-200 bg-white dark:bg-slate-900 dark:border-slate-800 hover:border-[#0877a7] text-xs font-semibold text-slate-800 dark:text-slate-200 transition">DETRACCIONES</button>
+								<button type="button" class="btn-tema text-left p-3 rounded-lg border border-slate-200 bg-white dark:bg-slate-900 dark:border-slate-800 hover:border-[#0877a7] text-xs font-semibold text-slate-800 dark:text-slate-200 transition">DEUDA</button>
+								<button type="button" class="btn-tema text-left p-3 rounded-lg border border-slate-200 bg-white dark:bg-slate-900 dark:border-slate-800 hover:border-[#0877a7] text-xs font-semibold text-slate-800 dark:text-slate-200 transition">DEVOLUCIÓN DE TRIBUTOS</button>
+								<button type="button" class="btn-tema text-left p-3 rounded-lg border border-slate-200 bg-white dark:bg-slate-900 dark:border-slate-800 hover:border-[#0877a7] text-xs font-semibold text-slate-800 dark:text-slate-200 transition">ESSALUD - ONP - T-REGISTRO</button>
+								<button type="button" class="btn-tema text-left p-3 rounded-lg border border-slate-200 bg-white dark:bg-slate-900 dark:border-slate-800 hover:border-[#0877a7] text-xs font-semibold text-slate-800 dark:text-slate-200 transition">FRACCIONAMIENTO</button>
+								<button type="button" class="btn-tema text-left p-3 rounded-lg border border-slate-200 bg-white dark:bg-slate-900 dark:border-slate-800 hover:border-[#0877a7] text-xs font-semibold text-slate-800 dark:text-slate-200 transition">PRESENTACIÓN Y PAGO DE DECLARACIONES</button>
+								<button type="button" class="btn-tema text-left p-3 rounded-lg border border-slate-200 bg-white dark:bg-slate-900 dark:border-slate-800 hover:border-[#0877a7] text-xs font-semibold text-slate-800 dark:text-slate-200 transition">SUNAT OPERACIONES EN LÍNEA (SOL)</button>
+								<button type="button" class="btn-tema text-left p-3 rounded-lg border border-slate-200 bg-white dark:bg-slate-900 dark:border-slate-800 hover:border-[#0877a7] text-xs font-semibold text-slate-800 dark:text-slate-200 transition">TRÁMITES DEL RUC</button>
+							</div>
+							<input type="hidden" id="tema-seleccionado" />
+							<p id="err-tema-seleccionado" class="text-[11px] font-semibold text-rose-600 dark:text-rose-400 mt-1 hidden"></p>
+						</div>
+					</div>
+
+					<!-- PASO 3: DETALLE DE LA QUEJA / SUGERENCIA -->
+					<div id="step-content-3" class="space-y-5 hidden">
+						<h3 class="text-sm font-extrabold text-slate-900 dark:text-white uppercase border-b border-slate-100 pb-3 dark:border-slate-800">
+							Paso 3: Detalle de la Queja o Sugerencia
+						</h3>
+
+						<div class="grid grid-cols-1 md:grid-cols-3 gap-4 text-xs">
+							<div>
+								<label class="block font-bold mb-1 text-slate-700 dark:text-slate-300">Rubro <span class="text-rose-500">*</span></label>
+								<select id="det-rubro" class="h-9 w-full rounded-lg border border-slate-300 px-3 text-xs dark:border-slate-700 dark:bg-slate-950 dark:text-white">
+									<option value="">-- Seleccionar --</option>
+									<option value="Atención Presencial">Atención Presencial</option>
+									<option value="Plataforma Virtual SOL">Plataforma Virtual SOL</option>
+									<option value="Procedimientos Tributarios">Procedimientos Tributarios</option>
+								</select>
+								<p id="err-det-rubro" class="text-[11px] font-semibold text-rose-600 dark:text-rose-400 mt-1 hidden"></p>
+							</div>
+
+							<div>
+								<label class="block font-bold mb-1 text-slate-700 dark:text-slate-300">Motivo <span class="text-rose-500">*</span></label>
+								<select id="det-motivo" class="h-9 w-full rounded-lg border border-slate-300 px-3 text-xs dark:border-slate-700 dark:bg-slate-950 dark:text-white">
+									<option value="">-- Seleccionar --</option>
+									<option value="Demora en el trámite">Demora en el trámite</option>
+									<option value="Falla en el sistema">Falla en el sistema</option>
+									<option value="Maltrato en la atención">Maltrato en la atención</option>
+								</select>
+								<p id="err-det-motivo" class="text-[11px] font-semibold text-rose-600 dark:text-rose-400 mt-1 hidden"></p>
+							</div>
+
+							<div>
+								<label class="block font-bold mb-1 text-slate-700 dark:text-slate-300">Categoría <span class="text-rose-500">*</span></label>
+								<select id="det-categoria" class="h-9 w-full rounded-lg border border-slate-300 px-3 text-xs dark:border-slate-700 dark:bg-slate-950 dark:text-white">
+									<option value="">-- Seleccionar --</option>
+									<option value="Intendencia Lima">Intendencia Lima</option>
+									<option value="Centro de Servicios al Contribuyente">Centro de Servicios al Contribuyente</option>
+								</select>
+								<p id="err-det-categoria" class="text-[11px] font-semibold text-rose-600 dark:text-rose-400 mt-1 hidden"></p>
+							</div>
+						</div>
+
+						<div>
+							<div class="flex justify-between items-center mb-1">
+								<label class="block font-bold text-xs text-slate-700 dark:text-slate-300">Contenido explicativo <span class="text-rose-500">*</span></label>
+								<span id="cnt-caracteres" class="text-[10px] font-semibold text-slate-400">0 / 1800 caracteres</span>
+							</div>
+							<textarea id="det-contenido" rows="5" maxlength="1800" placeholder="Redacte detalladamente los hechos u observaciones..." class="w-full rounded-xl border border-slate-300 p-3 text-xs dark:border-slate-700 dark:bg-slate-950 dark:text-white focus:border-[#0877a7] focus:ring-1 focus:ring-[#0877a7]"></textarea>
+							<p id="err-det-contenido" class="text-[11px] font-semibold text-rose-600 dark:text-rose-400 mt-1 hidden"></p>
+						</div>
+					</div>
+
+					<!-- PASO 4: ARCHIVOS ADJUNTOS -->
+					<div id="step-content-4" class="space-y-5 hidden">
+						<h3 class="text-sm font-extrabold text-slate-900 dark:text-white uppercase border-b border-slate-100 pb-3 dark:border-slate-800">
+							Paso 4: Documentos de Sustento y Confirmación
+						</h3>
+
+						<div class="p-6 rounded-2xl border-2 border-dashed border-slate-300 dark:border-slate-800 text-center space-y-3 bg-slate-50/50 dark:bg-slate-950/40">
+							<Icon name="file-text" size={32} class="mx-auto text-slate-400" />
+							<div>
+								<p class="text-xs font-bold text-slate-800 dark:text-slate-200">Seleccionar o arrastrar evidencias</p>
+								<p class="text-[10px] text-slate-500">Máximo 5 archivos (Hasta 1MB por archivo - PDF, JPG, PNG)</p>
+							</div>
+							<input type="file" id="input-archivos" multiple class="hidden" accept=".pdf,.png,.jpg,.jpeg" />
+							<button type="button" id="btn-browse-file" class="inline-flex items-center gap-1.5 rounded-xl bg-[#0877a7] px-4 py-2 text-xs font-bold text-white shadow-sm hover:bg-[#075782] transition">
+								Buscar Archivos
+							</button>
+						</div>
+
+						<!-- Lista de Archivos Cargados -->
+						<div class="overflow-x-auto rounded-xl border border-slate-200 dark:border-slate-800">
+							<table class="w-full text-left text-xs">
+								<thead class="bg-slate-50 text-slate-700 dark:bg-slate-800 dark:text-slate-300 font-bold">
+									<tr>
+										<th class="p-3">Nombre del Archivo</th>
+										<th class="p-3">Tamaño</th>
+										<th class="p-3 text-center">Acción</th>
+									</tr>
+								</thead>
+								<tbody id="tabla-archivos" class="divide-y divide-slate-100 dark:divide-slate-800">
+									<tr>
+										<td colspan="3" class="p-4 text-center text-slate-400 italic">No hay archivos adjuntados.</td>
+									</tr>
+								</tbody>
+							</table>
+						</div>
+					</div>
+
+					<!-- BOTONES DE NAVEGACIÓN Y ENVÍO -->
+					<div class="flex items-center justify-between pt-4 border-t border-slate-100 dark:border-slate-800">
+						<button type="button" id="btn-prev-step" class="hidden rounded-xl border border-slate-300 bg-white px-5 py-2.5 text-xs font-bold text-slate-700 transition hover:bg-slate-50 dark:border-slate-700 dark:bg-slate-950 dark:text-slate-300">
+							<div class="flex items-center gap-2">
+								<Icon name="arrow-left" size={16} />
+								<span>Paso Anterior</span>
+							</div>
+						</button>
+
+						<div class="ml-auto flex items-center gap-2">
+							<button type="button" id="btn-next-step" class="rounded-xl bg-[#0877a7] px-6 py-2.5 text-xs font-bold text-white shadow-md transition hover:bg-[#075782]">
+								<div class="flex items-center gap-2">
+									<span>Siguiente Paso</span>
+									<Icon name="arrow-right" size={16} />
+								</div>
+							</button>
+
+							<button type="submit" id="btn-submit-reclamacion" class="hidden rounded-xl bg-emerald-600 px-6 py-2.5 text-xs font-bold text-white shadow-md transition hover:bg-emerald-700">
+								<div class="flex items-center gap-2">
+									<Icon name="check" size={16} />
+									<span>Registrar Queja / Sugerencia</span>
+								</div>
+							</button>
+						</div>
+					</div>
+
+				</form>
+			</div>
+		</main>
+	</div>
+
+	<!-- MODAL CONFIRMACIÓN Y CONSTANCIA -->
+	<div id="modal-exito-reclamacion" class="hidden fixed inset-0 z-50 flex items-center justify-center bg-slate-900/60 p-4 backdrop-blur-sm print:hidden">
+		<div class="w-full max-w-md rounded-2xl border border-slate-200 bg-white p-6 shadow-2xl dark:border-slate-800 dark:bg-slate-900 space-y-5 text-slate-900 dark:text-slate-100 text-center">
+			<div class="grid h-12 w-12 place-items-center rounded-full bg-emerald-500 text-white font-black text-xl mx-auto shadow-lg">✓</div>
+			<div>
+				<h3 class="text-base font-extrabold text-slate-900 dark:text-white">Registro Exitoso</h3>
+				<p class="text-xs text-slate-500 dark:text-slate-400 mt-1">Su código de atención asignado es:</p>
+				<p id="res-codigo-constancia" class="text-base font-black text-[#0877a7] dark:text-sky-400 mt-1">Q-2026-000482</p>
+			</div>
+			<p class="text-[11px] text-slate-600 dark:text-slate-300 leading-relaxed bg-slate-50 dark:bg-slate-950 p-3 rounded-xl border border-slate-200 dark:border-slate-800">
+				La constancia digital ha sido enviada a su correo corporativo. SUNAT responderá dentro del plazo legal determinado.
+			</p>
+			<div class="flex justify-center gap-3 pt-2">
+				<a href="/prueba" class="w-full rounded-xl bg-[#0877a7] py-2.5 text-xs font-bold text-white shadow hover:bg-[#075782] transition">
+					Aceptar y Finalizar
+				</a>
+			</div>
+		</div>
+	</div>
+
+	<!-- SCRIPT EXTERNO -->
+	<script src="../../scripts/libro-reclamaciones.js"></script>
+</Layout>

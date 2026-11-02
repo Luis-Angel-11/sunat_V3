@@ -1,0 +1,601 @@
+---
+import Icon from '../components/Icon.astro';
+import Tramite from '../components/sol/Tramite.astro';
+import SolLayout from '../layouts/SolLayout.astro';
+import { accesosDirectos, categorias, perfiles } from '../data/sol';
+import type { IconName } from '../data/icons';
+
+const sugerencias = ['recibo', 'declarar', 'devolución', 'factura', 'deuda', 'RUC'];
+
+const pasos = [
+	{ titulo: 'Busca', detalle: 'Escribe el trámite o lo que quieres lograr.' },
+	{ titulo: 'Entiende', detalle: 'Lee qué es y cuándo te conviene usarlo.' },
+	{ titulo: 'Realiza', detalle: 'Ábrelo y sigue las indicaciones en pantalla.' },
+];
+
+const mensajes = [
+	{
+		id: 'msg-1',
+		asunto: 'Constancia de presentación – Declaración mensual (Formulario 621)',
+		fecha: '30 oct. 2026',
+		texto: 'Tu declaración del periodo setiembre 2026 fue recibida correctamente. Puedes descargar la constancia desde Consultar declaraciones y pagos.',
+		nuevo: true,
+	},
+	{
+		id: 'msg-2',
+		asunto: 'Recordatorio: actualiza tus datos de contacto',
+		fecha: '28 oct. 2026',
+		texto: 'Registra un correo y un celular para recibir avisos de vencimientos y notificaciones. Hazlo desde Mi perfil.',
+		nuevo: true,
+	},
+	{
+		id: 'msg-3',
+		asunto: 'Bienvenido al nuevo Menú SOL',
+		fecha: '15 oct. 2026',
+		texto: 'Ahora puedes buscar trámites, guardarlos como favoritos y ver una explicación de cada uno pasando el cursor o tocando el botón de ayuda.',
+		nuevo: false,
+	},
+];
+---
+
+<SolLayout title="Menú SOL" description="Tus trámites y servicios de SUNAT con Clave SOL." current="inicio">
+	<!-- Bienvenida -->
+	<section class="sol-hero relative overflow-hidden text-white" aria-labelledby="titulo-bienvenida">
+		<div class="container-sunat relative grid gap-5 py-8 md:py-10 md:pb-12">
+			<div class="flex items-center gap-4 sm:gap-5">
+				<div class="relative w-fit shrink-0">
+					<span class="grid h-16 w-16 place-items-center rounded-3xl bg-white text-2xl font-black text-sunat-red shadow-xl ring-4 ring-white/25 dark:bg-sky-400 dark:text-slate-950 sm:h-20 sm:w-20 sm:text-3xl" data-sol-field="iniciales">S</span>
+					<span class="absolute -bottom-1 -right-1 grid h-7 w-7 place-items-center rounded-full bg-emerald-500 ring-4 ring-sunat-red dark:ring-slate-900" title="Sesión verificada">
+						<Icon name="check" size={15} strokeWidth={3} />
+					</span>
+				</div>
+				<div class="min-w-0">
+					<p class="text-sm font-semibold text-white/85"><span id="saludo">Hola</span> 👋</p>
+					<h1 id="titulo-bienvenida" class="mt-1 text-2xl font-black tracking-tight sm:text-3xl md:text-4xl">
+						<span data-sol-field="nombres">Bienvenido</span>
+					</h1>
+					<p class="mt-1 truncate text-sm text-white/80" data-sol-field="nombreCompleto">—</p>
+					<ul class="mt-3 flex flex-wrap gap-2 text-xs font-semibold" aria-label="Datos de tu sesión">
+						<li class="sol-chip"><Icon name="id-card" size={14} />RUC <span data-sol-field="ruc">—</span></li>
+						<li class="sol-chip"><Icon name="briefcase" size={14} /><span data-sol-field="tipo">—</span></li>
+					</ul>
+				</div>
+			</div>
+
+		</div>
+	</section>
+
+	<div class="container-sunat mt-8 grid gap-8 lg:grid-cols-[minmax(0,1fr)_320px]">
+		<div class="min-w-0">
+			<!-- Buscador y guía rápida -->
+			<section aria-labelledby="titulo-buscar">
+				<h2 id="titulo-buscar" class="text-2xl font-bold text-slate-900 dark:text-white">¿Qué necesitas hacer hoy?</h2>
+				<p class="mt-1 text-sm text-slate-600 dark:text-slate-400">
+					Escribe con tus propias palabras, por ejemplo “recibo”, “pagar” o “devolución”. No necesitas recordar el nombre exacto.
+				</p>
+				<div role="search" class="relative mt-4">
+					<label for="sol-buscar" class="sr-only">Buscar un trámite o servicio</label>
+					<Icon name="search" size={20} class="pointer-events-none absolute left-4 top-1/2 -translate-y-1/2 text-slate-400" />
+					<input
+						id="sol-buscar"
+						type="search"
+						autocomplete="off"
+						placeholder="Buscar trámites, consultas y formularios…"
+						aria-describedby="sol-buscar-ayuda"
+						class="h-14 w-full rounded-2xl border border-slate-300 bg-white pl-12 pr-4 text-base text-slate-900 shadow-sm transition placeholder:text-slate-400 focus:border-sunat-blue sm:pr-24 dark:border-slate-700 dark:bg-slate-900 dark:text-slate-100"
+					/>
+					<kbd class="pointer-events-none absolute right-4 top-1/2 hidden -translate-y-1/2 rounded-md border border-slate-300 bg-slate-50 px-2 py-0.5 text-xs font-semibold text-slate-500 sm:block dark:border-slate-700 dark:bg-slate-800 dark:text-slate-400" title="Atajo de teclado">/</kbd>
+				</div>
+				<div id="sol-buscar-ayuda" class="mt-3 flex flex-wrap items-center gap-2 text-xs text-slate-500 dark:text-slate-400">
+					<span>Búsquedas comunes:</span>
+					{
+						sugerencias.map((s) => (
+							<button type="button" data-sugerencia={s} class="rounded-full border border-slate-200 bg-white px-2.5 py-1 font-semibold text-slate-600 transition hover:border-sunat-blue hover:text-sunat-blue dark:border-slate-700 dark:bg-slate-900 dark:text-slate-300 dark:hover:border-sky-400 dark:hover:text-sky-300">
+								{s}
+							</button>
+						))
+					}
+				</div>
+				<p id="sol-buscar-estado" role="status" aria-live="polite" class="mt-3 text-sm font-semibold text-slate-700 dark:text-slate-300"></p>
+
+				<ol class="mt-4 grid gap-2 sm:grid-cols-3" aria-label="Cómo hacer un trámite" data-ocultar-en-busqueda>
+					{
+						pasos.map((paso, index) => (
+							<li class="flex items-start gap-2.5 rounded-xl border border-slate-200 bg-white p-3 dark:border-slate-800 dark:bg-slate-900">
+								<span class="grid h-6 w-6 shrink-0 place-items-center rounded-full bg-sunat-blue/10 text-xs font-black text-sunat-blue dark:bg-sky-500/15 dark:text-sky-300">
+									{index + 1}
+								</span>
+								<span class="min-w-0">
+									<strong class="block text-sm text-slate-900 dark:text-white">{paso.titulo}</strong>
+									<span class="mt-0.5 block text-xs leading-snug text-slate-500 dark:text-slate-400">{paso.detalle}</span>
+								</span>
+							</li>
+						))
+					}
+				</ol>
+			</section>
+
+			<!-- Selector de perfil -->
+			<section class="mt-8" aria-labelledby="titulo-perfil" data-ocultar-en-busqueda>
+				<h2 id="titulo-perfil" class="text-lg font-bold text-slate-900 dark:text-white">¿Para quién es el trámite?</h2>
+				<p class="text-sm text-slate-600 dark:text-slate-400">Elige tu caso y te mostramos solo las opciones que te corresponden.</p>
+				<div class="mt-3 grid gap-2 sm:grid-cols-3" role="group" aria-label="Perfil de trámites">
+					{
+						perfiles.map((perfil) => (
+							<button
+								type="button"
+								data-perfil={perfil.id}
+								aria-pressed="false"
+								class="sol-perfil flex items-start gap-3 rounded-2xl border-2 border-slate-200 bg-white p-3 text-left transition hover:border-sunat-blue/50 dark:border-slate-800 dark:bg-slate-900 dark:hover:border-sky-500/50"
+							>
+								<span class="sol-perfil-icon grid h-10 w-10 shrink-0 place-items-center rounded-xl bg-slate-100 text-slate-600 dark:bg-slate-800 dark:text-slate-300">
+									<Icon name={perfil.icon} size={20} />
+								</span>
+								<span>
+									<span class="block text-sm font-bold text-slate-900 dark:text-white">{perfil.label}</span>
+									<span class="block text-xs leading-snug text-slate-500 dark:text-slate-400">{perfil.descripcion}</span>
+								</span>
+							</button>
+						))
+					}
+				</div>
+			</section>
+
+			<!-- Accesos directos -->
+			<section class="mt-8" aria-labelledby="titulo-accesos" data-ocultar-en-busqueda>
+				<h2 id="titulo-accesos" class="text-lg font-bold text-slate-900 dark:text-white">Accesos directos</h2>
+				<p class="text-sm text-slate-600 dark:text-slate-400">Atajos a los trámites más frecuentes. Toca una tarjeta para abrirla.</p>
+				{
+					perfiles.map((perfil) => (
+						<ul class="mt-3 grid grid-cols-1 gap-3 sm:grid-cols-2 xl:grid-cols-3" data-accesos={perfil.id} hidden={perfil.id !== 'personas'}>
+							{accesosDirectos[perfil.id].map((id) => (
+								<Tramite id={id} uid={`acc-${perfil.id}-${id}`} variant="card" />
+							))}
+						</ul>
+					))
+				}
+			</section>
+
+			<!-- Todas las opciones -->
+			<section class="mt-10" aria-labelledby="titulo-opciones">
+				<div class="flex flex-wrap items-end justify-between gap-2">
+					<div>
+						<h2 id="titulo-opciones" class="text-lg font-bold text-slate-900 dark:text-white">
+							<span data-titulo-opciones>Explora por tema</span>
+						</h2>
+						<p class="text-sm text-slate-600 dark:text-slate-400" data-ocultar-en-busqueda>
+							Si no sabes el nombre exacto, abre un tema y elige el trámite.
+						</p>
+					</div>
+					<div class="flex gap-2 text-xs font-bold" data-ocultar-en-busqueda>
+						<button type="button" data-expandir="true" class="link-sunat">Abrir todo</button>
+						<span class="text-slate-300 dark:text-slate-700" aria-hidden="true">|</span>
+						<button type="button" data-expandir="false" class="link-sunat">Cerrar todo</button>
+					</div>
+				</div>
+
+				<div class="mt-3 grid items-start gap-3 md:grid-cols-2">
+					{
+						categorias.map((categoria) => (
+							<details class="sol-categoria rounded-2xl border border-slate-200 bg-white shadow-sm dark:border-slate-800 dark:bg-slate-900" data-categoria>
+								<summary class="flex cursor-pointer list-none items-center gap-3 rounded-2xl p-4 transition hover:bg-slate-50 dark:hover:bg-slate-800/60">
+									<span class="grid h-10 w-10 shrink-0 place-items-center rounded-xl bg-sunat-blue/10 text-sunat-blue dark:bg-sky-500/15 dark:text-sky-300">
+										<Icon name={categoria.icon} size={20} />
+									</span>
+									<span class="min-w-0 flex-1">
+										<span class="block font-bold text-slate-900 dark:text-white">{categoria.titulo}</span>
+										<span class="block text-xs text-slate-500 dark:text-slate-400">{categoria.descripcion}</span>
+									</span>
+									<span class="rounded-full bg-slate-100 px-2 py-0.5 text-xs font-bold text-slate-600 dark:bg-slate-800 dark:text-slate-300" data-contador>
+										{categoria.tramites.length}
+									</span>
+									<Icon name="chevron-down" size={18} class="sol-chevron shrink-0 text-slate-400 transition-transform" />
+								</summary>
+								<ul class="grid gap-0.5 border-t border-slate-100 p-2 dark:border-slate-800">
+									{categoria.tramites.map((id) => (
+										<Tramite id={id} uid={`cat-${categoria.id}-${id}`} />
+									))}
+								</ul>
+							</details>
+						))
+					}
+				</div>
+
+				<div id="sol-sin-resultados" hidden class="mt-4 rounded-2xl border-2 border-dashed border-slate-300 p-8 text-center dark:border-slate-700">
+					<Icon name="search" size={32} class="mx-auto text-slate-400" />
+					<p class="mt-3 font-bold text-slate-900 dark:text-white">
+						No encontramos resultados para “<span id="sol-termino"></span>”
+					</p>
+					<p class="mt-1 text-sm text-slate-600 dark:text-slate-400">
+						Prueba con otra palabra más general, revisa la ortografía o llama al 0801-12100.
+					</p>
+					<button type="button" data-limpiar class="sol-btn-secondary mt-4">Limpiar búsqueda</button>
+				</div>
+			</section>
+		</div>
+
+		<!-- Columna lateral -->
+		<aside class="grid content-start gap-4" aria-label="Tu actividad">
+			<section class="sol-panel" aria-labelledby="titulo-accesos-guardados">
+				<h2 id="titulo-accesos-guardados" class="flex items-center gap-2 font-bold text-slate-900 dark:text-white">
+					<Icon name="star" size={19} class="text-amber-500" />
+					Tus accesos
+				</h2>
+				<p class="mt-2 text-xs text-slate-500 dark:text-slate-400">Lo que guardaste y lo que abriste hace poco.</p>
+
+				<h3 class="mt-4 text-xs font-bold uppercase tracking-wide text-slate-500 dark:text-slate-400">Favoritos</h3>
+				<ul id="lista-favoritos" class="mt-2 grid gap-1"></ul>
+				<p id="favoritos-vacio" class="mt-2 text-sm text-slate-500 dark:text-slate-400">
+					Aún no tienes favoritos. Toca la estrella <Icon name="star" size={13} class="inline" /> de un trámite para tenerlo siempre a mano.
+				</p>
+
+				<h3 class="mt-4 border-t border-slate-100 pt-4 text-xs font-bold uppercase tracking-wide text-slate-500 dark:border-slate-800 dark:text-slate-400">Últimos accesos</h3>
+				<ul id="lista-ultimos" class="mt-2 grid gap-1"></ul>
+				<p id="ultimos-vacio" class="mt-2 text-sm text-slate-500 dark:text-slate-400">Aquí verás los trámites que abriste recientemente.</p>
+			</section>
+
+			<section class="rounded-2xl bg-gradient-to-br from-sunat-blue to-sunat-blue-dark p-5 text-white shadow-lg dark:from-sky-900 dark:to-slate-900" aria-labelledby="titulo-ayuda">
+				<h2 id="titulo-ayuda" class="flex items-center gap-2 font-bold">
+					<Icon name="help-circle" size={19} />
+					¿No encuentras un trámite?
+				</h2>
+				<p class="mt-2 text-sm text-white/85">Llámanos y te guiamos paso a paso.</p>
+				<a href="tel:080112100" class="mt-3 inline-flex h-10 items-center gap-2 rounded-lg bg-white px-4 text-sm font-bold text-sunat-blue transition hover:bg-sky-50 dark:text-sky-900">
+					<Icon name="phone" size={16} />
+					0801-12100
+				</a>
+			</section>
+		</aside>
+	</div>
+
+	<!-- Botones flotantes: libro de reclamaciones y buzón -->
+	<div class="pointer-events-none fixed bottom-4 right-4 z-40 flex w-[calc(100vw-2rem)] max-w-sm flex-col items-end gap-3 sm:bottom-6 sm:right-6">
+		<a
+			href="/libro-reclamaciones"
+			class="pointer-events-auto flex items-center gap-2.5 rounded-2xl border border-slate-200 bg-white py-2.5 pl-2.5 pr-4 text-sm font-bold text-slate-800 shadow-xl transition hover:-translate-y-0.5 hover:border-sunat-blue hover:text-sunat-blue dark:border-slate-700 dark:bg-slate-900 dark:text-slate-100 dark:hover:border-sky-400 dark:hover:text-sky-300"
+		>
+			<span class="grid h-9 w-9 shrink-0 place-items-center rounded-xl bg-sunat-blue/10 text-sunat-blue dark:bg-sky-500/15 dark:text-sky-300">
+				<Icon name="book-open" size={19} />
+			</span>
+			Libro de reclamaciones
+		</a>
+		<button
+			type="button"
+			data-abrir-buzon
+			aria-haspopup="dialog"
+			aria-controls="buzon"
+			class="sol-buzon-fab animate-hop pointer-events-auto flex w-full items-center gap-3 rounded-2xl bg-sunat-red p-3 pr-4 text-left text-white shadow-2xl ring-4 ring-white/70 transition hover:bg-sunat-red/90 focus-visible:outline-none focus-visible:ring-sky-400 dark:bg-slate-800 dark:ring-slate-700 dark:hover:bg-slate-700"
+		>
+			<span class="relative grid h-11 w-11 shrink-0 place-items-center rounded-xl bg-amber-300/25 text-amber-200">
+				<Icon name="inbox" size={22} />
+				<span data-buzon-badge class="absolute -right-1.5 -top-1.5 grid h-5 min-w-5 place-items-center rounded-full bg-amber-300 px-1 text-[11px] font-black text-amber-950">2</span>
+			</span>
+			<span class="min-w-0 flex-1">
+				<span class="block text-sm font-bold">
+					Tienes <span data-buzon-count>2</span> <span data-buzon-plural>nuevos</span> en tu buzón
+				</span>
+				<span class="mt-0.5 block text-xs leading-snug text-white/80">Son avisos oficiales de SUNAT. Toca aquí para leerlos.</span>
+			</span>
+		</button>
+	</div>
+
+	<!-- Mensajes del buzón -->
+	<dialog
+		id="buzon"
+		aria-labelledby="titulo-buzon"
+		class="m-auto w-[calc(100%-2rem)] max-w-lg rounded-2xl border border-slate-200 bg-white p-0 text-slate-900 shadow-2xl backdrop:bg-slate-950/50 dark:border-slate-800 dark:bg-slate-900 dark:text-slate-100"
+	>
+		<div class="flex items-center justify-between gap-2 border-b border-slate-100 p-4 dark:border-slate-800">
+			<h2 id="titulo-buzon" class="flex items-center gap-2 font-bold">
+				<Icon name="inbox" size={19} class="text-sunat-blue dark:text-sky-300" />
+				Buzón electrónico
+			</h2>
+			<form method="dialog">
+				<button class="grid h-9 w-9 place-items-center rounded-full text-xl text-slate-500 hover:bg-slate-100 dark:hover:bg-slate-800" aria-label="Cerrar buzón">×</button>
+			</form>
+		</div>
+		<ul class="grid max-h-[70vh] gap-2 overflow-y-auto p-4">
+			{
+				mensajes.map((m) => (
+					<li>
+						<details class="sol-mensaje group rounded-xl border border-slate-200 dark:border-slate-800" data-mensaje={m.id} data-nuevo={m.nuevo ? 'true' : 'false'}>
+							<summary class="flex cursor-pointer list-none gap-2 p-3">
+								<span class="sol-mensaje-punto mt-1.5 h-2 w-2 shrink-0 rounded-full" aria-hidden="true"></span>
+								<span class="min-w-0">
+									<span class="sol-mensaje-asunto block text-sm leading-snug text-slate-800 dark:text-slate-200">{m.asunto}</span>
+									<span class="text-xs text-slate-500 dark:text-slate-400">
+										{m.fecha}
+										<span class="sol-mensaje-estado sr-only">{m.nuevo ? ' · sin leer' : ' · leído'}</span>
+									</span>
+								</span>
+							</summary>
+							<p class="border-t border-slate-100 px-3 py-2 text-sm text-slate-600 dark:border-slate-800 dark:text-slate-300">{m.texto}</p>
+						</details>
+					</li>
+				))
+			}
+		</ul>
+	</dialog>
+
+	<script is:inline>
+		(() => {
+			const sol = window.sunatSol;
+			if (!sol) return;
+
+			const read = (key, fallback) => {
+				try {
+					return JSON.parse(localStorage.getItem(key) || 'null') ?? fallback;
+				} catch {
+					return fallback;
+				}
+			};
+			const write = (key, value) => {
+				try {
+					localStorage.setItem(key, JSON.stringify(value));
+				} catch {
+				}
+			};
+			const normalize = (text) =>
+				text.toLowerCase().normalize('NFD').replace(/[̀-ͯ]/g, '');
+
+			// Saludo según la hora
+			const hour = new Date().getHours();
+			document.querySelector('#saludo').textContent =
+				hour < 12 ? 'Buenos días' : hour < 19 ? 'Buenas tardes' : 'Buenas noches';
+
+			const items = [...document.querySelectorAll('[data-tramite]')];
+			const titles = Object.fromEntries(items.map((li) => [li.dataset.id, li.dataset.titulo]));
+
+			// Favoritos y últimos accesos
+			const FAV_KEY = 'sunat-sol-favoritos';
+			const LAST_KEY = 'sunat-sol-ultimos';
+			let favoritos = read(FAV_KEY, []).filter((id) => titles[id]);
+			let ultimos = read(LAST_KEY, []).filter((id) => titles[id]);
+
+			const renderLista = (list, ids, empty, removable) => {
+				list.innerHTML = '';
+				empty.hidden = ids.length > 0;
+				ids.forEach((id) => {
+					const li = document.createElement('li');
+					li.className = 'flex items-center gap-1';
+					const open = document.createElement('button');
+					open.type = 'button';
+					open.dataset.abrir = id;
+					open.className =
+						'flex-1 truncate rounded-lg px-2 py-2 text-left text-sm font-semibold text-slate-700 hover:bg-sky-50 hover:text-sunat-blue dark:text-slate-300 dark:hover:bg-slate-800 dark:hover:text-sky-300';
+					open.textContent = titles[id];
+					li.append(open);
+					if (removable) {
+						const remove = document.createElement('button');
+						remove.type = 'button';
+						remove.dataset.quitarFav = id;
+						remove.className =
+							'grid h-8 w-8 shrink-0 place-items-center rounded-full text-slate-400 hover:bg-red-50 hover:text-red-600 dark:hover:bg-red-950/50';
+						remove.setAttribute('aria-label', `Quitar «${titles[id]}» de favoritos`);
+						remove.textContent = '×';
+						li.append(remove);
+					}
+					list.append(li);
+				});
+			};
+
+			const syncFavoritos = () => {
+				document.querySelectorAll('[data-tramite]').forEach((li) => {
+					const on = favoritos.includes(li.dataset.id);
+					const button = li.querySelector('[data-fav]');
+					button.setAttribute('aria-pressed', String(on));
+					button.setAttribute(
+						'aria-label',
+						`${on ? 'Quitar' : 'Agregar'} «${li.dataset.titulo}» ${on ? 'de' : 'a'} favoritos`,
+					);
+					button.title = on ? 'Quitar de favoritos' : 'Agregar a favoritos';
+				});
+				renderLista(
+					document.querySelector('#lista-favoritos'),
+					favoritos,
+					document.querySelector('#favoritos-vacio'),
+					true,
+				);
+			};
+			const renderUltimos = () =>
+				renderLista(document.querySelector('#lista-ultimos'), ultimos, document.querySelector('#ultimos-vacio'), false);
+
+			const toggleFavorito = (id) => {
+				const on = favoritos.includes(id);
+				favoritos = on ? favoritos.filter((f) => f !== id) : [...favoritos, id];
+				write(FAV_KEY, favoritos);
+				syncFavoritos();
+				sol.toast(on ? `Quitaste «${titles[id]}» de tus favoritos.` : `Agregaste «${titles[id]}» a tus favoritos.`, 'success');
+			};
+
+			const rutasTramite = {
+				'validez-cpe': '/validez-comprobante',
+				'emitir-rhe': '/emitir-rhe',
+			};
+
+			const abrirTramite = (id) => {
+				ultimos = [id, ...ultimos.filter((u) => u !== id)].slice(0, 5);
+				write(LAST_KEY, ultimos);
+				renderUltimos();
+				if (id === 'buzon') {
+					abrirBuzon();
+					return;
+				}
+				if (rutasTramite[id]) {
+					location.href = rutasTramite[id];
+					return;
+				}
+				sol.toast(`Abriendo «${titles[id]}»… (simulación del prototipo)`);
+			};
+
+			// Tooltips en pantallas táctiles y cierre con Escape
+			const closeTips = (except) =>
+				document.querySelectorAll('.tramite.is-open').forEach((li) => {
+					if (li === except) return;
+					li.classList.remove('is-open');
+					li.querySelector('[data-info]').setAttribute('aria-expanded', 'false');
+				});
+
+			document.addEventListener('click', (event) => {
+				const target = event.target instanceof Element ? event.target : null;
+				if (!target) return;
+				const li = target.closest('[data-tramite]');
+				if (target.closest('[data-info]')) {
+					const open = !li.classList.contains('is-open');
+					closeTips(li);
+					li.classList.toggle('is-open', open);
+					target.closest('[data-info]').setAttribute('aria-expanded', String(open));
+					return;
+				}
+				closeTips();
+				if (target.closest('[data-fav]')) toggleFavorito(li.dataset.id);
+				else if (target.closest('[data-open]')) abrirTramite(li.dataset.id);
+				else if (target.closest('[data-abrir]')) abrirTramite(target.closest('[data-abrir]').dataset.abrir);
+				else if (target.closest('[data-quitar-fav]')) toggleFavorito(target.closest('[data-quitar-fav]').dataset.quitarFav);
+			});
+
+			document.addEventListener('keydown', (event) => {
+				if (event.key !== 'Escape') return;
+				closeTips();
+				document.querySelectorAll('.tramite').forEach((li) => li.classList.add('tip-off'));
+			});
+			document.addEventListener('pointermove', () =>
+				document.querySelectorAll('.tramite.tip-off').forEach((li) => li.classList.remove('tip-off')),
+			);
+
+			// Perfiles y búsqueda
+			const PERFIL_KEY = 'sunat-sol-perfil';
+			const perfilButtons = [...document.querySelectorAll('[data-perfil]')];
+			const categoriasEl = [...document.querySelectorAll('[data-categoria]')];
+			const searchInput = document.querySelector('#sol-buscar');
+			const status = document.querySelector('#sol-buscar-estado');
+			const empty = document.querySelector('#sol-sin-resultados');
+			let perfil = read(PERFIL_KEY, 'personas');
+
+			const aplicarFiltro = () => {
+				const query = normalize(searchInput.value.trim());
+				const buscando = query.length > 0;
+				const words = query.split(/\s+/).filter(Boolean);
+				let total = 0;
+
+				document.querySelectorAll('[data-ocultar-en-busqueda]').forEach((el) => (el.hidden = buscando));
+				document.querySelector('[data-titulo-opciones]').textContent = buscando
+					? 'Resultados en todos los perfiles'
+					: `Explora por tema · ${perfilButtons.find((b) => b.dataset.perfil === perfil).querySelector('.font-bold').textContent}`;
+
+				categoriasEl.forEach((categoria) => {
+					let visibles = 0;
+					categoria.querySelectorAll('[data-tramite]').forEach((li) => {
+						const show = buscando
+							? words.every((w) => normalize(li.dataset.buscar).includes(w))
+							: li.dataset.perfiles.split(' ').includes(perfil);
+						li.hidden = !show;
+						if (show) visibles += 1;
+					});
+					categoria.hidden = visibles === 0;
+					categoria.querySelector('[data-contador]').textContent = String(visibles);
+					if (buscando && visibles) categoria.open = true;
+					total += visibles;
+				});
+
+				empty.hidden = !buscando || total > 0;
+				document.querySelector('#sol-termino').textContent = searchInput.value.trim();
+				status.textContent = buscando
+					? total
+						? `${total} ${total === 1 ? 'resultado' : 'resultados'} para “${searchInput.value.trim()}”.`
+						: ''
+					: '';
+			};
+
+			const setPerfil = (value) => {
+				perfil = value;
+				write(PERFIL_KEY, value);
+				perfilButtons.forEach((b) => b.setAttribute('aria-pressed', String(b.dataset.perfil === value)));
+				document.querySelectorAll('[data-accesos]').forEach((ul) => (ul.hidden = ul.dataset.accesos !== value));
+				aplicarFiltro();
+			};
+
+			perfilButtons.forEach((b) => b.addEventListener('click', () => setPerfil(b.dataset.perfil)));
+			searchInput.addEventListener('input', aplicarFiltro);
+			searchInput.addEventListener('keydown', (event) => {
+				if (event.key === 'Escape' && searchInput.value) {
+					searchInput.value = '';
+					aplicarFiltro();
+				}
+			});
+			document.querySelectorAll('[data-sugerencia]').forEach((b) =>
+				b.addEventListener('click', () => {
+					searchInput.value = b.dataset.sugerencia;
+					aplicarFiltro();
+					searchInput.focus();
+				}),
+			);
+			document.querySelector('[data-limpiar]').addEventListener('click', () => {
+				searchInput.value = '';
+				aplicarFiltro();
+				searchInput.focus();
+			});
+			document.querySelectorAll('[data-expandir]').forEach((b) =>
+				b.addEventListener('click', () =>
+					categoriasEl.forEach((c) => (c.open = b.dataset.expandir === 'true')),
+				),
+			);
+			document.addEventListener('keydown', (event) => {
+				const typing = event.target.closest?.('input, textarea, select');
+				if (event.key === '/' && !typing) {
+					event.preventDefault();
+					searchInput.focus();
+				}
+			});
+
+			// Buzón: marcar como leído al abrir
+			const LEIDOS_KEY = 'sunat-sol-leidos';
+			let leidos = read(LEIDOS_KEY, []);
+			const syncBuzon = () => {
+				let nuevos = 0;
+				document.querySelectorAll('[data-mensaje]').forEach((m) => {
+					const nuevo = m.dataset.nuevo === 'true' && !leidos.includes(m.dataset.mensaje);
+					m.classList.toggle('is-nuevo', nuevo);
+					m.querySelector('.sol-mensaje-estado').textContent = nuevo ? ' · sin leer' : ' · leído';
+					if (nuevo) nuevos += 1;
+				});
+				document.querySelectorAll('[data-buzon-count]').forEach((el) => (el.textContent = String(nuevos)));
+				document.querySelectorAll('[data-buzon-plural]').forEach((el) => (el.textContent = nuevos === 1 ? 'nuevo' : 'nuevos'));
+				document.querySelectorAll('[data-buzon-badge]').forEach((el) => {
+					el.textContent = String(nuevos);
+					el.hidden = nuevos === 0;
+				});
+				document.querySelector('[data-abrir-buzon]').classList.toggle('animate-hop', nuevos > 0);
+			};
+
+			const buzonDialog = document.querySelector('#buzon');
+			function abrirBuzon() {
+				if (!buzonDialog.open) buzonDialog.showModal();
+			}
+			document.querySelector('[data-abrir-buzon]').addEventListener('click', abrirBuzon);
+			buzonDialog.addEventListener('click', (event) => {
+				if (event.target === buzonDialog) buzonDialog.close();
+			});
+			buzonDialog.addEventListener('close', () => {
+				if (location.hash === '#buzon') history.replaceState(null, '', location.pathname + location.search);
+			});
+			const abrirSiHash = () => location.hash === '#buzon' && abrirBuzon();
+			window.addEventListener('hashchange', abrirSiHash);
+			document.querySelectorAll('[data-mensaje]').forEach((m) =>
+				m.addEventListener('toggle', () => {
+					if (m.open && !leidos.includes(m.dataset.mensaje)) {
+						leidos = [...leidos, m.dataset.mensaje];
+						write(LEIDOS_KEY, leidos);
+						syncBuzon();
+					}
+				}),
+			);
+
+			setPerfil(perfilButtons.some((b) => b.dataset.perfil === perfil) ? perfil : 'personas');
+			syncFavoritos();
+			renderUltimos();
+			syncBuzon();
+			abrirSiHash();
+		})();
+	</script>
+</SolLayout>

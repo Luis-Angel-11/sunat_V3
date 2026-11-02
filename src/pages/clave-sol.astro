@@ -1,0 +1,1278 @@
+---
+import Icon from '../components/Icon.astro';
+import ThemeToggle from '../components/ThemeToggle.astro';
+import Layout from '../layouts/Layout.astro';
+
+const hoy = new Date().toISOString().slice(0, 10);
+---
+
+<Layout
+	title="Obtén o recupera tu Clave SOL - SUNAT"
+	description="Crea o recupera tu Clave SOL en línea con un proceso guiado, accesible y seguro."
+>
+	<header class="bg-sunat-red text-white dark:bg-sunat-red-dark">
+		<div class="container-sunat flex h-16 items-center justify-between gap-4">
+			<a href="/" class="flex items-center gap-3" aria-label="gob.pe y SUNAT, ir al inicio">
+				<img src="/img/escudo_blanco.1b27b421.svg" alt="" width="80" height="28" class="h-7 w-auto" />
+				<img src="/img/gobpe_blanco.b8dd3ffa.svg" alt="gob.pe" width="70" height="17" class="hidden h-4 w-auto sm:block" />
+				<span class="hidden h-7 w-px bg-white/40 sm:block"></span>
+				<span class="text-base font-black tracking-tight">SUNAT</span>
+			</a>
+			<div class="flex items-center gap-2">
+				<ThemeToggle />
+				<a href="/login" class="inline-flex items-center gap-2 rounded-md text-sm font-semibold hover:underline">
+					<Icon name="arrow-left" size={17} />
+					Volver a iniciar sesión
+				</a>
+			</div>
+		</div>
+	</header>
+
+	<main id="contenido" class="bg-slate-50 py-6 dark:bg-slate-950 md:py-10">
+		<div class="container-sunat">
+			<nav aria-label="Ruta de navegación" class="text-sm">
+				<ol class="flex flex-wrap items-center gap-1.5 text-slate-500 dark:text-slate-400">
+					<li><a href="/" class="link-sunat">Inicio</a></li>
+					<li aria-hidden="true"><Icon name="chevron-right" size={14} /></li>
+					<li><a href="/login" class="link-sunat">Iniciar sesión</a></li>
+					<li aria-hidden="true"><Icon name="chevron-right" size={14} /></li>
+					<li aria-current="page" class="font-semibold text-slate-800 dark:text-slate-200">Clave SOL</li>
+				</ol>
+			</nav>
+
+			<div class="mt-6 grid gap-8 lg:grid-cols-[minmax(0,1fr)_minmax(0,560px)] lg:items-start">
+				<section class="lg:sticky lg:top-8" aria-labelledby="titulo-clave-sol">
+					<span class="inline-flex items-center gap-2 rounded-full bg-sunat-blue/10 px-3 py-1 text-xs font-bold uppercase tracking-wide text-sunat-blue dark:bg-sky-500/15 dark:text-sky-300">
+						<Icon name="shield-check" size={14} />
+						Trámite gratuito y en línea
+					</span>
+
+					<h1 id="titulo-clave-sol" class="mt-4 max-w-xl text-3xl font-black leading-tight tracking-tight text-slate-900 dark:text-white md:text-4xl">
+						Obtén o recupera tu Clave SOL en línea
+					</h1>
+					<p class="mt-4 max-w-xl text-base leading-relaxed text-slate-600 dark:text-slate-300 md:text-lg">
+						Te guiamos paso a paso. Valida tu identidad, confirma tus datos de contacto y crea una
+						clave segura sin acudir a una oficina.
+					</p>
+
+					<div class="mt-7 grid gap-3 sm:grid-cols-2 lg:grid-cols-1 xl:grid-cols-2">
+						<div class="rounded-2xl border border-slate-200 bg-white p-4 shadow-sm dark:border-slate-800 dark:bg-slate-900">
+							<span class="grid h-10 w-10 place-items-center rounded-xl bg-sky-50 text-sunat-blue dark:bg-sky-950/60 dark:text-sky-300">
+								<Icon name="id-card" size={20} />
+							</span>
+							<p class="mt-3 font-bold text-slate-900 dark:text-white">Ten a mano tu DNI</p>
+							<p class="mt-1 text-sm text-slate-600 dark:text-slate-400">Necesitamos tu número y fecha de nacimiento.</p>
+						</div>
+						<div class="rounded-2xl border border-slate-200 bg-white p-4 shadow-sm dark:border-slate-800 dark:bg-slate-900">
+							<span class="grid h-10 w-10 place-items-center rounded-xl bg-emerald-50 text-emerald-700 dark:bg-emerald-950/60 dark:text-emerald-300">
+								<Icon name="mail" size={20} />
+							</span>
+							<p class="mt-3 font-bold text-slate-900 dark:text-white">Un correo y celular</p>
+							<p class="mt-1 text-sm text-slate-600 dark:text-slate-400">Los usaremos para verificar tu identidad y enviarte avisos.</p>
+						</div>
+					</div>
+
+					<div class="mt-6 rounded-2xl border border-sky-200 bg-sky-50 p-4 dark:border-sky-900 dark:bg-sky-950/40">
+						<p class="flex items-start gap-2 text-sm text-sky-950 dark:text-sky-100">
+							<Icon name="info" size={18} class="mt-0.5 shrink-0 text-sunat-blue dark:text-sky-300" />
+							<span>
+								<strong class="font-bold">¿Ya tienes Clave SOL?</strong>
+								<a href="/login" class="ml-1 font-semibold underline underline-offset-2 hover:text-sunat-blue dark:hover:text-sky-300">Inicia sesión aquí</a>.
+								Si la olvidaste, elige “Recuperar mi clave”.
+							</span>
+						</p>
+					</div>
+
+					<div class="mt-6 rounded-2xl border border-slate-200 bg-white p-5 shadow-sm dark:border-slate-800 dark:bg-slate-900">
+						<h2 class="flex items-center gap-2 font-bold text-slate-900 dark:text-white">
+							<Icon name="help-circle" size={19} class="text-sunat-red dark:text-rose-300" />
+							¿Necesitas ayuda?
+						</h2>
+						<p class="mt-2 text-sm text-slate-600 dark:text-slate-400">
+							Si tus datos no coinciden o tienes problemas con el código, llámanos.
+						</p>
+						<div class="mt-3 flex flex-wrap gap-2">
+							<a href="tel:080112100" class="sol-btn-secondary">
+								<Icon name="phone" size={16} />
+								0801-12100
+							</a>
+							<a
+								href="https://www.sunat.gob.pe/institucional/contactenos/libroReclamaciones/comoPresentar-reclamo-queja-sugerencia.html"
+								target="_blank"
+								rel="noopener noreferrer"
+								class="sol-btn-secondary"
+							>
+								<Icon name="message" size={16} />
+								Libro de reclamaciones
+								<span class="sr-only">(se abre en una pestaña nueva)</span>
+							</a>
+						</div>
+						<p class="mt-3 flex items-center gap-1.5 text-xs text-slate-500 dark:text-slate-400">
+							<Icon name="clock" size={14} />
+							Lunes a viernes, de 8:30 a. m. a 6:00 p. m.
+						</p>
+					</div>
+				</section>
+
+				<section
+					id="panel-clave"
+					aria-labelledby="titulo-panel"
+					class="scroll-mt-6 overflow-hidden rounded-3xl border border-slate-200 bg-white shadow-xl dark:border-slate-800 dark:bg-slate-900 dark:shadow-slate-950/60"
+				>
+					<div class="bg-gradient-to-br from-slate-50 via-white to-sky-50 px-5 pb-5 pt-6 dark:from-slate-900 dark:via-slate-900 dark:to-sky-950/40 md:px-7 md:pt-7">
+						<div class="flex items-start gap-3">
+							<span class="grid h-12 w-12 shrink-0 place-items-center rounded-2xl bg-sunat-red/10 text-sunat-red dark:bg-rose-500/15 dark:text-rose-300">
+								<Icon name="key" size={24} />
+							</span>
+							<div class="min-w-0">
+								<p class="text-xs font-bold uppercase tracking-wider text-sunat-red dark:text-rose-300">Clave SOL</p>
+								<h2 id="titulo-panel" data-titulo-panel tabindex="-1" class="text-xl font-black tracking-tight text-slate-900 outline-none dark:text-white md:text-2xl">
+									Paso 1 de 3 · Identifícate
+								</h2>
+								<p class="mt-1 text-sm text-slate-600 dark:text-slate-400" data-panel-ayuda>
+									Empecemos validando tu identidad con los datos de tu DNI.
+								</p>
+							</div>
+						</div>
+
+						<div role="group" aria-label="¿Qué necesitas hacer?" data-modo-switch class="mt-5 grid grid-cols-2 gap-1 rounded-xl bg-slate-200/70 p-1 dark:bg-slate-800">
+							<button
+								type="button"
+								data-modo="crear"
+								aria-pressed="true"
+								class="cs-mode-btn flex min-h-10 items-center justify-center gap-2 rounded-lg px-2 text-xs font-bold transition sm:text-sm"
+							>
+								<Icon name="key" size={16} />
+								Crear mi clave
+							</button>
+							<button
+								type="button"
+								data-modo="recuperar"
+								aria-pressed="false"
+								class="cs-mode-btn flex min-h-10 items-center justify-center gap-2 rounded-lg px-2 text-xs font-bold transition sm:text-sm"
+							>
+								<Icon name="refund" size={16} />
+								Recuperar mi clave
+							</button>
+						</div>
+
+						<ol class="mt-5 grid grid-cols-3 gap-2" aria-label="Pasos del trámite">
+							<li data-step-item="1" aria-current="step" class="cs-step is-current">
+								<span class="cs-step-dot">
+									<span data-step-numero>1</span>
+									<span data-step-check hidden><Icon name="check" size={15} strokeWidth={3} /></span>
+								</span>
+								<span class="min-w-0">
+									<span class="block text-xs font-bold leading-tight text-slate-900 dark:text-white sm:text-sm">Identifícate</span>
+									<span class="sr-only" data-step-estado>Paso actual</span>
+								</span>
+							</li>
+							<li data-step-item="2" class="cs-step">
+								<span class="cs-step-dot">
+									<span data-step-numero>2</span>
+									<span data-step-check hidden><Icon name="check" size={15} strokeWidth={3} /></span>
+								</span>
+								<span class="min-w-0">
+									<span class="block text-xs font-bold leading-tight text-slate-900 dark:text-white sm:text-sm" data-step-label="2">Verifica tu contacto</span>
+									<span class="sr-only" data-step-estado>Pendiente</span>
+								</span>
+							</li>
+							<li data-step-item="3" class="cs-step">
+								<span class="cs-step-dot">
+									<span data-step-numero>3</span>
+									<span data-step-check hidden><Icon name="check" size={15} strokeWidth={3} /></span>
+								</span>
+								<span class="min-w-0">
+									<span class="block text-xs font-bold leading-tight text-slate-900 dark:text-white sm:text-sm" data-step-label="3">Crea tu clave</span>
+									<span class="sr-only" data-step-estado>Pendiente</span>
+								</span>
+							</li>
+						</ol>
+					</div>
+
+					<div class="px-5 py-6 md:px-7 md:py-7">
+						<noscript>
+							<p class="rounded-xl border border-amber-300 bg-amber-50 p-4 text-sm text-amber-950 dark:border-amber-800 dark:bg-amber-950/40 dark:text-amber-100">
+								Este trámite necesita JavaScript para funcionar. Actívalo en tu navegador o llama al
+								<a href="tel:080112100" class="font-bold underline">0801-12100</a>.
+							</p>
+						</noscript>
+
+						<div
+							id="form-alerta"
+							role="alert"
+							hidden
+							class="mb-5 rounded-xl border border-red-200 bg-red-50 p-3 text-sm font-semibold text-red-800 dark:border-red-900 dark:bg-red-950/40 dark:text-red-200"
+						>
+						</div>
+
+						<form id="form-clave" class="grid gap-5" novalidate>
+							<div data-paso="1" class="grid gap-5">
+								<div>
+									<h3 data-step-title tabindex="-1" class="text-lg font-bold text-slate-900 outline-none dark:text-white">Identifícate</h3>
+									<p class="mt-1 text-sm text-slate-600 dark:text-slate-400" data-paso1-ayuda>
+										Ingresa tu DNI y fecha de nacimiento. Usaremos estos datos solo para validar tu identidad.
+									</p>
+								</div>
+
+								<div class="flex flex-wrap items-center justify-between gap-2 rounded-xl border border-dashed border-slate-300 px-3 py-2 text-xs dark:border-slate-700">
+									<span class="text-slate-600 dark:text-slate-400">¿Solo quieres probar el prototipo?</span>
+									<button type="button" data-demo class="font-bold text-sunat-blue hover:underline dark:text-sky-300">
+										Usar datos de prueba
+									</button>
+								</div>
+
+								<div class="grid gap-4 sm:grid-cols-2">
+									<div>
+										<label for="dni" class="sol-label">DNI</label>
+										<input
+											id="dni"
+											name="dni"
+											type="text"
+											inputmode="numeric"
+											autocomplete="off"
+											autocapitalize="off"
+											spellcheck="false"
+											maxlength="8"
+											placeholder="Ej. 74881174"
+											aria-describedby="dni-ayuda dni-error"
+											aria-errormessage="dni-error"
+											aria-invalid="false"
+											class="sol-input"
+										/>
+										<p id="dni-ayuda" class="mt-1 text-xs text-slate-500 dark:text-slate-400">8 dígitos, sin espacios ni guiones.</p>
+										<p id="dni-error" class="sol-field-msg" aria-live="polite"></p>
+									</div>
+									<div>
+										<label for="fecha-nacimiento" class="sol-label">Fecha de nacimiento</label>
+										<input
+											id="fecha-nacimiento"
+											name="fechaNacimiento"
+											type="date"
+											min="1900-01-01"
+											max={hoy}
+											aria-describedby="fecha-ayuda fecha-error"
+											aria-errormessage="fecha-error"
+											aria-invalid="false"
+											class="sol-input"
+										/>
+										<p id="fecha-ayuda" class="mt-1 text-xs text-slate-500 dark:text-slate-400">Tal como figura en tu DNI.</p>
+										<p id="fecha-error" class="sol-field-msg" aria-live="polite"></p>
+									</div>
+								</div>
+
+								<fieldset>
+									<legend class="sr-only">Tratamiento de datos personales</legend>
+									<label for="privacidad" class="flex cursor-pointer items-start gap-3 rounded-xl border border-slate-200 p-3 text-sm transition hover:bg-slate-50 dark:border-slate-800 dark:hover:bg-slate-800/50">
+										<input
+											id="privacidad"
+											name="privacidad"
+											type="checkbox"
+											aria-describedby="privacidad-error"
+											aria-errormessage="privacidad-error"
+											aria-invalid="false"
+											class="mt-0.5 h-5 w-5 shrink-0 rounded border-slate-300 text-sunat-blue dark:border-slate-600 dark:bg-slate-800"
+										/>
+										<span class="text-slate-700 dark:text-slate-300">
+											Acepto el tratamiento de mis datos personales para validar mi identidad y gestionar mi Clave SOL.
+										</span>
+									</label>
+									<details id="detalle-privacidad" class="mt-2 rounded-lg bg-slate-50 px-3 py-2 text-xs text-slate-600 dark:bg-slate-800/60 dark:text-slate-400">
+										<summary class="cursor-pointer font-semibold text-slate-700 dark:text-slate-300">Leer resumen del tratamiento de datos</summary>
+										<p class="mt-2">
+											En este prototipo los datos son ficticios y no se envían a ningún servidor. En un servicio real,
+											SUNAT usaría tu DNI, correo y celular solo para validar tu identidad, enviarte el código de
+											seguridad y comunicarte avisos relacionados con tu cuenta.
+										</p>
+									</details>
+									<p id="privacidad-error" class="sol-field-msg" aria-live="polite"></p>
+								</fieldset>
+
+								<div class="flex flex-col-reverse gap-2 border-t border-slate-100 pt-5 dark:border-slate-800 sm:flex-row sm:items-center sm:justify-between">
+									<a href="/login" class="sol-btn-secondary">Cancelar</a>
+									<button type="submit" class="sol-btn-primary h-11 px-5">
+										Continuar
+										<Icon name="arrow-right" size={17} />
+									</button>
+								</div>
+							</div>
+
+							<div data-paso="2" hidden class="grid gap-5">
+								<div>
+									<h3 data-step-title tabindex="-1" class="text-lg font-bold text-slate-900 outline-none dark:text-white">Verifica tu contacto</h3>
+									<p class="mt-1 text-sm text-slate-600 dark:text-slate-400" data-paso2-ayuda>
+										Confirma tu correo y celular. Te enviaremos un código de 6 dígitos para comprobar que son tuyos.
+									</p>
+								</div>
+
+								<div class="flex items-start gap-3 rounded-xl border border-emerald-200 bg-emerald-50 p-3 dark:border-emerald-900 dark:bg-emerald-950/40">
+									<span class="grid h-9 w-9 shrink-0 place-items-center rounded-full bg-emerald-100 text-emerald-700 dark:bg-emerald-900/60 dark:text-emerald-200">
+										<Icon name="check" size={18} strokeWidth={3} />
+									</span>
+									<div class="min-w-0">
+										<p class="text-sm font-bold text-emerald-950 dark:text-emerald-50">Identidad validada <span class="font-normal">(simulación)</span></p>
+										<p class="mt-0.5 text-sm text-emerald-900 dark:text-emerald-100" data-identidad-nombre>—</p>
+										<p class="text-xs text-emerald-800 dark:text-emerald-200">DNI <span data-identidad-dni>—</span></p>
+									</div>
+								</div>
+
+								<div data-solo-crear class="grid gap-4 sm:grid-cols-2">
+									<div class="sm:col-span-2">
+										<label for="correo" class="sol-label">Correo electrónico</label>
+										<input
+											id="correo"
+											name="correo"
+											type="email"
+											inputmode="email"
+											autocomplete="email"
+											placeholder="nombre@correo.com"
+											aria-describedby="correo-ayuda correo-error"
+											aria-errormessage="correo-error"
+											aria-invalid="false"
+											class="sol-input"
+										/>
+										<p id="correo-ayuda" class="mt-1 text-xs text-slate-500 dark:text-slate-400">Te enviaremos el código y los avisos de tu cuenta.</p>
+										<p id="correo-error" class="sol-field-msg" aria-live="polite"></p>
+									</div>
+									<div>
+										<label for="correo-confirmar" class="sol-label">Repite tu correo</label>
+										<input
+											id="correo-confirmar"
+											name="correoConfirmar"
+											type="email"
+											inputmode="email"
+											autocomplete="email"
+											placeholder="nombre@correo.com"
+											aria-describedby="correo-confirmar-error"
+											aria-errormessage="correo-confirmar-error"
+											aria-invalid="false"
+											class="sol-input"
+										/>
+										<p id="correo-confirmar-error" class="sol-field-msg" aria-live="polite"></p>
+									</div>
+									<div>
+										<label for="celular" class="sol-label">Celular</label>
+										<div class="flex">
+											<span class="inline-flex items-center rounded-l-lg border border-r-0 border-slate-300 bg-slate-50 px-3 text-sm font-semibold text-slate-600 dark:border-slate-700 dark:bg-slate-800 dark:text-slate-300">+51</span>
+											<input
+												id="celular"
+												name="celular"
+												type="tel"
+												inputmode="numeric"
+												autocomplete="tel-national"
+												maxlength="9"
+												placeholder="987654321"
+												aria-describedby="celular-ayuda celular-error"
+												aria-errormessage="celular-error"
+												aria-invalid="false"
+												class="sol-input rounded-l-none"
+											/>
+										</div>
+										<p id="celular-ayuda" class="mt-1 text-xs text-slate-500 dark:text-slate-400">9 dígitos, debe empezar con 9.</p>
+										<p id="celular-error" class="sol-field-msg" aria-live="polite"></p>
+									</div>
+								</div>
+
+								<div data-solo-recuperar hidden class="rounded-xl border border-sky-200 bg-sky-50 p-4 text-sm text-sky-950 dark:border-sky-900 dark:bg-sky-950/40 dark:text-sky-100">
+									<p class="flex items-start gap-2">
+										<Icon name="mail" size={18} class="mt-0.5 shrink-0 text-sunat-blue dark:text-sky-300" />
+										<span>Enviaremos el código al correo y celular que registraste cuando creaste tu Clave SOL. Por seguridad, no los mostramos completos.</span>
+									</p>
+								</div>
+
+								<div data-codigo-grupo hidden class="rounded-2xl border border-slate-200 bg-slate-50 p-4 dark:border-slate-800 dark:bg-slate-800/40">
+									<label for="codigo" class="sol-label">Código de verificación</label>
+									<input
+										id="codigo"
+										name="codigo"
+										type="text"
+										inputmode="numeric"
+										autocomplete="one-time-code"
+										maxlength="6"
+										placeholder="000000"
+										aria-describedby="codigo-ayuda codigo-error"
+										aria-errormessage="codigo-error"
+										aria-invalid="false"
+										class="sol-input cs-code max-w-52 text-center text-lg font-bold tracking-widest"
+									/>
+									<p id="codigo-ayuda" class="mt-1 text-xs text-slate-500 dark:text-slate-400">
+										Escribe los 6 dígitos. Para esta simulación usa <strong class="text-slate-800 dark:text-slate-200">123456</strong>.
+									</p>
+									<p id="codigo-error" class="sol-field-msg" aria-live="polite"></p>
+									<p id="codigo-estado" role="status" aria-live="polite" class="mt-2 text-xs font-semibold text-emerald-700 dark:text-emerald-300"></p>
+								</div>
+
+								<div class="flex flex-col-reverse gap-2 border-t border-slate-100 pt-5 dark:border-slate-800 sm:flex-row sm:items-center sm:justify-between">
+									<button type="button" data-atras class="sol-btn-secondary">
+										<Icon name="arrow-left" size={16} />
+										Atrás
+									</button>
+									<div class="flex flex-col gap-2 sm:flex-row-reverse">
+										<button type="submit" data-verificar hidden class="sol-btn-primary h-11 px-5">
+											Verificar y continuar
+											<Icon name="arrow-right" size={17} />
+										</button>
+										<button type="button" data-enviar class="sol-btn-primary h-11 px-5">
+											<Icon name="mail" size={17} />
+											Enviar código
+										</button>
+									</div>
+								</div>
+
+								<button type="button" data-reenviar hidden class="justify-self-center text-xs font-semibold text-sunat-blue underline underline-offset-2 hover:text-sunat-blue-dark dark:text-sky-300 dark:hover:text-sky-200">
+									Reenviar código
+								</button>
+							</div>
+
+							<div data-paso="3" hidden class="grid gap-5">
+								<div>
+									<h3 data-step-title tabindex="-1" class="text-lg font-bold text-slate-900 outline-none dark:text-white">Crea tu Clave SOL</h3>
+									<p class="mt-1 text-sm text-slate-600 dark:text-slate-400" data-paso3-ayuda>
+										Elige un usuario y una clave que solo tú conozcas. Podrás usarlos para entrar a SUNAT.
+									</p>
+								</div>
+
+								<div data-solo-crear>
+									<label for="usuario" class="sol-label">Usuario SOL</label>
+									<input
+										id="usuario"
+										name="usuario"
+										type="text"
+										autocomplete="username"
+										autocapitalize="characters"
+										spellcheck="false"
+										maxlength="8"
+										placeholder="Ej. CORTEZ"
+										aria-describedby="usuario-ayuda usuario-error"
+										aria-errormessage="usuario-error"
+										aria-invalid="false"
+										class="sol-input uppercase placeholder:normal-case"
+									/>
+									<p id="usuario-ayuda" class="mt-1 text-xs text-slate-500 dark:text-slate-400">De 3 a 8 letras o números, sin espacios ni símbolos. No se podrá cambiar después.</p>
+									<p id="usuario-error" class="sol-field-msg" aria-live="polite"></p>
+								</div>
+
+								<div class="grid gap-4 sm:grid-cols-2">
+									<div>
+										<label for="clave-nueva" class="sol-label" data-label-clave>Nueva Clave SOL</label>
+										<div class="relative">
+											<input
+												id="clave-nueva"
+												name="claveNueva"
+												type="password"
+												autocomplete="new-password"
+												maxlength="12"
+												aria-describedby="clave-reglas clave-fuerza-texto clave-nueva-error"
+												aria-errormessage="clave-nueva-error"
+												aria-invalid="false"
+												class="sol-input pr-20"
+											/>
+											<button type="button" data-ver-clave="clave-nueva" aria-pressed="false" class="absolute inset-y-1 right-1 rounded-md px-3 text-xs font-bold text-sunat-blue transition hover:bg-sky-50 dark:text-sky-400 dark:hover:bg-slate-800">
+												Mostrar
+											</button>
+										</div>
+										<p id="clave-nueva-error" class="sol-field-msg" aria-live="polite"></p>
+									</div>
+									<div>
+										<label for="clave-confirmar" class="sol-label">Repite la clave</label>
+										<div class="relative">
+											<input
+												id="clave-confirmar"
+												name="claveConfirmar"
+												type="password"
+												autocomplete="new-password"
+												maxlength="12"
+												aria-describedby="clave-confirmar-error"
+												aria-errormessage="clave-confirmar-error"
+												aria-invalid="false"
+												class="sol-input pr-20"
+											/>
+											<button type="button" data-ver-clave="clave-confirmar" aria-pressed="false" class="absolute inset-y-1 right-1 rounded-md px-3 text-xs font-bold text-sunat-blue transition hover:bg-sky-50 dark:text-sky-400 dark:hover:bg-slate-800">
+												Mostrar
+											</button>
+										</div>
+										<p id="clave-confirmar-error" class="sol-field-msg" aria-live="polite"></p>
+									</div>
+								</div>
+
+								<div>
+									<div class="flex items-center justify-between gap-2 text-xs">
+										<span class="font-semibold text-slate-700 dark:text-slate-300">Seguridad de la clave</span>
+										<span id="clave-fuerza-texto" aria-live="polite" class="font-bold text-slate-500 dark:text-slate-400">Aún no escribiste tu clave</span>
+									</div>
+									<div class="mt-2 h-2 overflow-hidden rounded-full bg-slate-100 dark:bg-slate-800" aria-hidden="true">
+										<div id="clave-fuerza" class="h-full w-0 rounded-full transition-all duration-300"></div>
+									</div>
+									<ul id="clave-reglas" class="mt-3 grid gap-2 text-sm sm:grid-cols-2" aria-label="Requisitos de la Clave SOL">
+										<li data-regla="largo" class="sol-regla flex items-center gap-2 text-slate-600 dark:text-slate-400">
+											<span class="sol-regla-icon grid h-5 w-5 shrink-0 place-items-center rounded-full border border-current"><Icon name="check" size={12} strokeWidth={3} /></span>
+											<span>Entre 8 y 12 caracteres</span>
+											<span class="sr-only" data-regla-estado>: pendiente</span>
+										</li>
+										<li data-regla="letra" class="sol-regla flex items-center gap-2 text-slate-600 dark:text-slate-400">
+											<span class="sol-regla-icon grid h-5 w-5 shrink-0 place-items-center rounded-full border border-current"><Icon name="check" size={12} strokeWidth={3} /></span>
+											<span>Al menos una letra</span>
+											<span class="sr-only" data-regla-estado>: pendiente</span>
+										</li>
+										<li data-regla="numero" class="sol-regla flex items-center gap-2 text-slate-600 dark:text-slate-400">
+											<span class="sol-regla-icon grid h-5 w-5 shrink-0 place-items-center rounded-full border border-current"><Icon name="check" size={12} strokeWidth={3} /></span>
+											<span>Al menos un número</span>
+											<span class="sr-only" data-regla-estado>: pendiente</span>
+										</li>
+										<li data-regla="distinta" class="sol-regla flex items-center gap-2 text-slate-600 dark:text-slate-400">
+											<span class="sol-regla-icon grid h-5 w-5 shrink-0 place-items-center rounded-full border border-current"><Icon name="check" size={12} strokeWidth={3} /></span>
+											<span>No debe contener tu DNI</span>
+											<span class="sr-only" data-regla-estado>: pendiente</span>
+										</li>
+									</ul>
+								</div>
+
+								<p class="flex items-start gap-2 rounded-lg bg-slate-50 p-3 text-xs text-slate-600 dark:bg-slate-800/60 dark:text-slate-400">
+									<Icon name="shield-check" size={16} class="mt-0.5 shrink-0 text-emerald-600 dark:text-emerald-400" />
+									SUNAT nunca te pedirá tu Clave SOL por correo, teléfono ni redes sociales. No la compartas.
+								</p>
+
+								<div class="flex flex-col-reverse gap-2 border-t border-slate-100 pt-5 dark:border-slate-800 sm:flex-row sm:items-center sm:justify-between">
+									<button type="button" data-atras class="sol-btn-secondary">
+										<Icon name="arrow-left" size={16} />
+										Atrás
+									</button>
+									<button type="submit" data-finalizar class="sol-btn-primary h-11 px-5">
+										<Icon name="lock" size={17} />
+										<span data-texto-finalizar>Crear mi Clave SOL</span>
+									</button>
+								</div>
+							</div>
+
+							<div data-paso="4" hidden>
+								<div tabindex="-1" data-exito class="rounded-2xl border border-emerald-200 bg-emerald-50 p-5 text-center outline-none dark:border-emerald-900 dark:bg-emerald-950/40">
+									<span class="mx-auto grid h-16 w-16 place-items-center rounded-full bg-emerald-100 text-emerald-700 dark:bg-emerald-900/60 dark:text-emerald-200">
+										<Icon name="check" size={34} strokeWidth={3} />
+									</span>
+									<h3 id="exito-titulo" class="mt-4 text-2xl font-black text-emerald-950 dark:text-emerald-50" data-exito-titulo>Tu Clave SOL está lista</h3>
+									<p class="mt-2 text-sm text-emerald-900 dark:text-emerald-100" data-exito-texto></p>
+
+									<dl data-solo-crear class="mx-auto mt-5 grid max-w-sm gap-3 rounded-xl bg-white p-4 text-left dark:bg-slate-900">
+										<div class="flex items-center justify-between gap-3">
+											<dt class="text-sm text-slate-500 dark:text-slate-400">Usuario SOL</dt>
+											<dd class="font-bold text-slate-900 dark:text-white" data-usuario-final>—</dd>
+										</div>
+										<div class="flex items-center justify-between gap-3">
+											<dt class="text-sm text-slate-500 dark:text-slate-400">DNI</dt>
+											<dd class="font-bold text-slate-900 dark:text-white" data-dni-final>—</dd>
+										</div>
+									</dl>
+
+									<div class="mt-5 flex flex-col justify-center gap-2 sm:flex-row">
+										<a href="/login" class="sol-btn-primary h-11 px-5">
+											<Icon name="log-in" size={17} />
+											Ir a iniciar sesión
+										</a>
+										<a href="/" class="sol-btn-secondary h-11 px-5">Volver al inicio</a>
+									</div>
+
+									<p class="mt-5 flex items-center justify-center gap-2 text-xs text-emerald-900 dark:text-emerald-100">
+										<Icon name="shield-check" size={15} />
+										Guarda tu clave en un lugar seguro. Nadie de SUNAT te la pedirá.
+									</p>
+								</div>
+							</div>
+						</form>
+
+						<p class="mt-6 border-t border-slate-100 pt-4 text-center text-xs text-slate-500 dark:border-slate-800 dark:text-slate-400">
+							Prototipo académico. Los datos ingresados son ficticios y no se envían a ningún servidor.
+						</p>
+					</div>
+				</section>
+			</div>
+		</div>
+	</main>
+
+	<script is:inline>
+		(() => {
+			const form = document.querySelector('#form-clave');
+			const panel = document.querySelector('#panel-clave');
+			const panelTitulo = document.querySelector('[data-titulo-panel]');
+			const panelAyuda = document.querySelector('[data-panel-ayuda]');
+			const alerta = document.querySelector('#form-alerta');
+			const modoSwitch = document.querySelector('[data-modo-switch]');
+			const botonesModo = [...document.querySelectorAll('[data-modo]')];
+			const pasos = [...document.querySelectorAll('[data-paso]')];
+			const itemsPaso = [...document.querySelectorAll('[data-step-item]')];
+			const labelPaso2 = document.querySelector('[data-step-label="2"]');
+			const labelPaso3 = document.querySelector('[data-step-label="3"]');
+			const soloCrear = [...document.querySelectorAll('[data-solo-crear]')];
+			const soloRecuperar = [...document.querySelectorAll('[data-solo-recuperar]')];
+
+			const dni = document.querySelector('#dni');
+			const fecha = document.querySelector('#fecha-nacimiento');
+			const privacidad = document.querySelector('#privacidad');
+			const dniError = document.querySelector('#dni-error');
+			const fechaError = document.querySelector('#fecha-error');
+			const privacidadError = document.querySelector('#privacidad-error');
+
+			const correo = document.querySelector('#correo');
+			const correoConfirmar = document.querySelector('#correo-confirmar');
+			const celular = document.querySelector('#celular');
+			const codigo = document.querySelector('#codigo');
+			const codigoGrupo = document.querySelector('[data-codigo-grupo]');
+			const codigoEstado = document.querySelector('#codigo-estado');
+			const enviarBtn = document.querySelector('[data-enviar]');
+			const verificarBtn = document.querySelector('[data-verificar]');
+			const reenviarBtn = document.querySelector('[data-reenviar]');
+			const identidadNombre = document.querySelector('[data-identidad-nombre]');
+			const identidadDni = document.querySelector('[data-identidad-dni]');
+			const paso1Ayuda = document.querySelector('[data-paso1-ayuda]');
+			const paso2Ayuda = document.querySelector('[data-paso2-ayuda]');
+			const paso3Ayuda = document.querySelector('[data-paso3-ayuda]');
+			const labelClave = document.querySelector('[data-label-clave]');
+			const actualizarTextoFinalizar = () => {
+				const textoFinalizar = document.querySelector('[data-texto-finalizar]');
+				if (textoFinalizar) {
+					textoFinalizar.textContent = state.modo === 'crear' ? 'Crear mi Clave SOL' : 'Cambiar mi Clave SOL';
+				}
+			};
+
+			const usuario = document.querySelector('#usuario');
+			const claveNueva = document.querySelector('#clave-nueva');
+			const claveConfirmar = document.querySelector('#clave-confirmar');
+			const claveFuerza = document.querySelector('#clave-fuerza');
+			const claveFuerzaTexto = document.querySelector('#clave-fuerza-texto');
+			const reglas = [...document.querySelectorAll('[data-regla]')];
+			const finalizarBtn = document.querySelector('[data-finalizar]');
+			const exito = document.querySelector('[data-exito]');
+			const exitoTitulo = document.querySelector('[data-exito-titulo]');
+			const exitoTexto = document.querySelector('[data-exito-texto]');
+			const usuarioFinal = document.querySelector('[data-usuario-final]');
+			const dniFinal = document.querySelector('[data-dni-final]');
+
+			if (!form || !panelTitulo || !dni || !fecha || !privacidad) return;
+
+			const DEMO = {
+				dni: '74881174',
+				fecha: '1990-05-12',
+				correo: 'jesus.cortez@ejemplo.pe',
+				celular: '987654321',
+				codigo: '123456',
+			};
+
+			const state = {
+				modo: 'crear',
+				paso: 1,
+				codigoEnviado: false,
+				validando: false,
+				dni: '',
+				fecha: '',
+				nombre: '',
+				correo: '',
+				celular: '',
+				usuario: '',
+			};
+
+			const reducido = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+			const esperar = (ms) => new Promise((resolve) => setTimeout(resolve, ms));
+			const soloDigitos = (value) => value.replace(/\D/g, '');
+			const emailValido = (value) => /^[^\s@]+@[^\s@]+\.[^\s@]{2,}$/.test(value);
+
+			const setError = (input, error, message) => {
+				if (!input || !error) return;
+				input.classList.toggle('field-invalid', Boolean(message));
+				input.setAttribute('aria-invalid', message ? 'true' : 'false');
+				error.textContent = message || '';
+				error.dataset.state = message ? 'error' : '';
+				if (message) {
+					error.classList.remove('hidden');
+				} else {
+					error.classList.add('hidden');
+				}
+			};
+
+			const limpiarError = (input, error) => setError(input, error, '');
+			const limpiarAlerta = () => {
+				alerta.textContent = '';
+				alerta.hidden = true;
+			};
+			const mostrarAlerta = (mensaje) => {
+				alerta.textContent = mensaje;
+				alerta.hidden = false;
+			};
+			const enfocarPrimerError = () => {
+				const activo = document.querySelector('[data-paso]:not([hidden])');
+				const invalido = activo?.querySelector('[aria-invalid="true"]');
+				if (invalido) {
+					invalido.focus();
+					return true;
+				}
+				return false;
+			};
+
+			const nombreTitular = (valorDni) => {
+				if (valorDni === DEMO.dni) return 'Jesús Eduardo Cortez Ramos';
+				return `Titular del DNI ••••${valorDni.slice(-4)}`;
+			};
+
+			const actualizarIdentidad = () => {
+				if (identidadNombre) identidadNombre.textContent = state.nombre;
+				if (identidadDni) identidadDni.textContent = state.dni;
+				if (usuarioFinal) usuarioFinal.textContent = state.usuario || state.dni;
+				if (dniFinal) dniFinal.textContent = state.dni;
+			};
+
+			const actualizarStepper = () => {
+				itemsPaso.forEach((item, index) => {
+					const numero = index + 1;
+					const actual = numero === state.paso && state.paso <= 3;
+					const hecho = numero < state.paso || state.paso === 4;
+					const estado = item.querySelector('[data-step-estado]');
+					const numeroEl = item.querySelector('[data-step-numero]');
+					const check = item.querySelector('[data-step-check]');
+
+					item.classList.toggle('is-current', actual);
+					item.classList.toggle('is-done', hecho);
+					if (actual) {
+						item.setAttribute('aria-current', 'step');
+						if (estado) estado.textContent = 'Paso actual';
+					} else {
+						item.removeAttribute('aria-current');
+						if (estado) estado.textContent = hecho ? 'Completado' : 'Pendiente';
+					}
+					if (numeroEl) numeroEl.hidden = hecho;
+					if (check) check.hidden = !hecho;
+				});
+			};
+
+			const titulos = () => ({
+				1: 'Identifícate',
+				2: state.modo === 'crear' ? 'Verifica tu contacto' : 'Verifica tu identidad',
+				3: state.modo === 'crear' ? 'Crea tu Clave SOL' : 'Crea tu nueva Clave SOL',
+				4: '¡Listo!',
+			});
+
+			const irPaso = (numero, { enfocar = true } = {}) => {
+				state.paso = numero;
+				pasos.forEach((paso) => {
+					paso.hidden = Number(paso.dataset.paso) !== numero;
+				});
+				const titulo = titulos()[numero];
+				panelTitulo.textContent = numero === 4 ? '¡Trámite completado!' : `Paso ${numero} de 3 · ${titulo}`;
+				if (panelAyuda) {
+					panelAyuda.textContent =
+						numero === 4
+							? 'Ya puedes usar tu Clave SOL para entrar a los servicios de SUNAT.'
+							: numero === 1
+								? 'Empecemos validando tu identidad con los datos de tu DNI.'
+								: numero === 2
+									? state.modo === 'crear'
+										? 'Confirma tus datos de contacto y verifica el código que te enviaremos.'
+										: 'Comprobaremos tu identidad con un código enviado a tus datos registrados.'
+									: 'Elige una clave segura y fácil de recordar solo para ti.';
+				}
+				actualizarStepper();
+				limpiarAlerta();
+				if (enfocar) {
+					panel.scrollIntoView({ behavior: reducido ? 'auto' : 'smooth', block: 'start' });
+					const activo = document.querySelector('[data-paso]:not([hidden])');
+					const heading = activo?.querySelector('[data-step-title], [data-exito]');
+					heading?.focus({ preventScroll: true });
+				}
+			};
+
+			const resetFormulario = ({ enfocar = false } = {}) => {
+				form.reset();
+				state.paso = 1;
+				state.codigoEnviado = false;
+				state.validando = false;
+				state.dni = '';
+				state.fecha = '';
+				state.nombre = '';
+				state.correo = '';
+				state.celular = '';
+				state.usuario = '';
+				document.querySelectorAll('.field-invalid').forEach((el) => el.classList.remove('field-invalid'));
+				document.querySelectorAll('[aria-invalid="true"]').forEach((el) => el.setAttribute('aria-invalid', 'false'));
+				document.querySelectorAll('.sol-field-msg').forEach((el) => {
+					el.textContent = '';
+					el.classList.add('hidden');
+				});
+				codigoGrupo.hidden = true;
+				codigo.value = '';
+				codigoEstado.textContent = '';
+				enviarBtn.hidden = false;
+				verificarBtn.hidden = true;
+				reenviarBtn.hidden = true;
+				enviarBtn.disabled = false;
+				verificarBtn.disabled = false;
+				actualizarReglasClave();
+				actualizarIdentidad();
+				irPaso(1, { enfocar });
+			};
+
+			const setModo = (modo, { enfocar = false } = {}) => {
+				state.modo = modo;
+				const esCrear = modo === 'crear';
+				botonesModo.forEach((boton) => {
+					boton.setAttribute('aria-pressed', String(boton.dataset.modo === modo));
+				});
+				soloCrear.forEach((el) => (el.hidden = !esCrear));
+				soloRecuperar.forEach((el) => (el.hidden = esCrear));
+				if (labelPaso2) labelPaso2.textContent = esCrear ? 'Verifica tu contacto' : 'Verifica tu identidad';
+				if (labelPaso3) labelPaso3.textContent = esCrear ? 'Crea tu clave' : 'Nueva clave';
+				if (paso1Ayuda) {
+					paso1Ayuda.textContent = esCrear
+						? 'Ingresa tu DNI y fecha de nacimiento. Usaremos estos datos solo para validar tu identidad.'
+						: 'Para recuperar tu clave, primero valida tu identidad con tu DNI y fecha de nacimiento.';
+				}
+				if (paso2Ayuda) {
+					paso2Ayuda.textContent = esCrear
+						? 'Confirma tu correo y celular. Te enviaremos un código de 6 dígitos para comprobar que son tuyos.'
+						: 'Enviaremos un código de 6 dígitos a los datos registrados en tu Clave SOL para confirmar que eres tú.';
+				}
+				if (paso3Ayuda) {
+					paso3Ayuda.textContent = esCrear
+						? 'Elige un usuario y una clave que solo tú conozcas. Podrás usarlos para entrar a SUNAT.'
+						: 'Crea una nueva clave segura. La anterior dejará de funcionar cuando confirmes el cambio.';
+				}
+				if (labelClave) labelClave.textContent = esCrear ? 'Nueva Clave SOL' : 'Nueva clave';
+				actualizarTextoFinalizar();
+				resetFormulario({ enfocar });
+			};
+
+			const validarPaso1 = () => {
+				let valido = true;
+				const valorDni = soloDigitos(dni.value);
+
+				if (!/^\d{8}$/.test(valorDni)) {
+					setError(dni, dniError, valorDni.length < 8 ? `Ingresa los 8 dígitos de tu DNI. ${valorDni.length ? `Faltan ${8 - valorDni.length}.` : ''}`.trim() : 'El DNI debe tener exactamente 8 dígitos.');
+					valido = false;
+				} else {
+					limpiarError(dni, dniError);
+				}
+
+				if (!fecha.value) {
+					setError(fecha, fechaError, 'Ingresa tu fecha de nacimiento.');
+					valido = false;
+				} else {
+					const seleccion = new Date(`${fecha.value}T00:00:00`);
+					const manana = new Date();
+					manana.setHours(23, 59, 59, 999);
+					if (Number.isNaN(seleccion.getTime()) || seleccion > manana) {
+						setError(fecha, fechaError, 'La fecha de nacimiento no puede estar en el futuro.');
+						valido = false;
+					} else {
+						limpiarError(fecha, fechaError);
+					}
+				}
+
+				if (!privacidad.checked) {
+					setError(privacidad, privacidadError, 'Debes aceptar el tratamiento de tus datos personales para continuar.');
+					valido = false;
+				} else {
+					limpiarError(privacidad, privacidadError);
+				}
+
+				if (!valido) {
+					mostrarAlerta('Revisa los campos marcados para continuar.');
+					enfocarPrimerError();
+					return false;
+				}
+
+				state.dni = valorDni;
+				state.fecha = fecha.value;
+				state.nombre = nombreTitular(valorDni);
+				actualizarIdentidad();
+				return true;
+			};
+
+			const validarContacto = () => {
+				let valido = true;
+				const valorCorreo = correo.value.trim().toLowerCase();
+				const valorConfirmar = correoConfirmar.value.trim().toLowerCase();
+				const valorCelular = soloDigitos(celular.value);
+
+				if (!valorCorreo) {
+					setError(correo, document.querySelector('#correo-error'), 'Ingresa tu correo electrónico.');
+					valido = false;
+				} else if (!emailValido(valorCorreo)) {
+					setError(correo, document.querySelector('#correo-error'), 'Escribe un correo válido, por ejemplo nombre@correo.com.');
+					valido = false;
+				} else {
+					limpiarError(correo, document.querySelector('#correo-error'));
+				}
+
+				if (!valorConfirmar) {
+					setError(correoConfirmar, document.querySelector('#correo-confirmar-error'), 'Repite tu correo electrónico.');
+					valido = false;
+				} else if (valorCorreo !== valorConfirmar) {
+					setError(correoConfirmar, document.querySelector('#correo-confirmar-error'), 'Los correos no coinciden. Revísalos e inténtalo de nuevo.');
+					valido = false;
+				} else {
+					limpiarError(correoConfirmar, document.querySelector('#correo-confirmar-error'));
+				}
+
+				if (!/^9\d{8}$/.test(valorCelular)) {
+					setError(celular, document.querySelector('#celular-error'), 'Ingresa un celular de 9 dígitos que empiece con 9.');
+					valido = false;
+				} else {
+					limpiarError(celular, document.querySelector('#celular-error'));
+				}
+
+				if (!valido) {
+					mostrarAlerta('Revisa tus datos de contacto para enviar el código.');
+					enfocarPrimerError();
+					return false;
+				}
+
+				state.correo = valorCorreo;
+				state.celular = valorCelular;
+				return true;
+			};
+
+			const prepararPaso2 = () => {
+				if (state.modo === 'crear' && state.dni === DEMO.dni) {
+					if (!correo.value) correo.value = DEMO.correo;
+					if (!correoConfirmar.value) correoConfirmar.value = DEMO.correo;
+					if (!celular.value) celular.value = DEMO.celular;
+				}
+			};
+
+			const enviarCodigo = async () => {
+				if (state.validando) return;
+				if (state.modo === 'crear' && !validarContacto()) return;
+
+				limpiarAlerta();
+				state.validando = true;
+				enviarBtn.disabled = true;
+				enviarBtn.setAttribute('aria-busy', 'true');
+				const textoOriginal = enviarBtn.innerHTML;
+				enviarBtn.innerHTML = '<span class="inline-block h-4 w-4 animate-spin rounded-full border-2 border-white/40 border-t-white" aria-hidden="true"></span> Enviando…';
+
+				await esperar(850);
+
+				state.validando = false;
+				state.codigoEnviado = true;
+				enviarBtn.disabled = false;
+				enviarBtn.removeAttribute('aria-busy');
+				enviarBtn.innerHTML = textoOriginal;
+				enviarBtn.hidden = true;
+				verificarBtn.hidden = false;
+				reenviarBtn.hidden = false;
+				codigoGrupo.hidden = false;
+
+				const destino =
+					state.modo === 'crear'
+						? `tu correo ${state.correo} y tu celular terminado en ${state.celular.slice(-3)}`
+						: 'el correo y celular registrados en tu Clave SOL';
+				codigoEstado.textContent = `Código enviado a ${destino}. Para esta simulación usa 123456.`;
+				codigo.value = '';
+				limpiarError(codigo, document.querySelector('#codigo-error'));
+				codigo.focus();
+			};
+
+			const reenviarCodigo = async () => {
+				if (state.validando) return;
+				state.validando = true;
+				reenviarBtn.disabled = true;
+				codigoEstado.textContent = 'Reenviando el código…';
+				await esperar(700);
+				state.validando = false;
+				reenviarBtn.disabled = false;
+				codigo.value = '';
+				limpiarError(codigo, document.querySelector('#codigo-error'));
+				codigoEstado.textContent = 'Enviamos un nuevo código. Para esta simulación usa 123456.';
+				codigo.focus();
+			};
+
+			const validarPaso2 = () => {
+				if (!state.codigoEnviado) {
+					mostrarAlerta('Primero envía el código de verificación.');
+					enviarBtn.focus();
+					return false;
+				}
+
+				const valorCodigo = soloDigitos(codigo.value);
+				if (valorCodigo !== DEMO.codigo) {
+					const mensaje = valorCodigo.length !== 6 ? 'Ingresa los 6 dígitos del código.' : 'El código no es correcto. Para esta simulación usa 123456.';
+					setError(codigo, document.querySelector('#codigo-error'), mensaje);
+					mostrarAlerta('No pudimos verificar el código. Inténtalo de nuevo.');
+					codigo.focus();
+					return false;
+				}
+
+				limpiarError(codigo, document.querySelector('#codigo-error'));
+				return true;
+			};
+
+			const reglasClave = () => {
+				const valor = claveNueva.value;
+				return {
+					largo: valor.length >= 8 && valor.length <= 12,
+					letra: /[A-Za-zÁÉÍÓÚÜÑáéíóúüñ]/.test(valor),
+					numero: /\d/.test(valor),
+					distinta: Boolean(valor) && !valor.includes(state.dni),
+				};
+			};
+
+			const actualizarReglasClave = () => {
+				const estadoReglas = reglasClave();
+				let cumplidas = 0;
+				reglas.forEach((regla) => {
+					const cumple = Boolean(estadoReglas[regla.dataset.regla]);
+					regla.classList.toggle('is-ok', cumple);
+					const estado = regla.querySelector('[data-regla-estado]');
+					if (estado) estado.textContent = cumple ? ': cumplido' : ': pendiente';
+					if (cumple) cumplidas += 1;
+				});
+
+				const valor = claveNueva.value;
+				const nivel = cumplidas >= 4 ? 'alta' : cumplidas >= 3 ? 'media' : cumplidas > 0 ? 'baja' : '';
+				claveFuerza.dataset.nivel = nivel;
+				claveFuerza.style.width = nivel === 'alta' ? '100%' : nivel === 'media' ? '66%' : nivel === 'baja' ? '33%' : '0%';
+				claveFuerzaTexto.textContent =
+					!valor
+						? 'Aún no escribiste tu clave'
+						: nivel === 'alta'
+							? 'Alta'
+							: nivel === 'media'
+								? 'Media'
+								: 'Baja';
+				claveFuerzaTexto.className =
+					'font-bold ' +
+					(nivel === 'alta'
+						? 'text-emerald-700 dark:text-emerald-300'
+						: nivel === 'media'
+							? 'text-amber-700 dark:text-amber-300'
+							: nivel === 'baja'
+								? 'text-red-700 dark:text-red-300'
+								: 'text-slate-500 dark:text-slate-400');
+			};
+
+			const validarPaso3 = () => {
+				let valido = true;
+				const errores = [];
+
+				if (state.modo === 'crear') {
+					const valorUsuario = usuario.value.trim();
+					if (!/^[A-Za-z0-9]{3,8}$/.test(valorUsuario)) {
+						setError(usuario, document.querySelector('#usuario-error'), 'El usuario debe tener entre 3 y 8 letras o números, sin espacios ni símbolos.');
+						valido = false;
+					} else {
+						limpiarError(usuario, document.querySelector('#usuario-error'));
+					}
+				}
+
+				const estadoReglas = reglasClave();
+				if (!estadoReglas.largo) {
+					errores.push('la clave debe tener entre 8 y 12 caracteres');
+					valido = false;
+				}
+				if (!estadoReglas.letra) {
+					errores.push('debe incluir al menos una letra');
+					valido = false;
+				}
+				if (!estadoReglas.numero) {
+					errores.push('debe incluir al menos un número');
+					valido = false;
+				}
+				if (!estadoReglas.distinta) {
+					errores.push('no debe contener tu DNI');
+					valido = false;
+				}
+
+				if (!claveNueva.value || errores.length) {
+					setError(
+						claveNueva,
+						document.querySelector('#clave-nueva-error'),
+						errores.length
+							? `Revisa la clave: ${errores.join(', ')}.`
+							: 'Crea una Clave SOL.',
+					);
+					valido = false;
+				} else {
+					limpiarError(claveNueva, document.querySelector('#clave-nueva-error'));
+				}
+
+				if (!claveConfirmar.value) {
+					setError(claveConfirmar, document.querySelector('#clave-confirmar-error'), 'Repite la clave para confirmarla.');
+					valido = false;
+				} else if (claveConfirmar.value !== claveNueva.value) {
+					setError(claveConfirmar, document.querySelector('#clave-confirmar-error'), 'Las claves no coinciden. Revísalas e inténtalo de nuevo.');
+					valido = false;
+				} else {
+					limpiarError(claveConfirmar, document.querySelector('#clave-confirmar-error'));
+				}
+
+				if (!valido) {
+					mostrarAlerta(state.modo === 'crear' ? 'Revisa tu usuario y tu clave para continuar.' : 'Revisa tu nueva clave para continuar.');
+					enfocarPrimerError();
+					return false;
+				}
+
+				state.usuario = state.modo === 'crear' ? usuario.value.trim().toUpperCase() : state.dni;
+				return true;
+			};
+
+			const finalizar = async () => {
+				if (state.validando) return;
+				if (!validarPaso3()) return;
+
+				state.validando = true;
+				finalizarBtn.disabled = true;
+				finalizarBtn.setAttribute('aria-busy', 'true');
+				const textoOriginal = finalizarBtn.innerHTML;
+				finalizarBtn.innerHTML = '<span class="inline-block h-4 w-4 animate-spin rounded-full border-2 border-white/40 border-t-white" aria-hidden="true"></span> Guardando…';
+
+				await esperar(950);
+
+				state.validando = false;
+				finalizarBtn.disabled = false;
+				finalizarBtn.removeAttribute('aria-busy');
+				finalizarBtn.innerHTML = textoOriginal;
+				actualizarTextoFinalizar();
+				const esCrear = state.modo === 'crear';
+				if (exitoTitulo) exitoTitulo.textContent = esCrear ? 'Tu Clave SOL está lista' : 'Tu Clave SOL fue actualizada';
+				if (exitoTexto) {
+					exitoTexto.textContent = esCrear
+						? `Creamos la Clave SOL para ${state.nombre}. Ya puedes iniciar sesión con tu usuario y tu nueva clave.`
+						: `Cambiamos la Clave SOL de ${state.nombre}. Desde ahora, usa solo tu nueva clave para iniciar sesión.`;
+				}
+				actualizarIdentidad();
+				irPaso(4);
+				exito?.focus();
+			};
+
+			dni.addEventListener('input', () => {
+				const digitos = soloDigitos(dni.value);
+				if (dni.value !== digitos) dni.value = digitos;
+				limpiarError(dni, dniError);
+				limpiarAlerta();
+			});
+
+			fecha.addEventListener('input', () => {
+				limpiarError(fecha, fechaError);
+				limpiarAlerta();
+			});
+
+			privacidad.addEventListener('change', () => {
+				limpiarError(privacidad, privacidadError);
+				limpiarAlerta();
+			});
+
+			correo.addEventListener('input', () => {
+				limpiarError(correo, document.querySelector('#correo-error'));
+				limpiarAlerta();
+			});
+			correoConfirmar.addEventListener('input', () => {
+				limpiarError(correoConfirmar, document.querySelector('#correo-confirmar-error'));
+				limpiarAlerta();
+			});
+			celular.addEventListener('input', () => {
+				const digitos = soloDigitos(celular.value);
+				if (celular.value !== digitos) celular.value = digitos;
+				limpiarError(celular, document.querySelector('#celular-error'));
+				limpiarAlerta();
+			});
+			codigo.addEventListener('input', () => {
+				const digitos = soloDigitos(codigo.value);
+				if (codigo.value !== digitos) codigo.value = digitos;
+				limpiarError(codigo, document.querySelector('#codigo-error'));
+				limpiarAlerta();
+			});
+			usuario.addEventListener('input', () => {
+				const limpio = usuario.value.replace(/[^A-Za-z0-9]/g, '').toUpperCase();
+				if (usuario.value !== limpio) usuario.value = limpio;
+				limpiarError(usuario, document.querySelector('#usuario-error'));
+				limpiarAlerta();
+			});
+			claveNueva.addEventListener('input', () => {
+				actualizarReglasClave();
+				limpiarError(claveNueva, document.querySelector('#clave-nueva-error'));
+				limpiarAlerta();
+			});
+			claveConfirmar.addEventListener('input', () => {
+				limpiarError(claveConfirmar, document.querySelector('#clave-confirmar-error'));
+				limpiarAlerta();
+			});
+
+			document.querySelectorAll('[data-ver-clave]').forEach((boton) => {
+				boton.addEventListener('click', () => {
+					const input = document.querySelector(`#${boton.dataset.verClave}`);
+					if (!input) return;
+					const mostrar = input.type === 'password';
+					input.type = mostrar ? 'text' : 'password';
+					boton.textContent = mostrar ? 'Ocultar' : 'Mostrar';
+					boton.setAttribute('aria-pressed', String(mostrar));
+					boton.setAttribute('aria-label', `${mostrar ? 'Ocultar' : 'Mostrar'} ${input.id === 'clave-nueva' ? 'nueva clave' : 'confirmación de clave'}`);
+				});
+			});
+
+			document.querySelectorAll('[data-atras]').forEach((boton) => {
+				boton.addEventListener('click', () => {
+					if (state.paso === 3) {
+						irPaso(2);
+						return;
+					}
+					if (state.paso === 2) {
+						state.codigoEnviado = false;
+						codigoGrupo.hidden = true;
+						enviarBtn.hidden = false;
+						verificarBtn.hidden = true;
+						reenviarBtn.hidden = true;
+						codigo.value = '';
+						codigoEstado.textContent = '';
+						irPaso(1);
+					}
+				});
+			});
+
+			enviarBtn.addEventListener('click', enviarCodigo);
+			reenviarBtn.addEventListener('click', reenviarCodigo);
+
+			document.querySelector('[data-demo]')?.addEventListener('click', () => {
+				dni.value = DEMO.dni;
+				fecha.value = DEMO.fecha;
+				privacidad.checked = true;
+				limpiarError(dni, dniError);
+				limpiarError(fecha, fechaError);
+				limpiarError(privacidad, privacidadError);
+				limpiarAlerta();
+				dni.focus();
+			});
+
+			botonesModo.forEach((boton) => {
+				boton.addEventListener('click', () => {
+					if (boton.dataset.modo === state.modo) return;
+					const url = new URL(window.location.href);
+					if (boton.dataset.modo === 'recuperar') {
+						url.searchParams.set('modo', 'recuperar');
+					} else {
+						url.searchParams.delete('modo');
+					}
+					history.replaceState(null, '', url);
+					setModo(boton.dataset.modo, { enfocar: true });
+				});
+			});
+
+			form.addEventListener('submit', (event) => {
+				event.preventDefault();
+				limpiarAlerta();
+
+				if (state.paso === 1) {
+					if (validarPaso1()) {
+						prepararPaso2();
+						irPaso(2);
+					}
+					return;
+				}
+				if (state.paso === 2) {
+					if (validarPaso2()) irPaso(3);
+					return;
+				}
+				if (state.paso === 3) finalizar();
+			});
+
+			const modoInicial = new URLSearchParams(window.location.search).get('modo') === 'recuperar' ? 'recuperar' : 'crear';
+			setModo(modoInicial);
+			actualizarReglasClave();
+		})();
+	</script>
+</Layout>

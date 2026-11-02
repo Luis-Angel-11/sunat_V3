@@ -1,0 +1,1763 @@
+---
+import Icon from '../components/Icon.astro';
+import CampoAyuda from '../components/sol/CampoAyuda.astro';
+import SolLayout from '../layouts/SolLayout.astro';
+
+const pasos = [
+	{ n: 1, titulo: 'Cómo te pagan', corto: 'Pago' },
+	{ n: 2, titulo: 'Tu cliente', corto: 'Cliente' },
+	{ n: 3, titulo: 'El servicio', corto: 'Servicio' },
+	{ n: 4, titulo: 'Montos', corto: 'Montos' },
+	{ n: 5, titulo: 'Revisar y emitir', corto: 'Emitir' },
+];
+
+const departamentos = [
+	'AMAZONAS', 'ÁNCASH', 'APURÍMAC', 'AREQUIPA', 'AYACUCHO', 'CAJAMARCA', 'CALLAO', 'CUSCO', 'HUANCAVELICA',
+	'HUÁNUCO', 'ICA', 'JUNÍN', 'LA LIBERTAD', 'LAMBAYEQUE', 'LIMA', 'LORETO', 'MADRE DE DIOS', 'MOQUEGUA',
+	'PASCO', 'PIURA', 'PUNO', 'SAN MARTÍN', 'TACNA', 'TUMBES', 'UCAYALI',
+];
+
+const mediosPago = [
+	['001', 'Depósito en cuenta'],
+	['002', 'Giro'],
+	['003', 'Transferencia bancaria'],
+	['004', 'Orden de pago'],
+	['005', 'Tarjeta de débito'],
+	['006', 'Tarjeta de crédito de un banco del Perú'],
+	['007', 'Cheque «no negociable» o «intransferible»'],
+	['008', 'Efectivo (cuando no es obligatorio usar el banco)'],
+	['009', 'Efectivo (en los demás casos)'],
+	['010', 'Medios de pago de comercio exterior'],
+	['011', 'Documentos de Edpymes o cooperativas de ahorro'],
+	['012', 'Tarjeta de crédito de otras entidades'],
+	['013', 'Tarjeta de crédito emitida en el extranjero'],
+];
+---
+
+<SolLayout
+	title="Emitir recibo por honorarios"
+	description="Crea paso a paso el recibo por honorarios electrónico que entregas a tu cliente."
+	current="inicio"
+>
+	<div class="container-sunat py-6">
+		<nav aria-label="Ruta de navegación" class="text-sm">
+			<ol class="flex flex-wrap items-center gap-1.5 text-slate-500 dark:text-slate-400">
+				<li><a href="/sol" class="link-sunat">Inicio</a></li>
+				<li aria-hidden="true"><Icon name="chevron-right" size={14} /></li>
+				<li aria-current="page" class="font-semibold text-slate-800 dark:text-slate-200">Emitir recibo por honorarios</li>
+			</ol>
+		</nav>
+
+		<div class="mt-4">
+			<h1 class="text-2xl font-black tracking-tight text-slate-900 dark:text-white sm:text-3xl">
+				Emitir recibo por honorarios
+			</h1>
+			<details class="rhe-intro group mt-3 max-w-3xl rounded-2xl border border-sky-200 bg-sky-50 p-4 dark:border-sky-900 dark:bg-sky-950/40">
+				<summary class="flex cursor-pointer list-none items-center justify-between gap-2 text-sm font-bold text-sunat-blue dark:text-sky-300">
+					<span class="flex items-center gap-2"><Icon name="info" size={17} />¿Qué es un recibo por honorarios y cuándo lo necesito?</span>
+					<Icon name="chevron-down" size={17} class="transition group-open:rotate-180" />
+				</summary>
+				<div class="mt-2 space-y-2 text-sm leading-relaxed text-slate-700 dark:text-slate-200">
+					<p>
+						Es el comprobante que entregas cuando <strong>cobras por un trabajo que hiciste por tu cuenta</strong>, sin ser
+						trabajador en planilla. Por ejemplo: una asesoría, una clase particular, un diseño o una consulta médica.
+					</p>
+					<p>
+						Le sirve a tu cliente como prueba de que te pagó, y a ti para que SUNAT registre ese ingreso. Te tomará unos
+						<strong>3 a 5 minutos</strong> y puedes volver a cualquier paso antes de emitir.
+					</p>
+				</div>
+			</details>
+		</div>
+
+		<!-- Progreso -->
+		<section id="progreso" class="sol-panel mt-5 scroll-mt-24" aria-label="Progreso de la emisión">
+			<div class="flex flex-wrap items-end justify-between gap-2">
+				<div>
+					<p class="text-xs font-bold uppercase tracking-wider text-slate-500 dark:text-slate-400" id="progreso-paso">Paso 1 de 5</p>
+					<p class="text-lg font-bold text-slate-900 dark:text-white" id="progreso-titulo">Cómo te pagan</p>
+				</div>
+				<p class="text-sm font-bold text-sunat-blue dark:text-sky-300"><span id="progreso-pct">0</span>% completado</p>
+			</div>
+			<div
+				class="mt-3 h-2.5 overflow-hidden rounded-full bg-slate-200 dark:bg-slate-800"
+				role="progressbar"
+				id="progreso-barra"
+				aria-label="Avance de la emisión"
+				aria-valuemin="0"
+				aria-valuemax="100"
+				aria-valuenow="0"
+			>
+				<div id="progreso-relleno" class="h-full w-0 rounded-full bg-gradient-to-r from-sunat-blue to-sky-500 transition-all duration-500"></div>
+			</div>
+			<ol class="mt-4 grid grid-cols-5 gap-1.5" id="stepper">
+				{
+					pasos.map((p) => (
+						<li>
+							<button type="button" data-ir={p.n} class="paso-btn group flex w-full flex-col items-center gap-1.5 rounded-lg p-1 text-center disabled:cursor-not-allowed" data-estado={p.n === 1 ? 'actual' : 'pendiente'} disabled={p.n !== 1}>
+								<span class="paso-circulo grid h-8 w-8 place-items-center rounded-full border-2 text-sm font-bold transition">
+									<span class="paso-num">{p.n}</span>
+									<Icon name="check" size={16} strokeWidth={3} class="paso-check" />
+								</span>
+								<span class="paso-texto text-[11px] font-semibold leading-tight sm:text-xs">
+									<span class="sm:hidden">{p.corto}</span>
+									<span class="hidden sm:inline">{p.titulo}</span>
+								</span>
+							</button>
+						</li>
+					))
+				}
+			</ol>
+		</section>
+
+		<div class="mt-5 grid items-start gap-6 lg:grid-cols-[minmax(0,1fr)_320px]">
+			<form id="rheForm" class="sol-panel min-w-0" novalidate>
+				<!-- Modo demostración -->
+				<div id="demo-banner" class="mb-6 rounded-xl border border-dashed border-amber-300 bg-amber-50 p-4 dark:border-amber-800 dark:bg-amber-950/30">
+					<p class="flex items-center gap-2 text-sm font-bold text-amber-900 dark:text-amber-200">
+						<Icon name="sliders" size={17} />Modo de prueba
+					</p>
+					<p class="mt-1 text-sm text-amber-950/80 dark:text-amber-100/80">
+						Toca cualquier campo para ver <strong>datos de ejemplo</strong> y elegir uno. O llena todo el recibo de una vez:
+					</p>
+					<div class="mt-3 flex flex-col gap-2 sm:flex-row">
+						<button type="button" class="sol-btn-secondary" data-ejemplo="contado"><Icon name="check" size={16} />Ejemplo al contado</button>
+						<button type="button" class="sol-btn-secondary" data-ejemplo="credito"><Icon name="calendar" size={16} />Ejemplo al crédito (cuotas)</button>
+					</div>
+				</div>
+
+				<!-- PASO 1 -->
+				<section data-paso="1" aria-labelledby="t-paso-1">
+					<h2 id="t-paso-1" tabindex="-1" class="paso-titulo">
+						<Icon name="credit-card" size={20} class="text-sunat-blue dark:text-sky-300" />Cómo te pagan
+					</h2>
+					<p class="paso-intro">Empecemos con dos preguntas rápidas. Si no estás seguro, toca <strong>Ayuda</strong> en cada pregunta.</p>
+
+					<div class="mt-5 grid gap-6">
+						<div>
+							<CampoAyuda id="forma-pago" etiqueta="¿Cómo te pagará tu cliente?" etiquetaId="l-forma-pago" requerido>
+								<p><strong>Al contado:</strong> tu cliente te paga todo de una sola vez (hoy o en una sola fecha).</p>
+								<p class="mt-1.5"><strong>Al crédito:</strong> acordaron que te pagará después, en una o varias partes (cuotas). Más adelante te pediremos las fechas y los montos de esas cuotas.</p>
+							</CampoAyuda>
+							<div role="radiogroup" aria-labelledby="l-forma-pago" class="mt-2 grid gap-2 sm:grid-cols-2">
+								<label class="sol-opcion"><input type="radio" name="formaPago" value="contado" class="sr-only" checked /><span><Icon name="check" size={17} />Al contado</span></label>
+								<label class="sol-opcion"><input type="radio" name="formaPago" value="credito" class="sr-only" /><span><Icon name="calendar" size={17} />Al crédito (en cuotas)</span></label>
+							</div>
+						</div>
+
+						<div>
+							<CampoAyuda id="deduccion" etiqueta="¿Tu cliente usará este recibo para pagar menos impuestos?" etiquetaId="l-deduccion" requerido>
+								<p>Las personas pueden restar de sus impuestos una parte de lo que pagan a trabajadores independientes (por ejemplo médicos, dentistas, abogados o psicólogos), hasta un límite al año.</p>
+								<p class="mt-1.5">Marca <strong>Sí</strong> solo si tu cliente te dijo que quiere usar este recibo para eso. Si no lo sabes, deja <strong>No</strong>.</p>
+							</CampoAyuda>
+							<div role="radiogroup" aria-labelledby="l-deduccion" class="mt-2 grid gap-2 sm:grid-cols-2">
+								<label class="sol-opcion"><input type="radio" name="deduccion" value="no" class="sr-only" checked /><span>No</span></label>
+								<label class="sol-opcion"><input type="radio" name="deduccion" value="si" class="sr-only" /><span>Sí, lo usará para deducir</span></label>
+							</div>
+						</div>
+					</div>
+				</section>
+
+				<!-- PASO 2 -->
+				<section data-paso="2" hidden aria-labelledby="t-paso-2">
+					<h2 id="t-paso-2" tabindex="-1" class="paso-titulo">
+						<Icon name="user" size={20} class="text-sunat-blue dark:text-sky-300" />Datos de tu cliente
+					</h2>
+					<p class="paso-intro">Indica a quién le prestaste el servicio. Es la persona o empresa que te paga.</p>
+
+					<p id="nota-deduccion" hidden class="nota-info mt-4">
+						<Icon name="info" size={16} class="mt-0.5 shrink-0" />
+						<span>Como tu cliente usará el recibo para deducir impuestos, solo puede identificarse con <strong>DNI</strong> o <strong>RUC</strong>.</span>
+					</p>
+
+					<div class="mt-4 rounded-xl border border-slate-200 bg-slate-50 p-3 dark:border-slate-800 dark:bg-slate-950/50">
+						<p class="text-xs font-bold uppercase tracking-wide text-slate-500 dark:text-slate-400">Clientes de ejemplo · toca uno para usarlo</p>
+						<div id="chips-clientes" class="mt-2 flex flex-wrap gap-2"></div>
+					</div>
+
+					<div class="mt-5 grid gap-5">
+						<div>
+							<CampoAyuda id="tipo-doc" etiqueta="Tipo de documento del cliente" para="tipoDoc" requerido>
+								<p>Es el documento con el que se identifica tu cliente.</p>
+								<ul class="mt-1.5 list-disc space-y-1 pl-5">
+									<li><strong>DNI:</strong> si es una persona peruana.</li>
+									<li><strong>RUC:</strong> si es una empresa o una persona con negocio.</li>
+									<li><strong>Carné de extranjería o pasaporte:</strong> si es extranjero.</li>
+									<li><strong>Sin documento:</strong> solo si tu cliente no tiene o no quiere dar su documento.</li>
+								</ul>
+							</CampoAyuda>
+							<select id="tipoDoc" class="sol-input mt-1">
+								<option value="">Elige una opción</option>
+								<option value="1">DNI</option>
+								<option value="6">RUC</option>
+								<option value="4">Carné de extranjería</option>
+								<option value="7">Pasaporte</option>
+								<option value="A">Cédula diplomática de identidad</option>
+								<option value="-">Sin documento</option>
+							</select>
+							<p id="tipoDoc-msg" class="sol-field-msg" data-tono="error"></p>
+						</div>
+
+						<div id="fila-numDoc" hidden>
+							<CampoAyuda id="num-doc" etiqueta="Número de documento" para="numDoc" requerido>
+								<p>Escribe el número tal como aparece en el documento, sin espacios ni guiones.</p>
+								<p class="mt-1.5">Si es <strong>DNI</strong> (8 números) o <strong>RUC</strong> (11 números), buscaremos el nombre automáticamente para evitar errores.</p>
+							</CampoAyuda>
+							<div class="mt-1 flex gap-2">
+								<input id="numDoc" type="text" class="sol-input" autocomplete="off" spellcheck="false" maxlength="15" aria-describedby="numDoc-msg" />
+								<button type="button" id="btnBuscar" class="sol-btn-secondary shrink-0" hidden>
+									<Icon name="search" size={16} /><span>Buscar</span>
+								</button>
+							</div>
+							<p id="numDoc-msg" class="sol-field-msg" aria-live="polite"></p>
+						</div>
+
+						<div id="fila-nombre" hidden>
+							<CampoAyuda id="nombre-cliente" etiqueta="Nombre o razón social" para="nombreCliente" requerido>
+								<p>Es el nombre completo de la persona o el nombre de la empresa (razón social).</p>
+								<p class="mt-1.5">Con DNI o RUC se completa solo. Con otros documentos, escríbelo tal como figura en el documento.</p>
+							</CampoAyuda>
+							<input id="nombreCliente" type="text" class="sol-input mt-1 uppercase" maxlength="100" autocomplete="off" />
+							<p id="nombreCliente-msg" class="sol-field-msg" data-tono="error"></p>
+						</div>
+
+						<div id="bloque-domicilio" hidden class="rounded-xl border border-slate-200 p-4 dark:border-slate-800">
+							<CampoAyuda id="domicilio" etiqueta="Dirección del cliente" etiquetaId="l-domicilio">
+								<p>Es la dirección donde vive o donde funciona la empresa de tu cliente.</p>
+								<p class="mt-1.5"><strong>Si el pago es al crédito, es obligatoria</strong>, porque el recibo servirá como respaldo de una deuda. Si es al contado, puedes dejarla en blanco.</p>
+							</CampoAyuda>
+							<p id="domicilio-nota" class="mt-1 text-xs text-slate-500 dark:text-slate-400">Opcional cuando el pago es al contado.</p>
+							<div class="mt-3 grid gap-3 sm:grid-cols-[180px_minmax(0,1fr)]" role="group" aria-labelledby="l-domicilio">
+								<div>
+									<label for="departamento" class="text-xs font-semibold text-slate-600 dark:text-slate-400">Departamento</label>
+									<select id="departamento" class="sol-input mt-1">
+										<option value="">Elige</option>
+										{departamentos.map((d) => <option value={d}>{d}</option>)}
+									</select>
+									<p id="departamento-msg" class="sol-field-msg" data-tono="error"></p>
+								</div>
+								<div>
+									<label for="direccion" class="text-xs font-semibold text-slate-600 dark:text-slate-400">Dirección (calle, número, distrito)</label>
+									<input id="direccion" type="text" class="sol-input mt-1 uppercase" maxlength="200" placeholder="Ej.: Av. Arequipa 1234, Lince" />
+									<p id="direccion-msg" class="sol-field-msg" data-tono="error"></p>
+								</div>
+							</div>
+						</div>
+
+						<div id="bloque-paciente" hidden class="rounded-xl border border-slate-200 p-4 dark:border-slate-800">
+							<CampoAyuda id="paciente" etiqueta="¿Tu cliente recibió el servicio como paciente?" etiquetaId="l-paciente" requerido>
+								<p>Responde <strong>Sí</strong> si el servicio fue de salud (consulta médica, dental, psicológica, terapia, etc.).</p>
+								<p class="mt-1.5">Si quien recibió la atención es otra persona (por ejemplo, un hijo o un padre de tu cliente), te pediremos sus datos.</p>
+							</CampoAyuda>
+							<div role="radiogroup" aria-labelledby="l-paciente" class="mt-2 grid gap-2 sm:grid-cols-2">
+								<label class="sol-opcion"><input type="radio" name="paciente" value="no" class="sr-only" checked /><span>No</span></label>
+								<label class="sol-opcion"><input type="radio" name="paciente" value="si" class="sr-only" /><span>Sí, fue un servicio de salud</span></label>
+							</div>
+
+							<div id="datos-paciente" hidden class="mt-4 grid gap-3">
+								<p class="text-sm font-bold text-slate-800 dark:text-slate-200">Datos de la persona atendida</p>
+								<div class="grid gap-3 sm:grid-cols-[200px_minmax(0,1fr)]">
+									<div>
+										<label for="pacTipo" class="text-xs font-semibold text-slate-600 dark:text-slate-400">Tipo de documento</label>
+										<select id="pacTipo" class="sol-input mt-1">
+											<option value="">Elige</option>
+											<option value="1">DNI</option>
+											<option value="4">Carné de extranjería</option>
+											<option value="7">Pasaporte</option>
+											<option value="A">Cédula diplomática</option>
+										</select>
+										<p id="pacTipo-msg" class="sol-field-msg" data-tono="error"></p>
+									</div>
+									<div>
+										<label for="pacNum" class="text-xs font-semibold text-slate-600 dark:text-slate-400">Número de documento</label>
+										<input id="pacNum" type="text" class="sol-input mt-1" maxlength="12" autocomplete="off" />
+										<p id="pacNum-msg" class="sol-field-msg" data-tono="error"></p>
+									</div>
+								</div>
+								<div>
+									<label for="pacNombre" class="text-xs font-semibold text-slate-600 dark:text-slate-400">Nombre completo</label>
+									<input id="pacNombre" type="text" class="sol-input mt-1 uppercase" maxlength="100" />
+									<p id="pacNombre-msg" class="sol-field-msg" data-tono="error"></p>
+								</div>
+							</div>
+						</div>
+					</div>
+				</section>
+
+				<!-- PASO 3 -->
+				<section data-paso="3" hidden aria-labelledby="t-paso-3">
+					<h2 id="t-paso-3" tabindex="-1" class="paso-titulo">
+						<Icon name="briefcase" size={20} class="text-sunat-blue dark:text-sky-300" />El servicio que prestaste
+					</h2>
+					<p class="paso-intro">Cuéntanos qué trabajo hiciste. Escríbelo con palabras sencillas, como se lo explicarías a tu cliente.</p>
+
+					<div class="mt-5 grid gap-6">
+						<div>
+							<CampoAyuda id="gratuito" etiqueta="¿Hiciste el trabajo gratis?" etiquetaId="l-gratuito" requerido>
+								<p>Marca <strong>Sí</strong> solo si no vas a cobrar nada por este trabajo (por ejemplo, una asesoría de cortesía).</p>
+								<p class="mt-1.5">Igual deberás indicar cuánto costaría normalmente, pero no habrá descuentos ni pagos.</p>
+							</CampoAyuda>
+							<div role="radiogroup" aria-labelledby="l-gratuito" class="mt-2 grid gap-2 sm:grid-cols-2">
+								<label class="sol-opcion"><input type="radio" name="gratuito" value="no" class="sr-only" checked /><span>No, voy a cobrar</span></label>
+								<label class="sol-opcion"><input type="radio" name="gratuito" value="si" class="sr-only" /><span>Sí, fue gratis</span></label>
+							</div>
+						</div>
+
+						<div>
+							<CampoAyuda id="descripcion" etiqueta="¿Qué servicio prestaste?" para="descripcion" requerido>
+								<p>Describe el trabajo que hiciste. Es lo que tu cliente verá en el recibo.</p>
+								<p class="mt-1.5"><strong>Ejemplos:</strong> «Asesoría contable de mayo 2026», «Diseño de logotipo para tienda», «Consulta psicológica (4 sesiones)».</p>
+							</CampoAyuda>
+							<textarea id="descripcion" rows="3" maxlength="500" class="sol-input mt-1 h-auto py-2 uppercase" placeholder="Ej.: Asesoría contable del mes de mayo"></textarea>
+							<div class="flex justify-between gap-2">
+								<p id="descripcion-msg" class="sol-field-msg" data-tono="error"></p>
+								<p class="ml-auto mt-1 text-xs text-slate-500 dark:text-slate-400"><span id="descripcion-cuenta">0</span>/500</p>
+							</div>
+						</div>
+
+						<div>
+							<CampoAyuda id="observacion" etiqueta="Nota adicional" para="observacion" opcional>
+								<p>Puedes agregar un detalle extra que quieras que aparezca en el recibo, por ejemplo un número de contrato o de orden de servicio.</p>
+								<p class="mt-1.5">Si no tienes nada que agregar, déjalo en blanco.</p>
+							</CampoAyuda>
+							<textarea id="observacion" rows="2" maxlength="500" class="sol-input mt-1 h-auto py-2 uppercase" placeholder="Ej.: Según contrato N.º 045-2026"></textarea>
+						</div>
+
+						<div>
+							<CampoAyuda id="fecha" etiqueta="Fecha del recibo" para="fechaEmision" requerido>
+								<p>Es la fecha que aparecerá en el recibo. Normalmente es <strong>hoy</strong>.</p>
+								<p class="mt-1.5">Si olvidaste emitirlo, puedes elegir hasta <strong>2 días antes</strong>. No se permiten fechas futuras.</p>
+							</CampoAyuda>
+							<input id="fechaEmision" type="date" class="sol-input mt-1 sm:max-w-xs" />
+							<p id="fechaEmision-msg" class="sol-field-msg" data-tono="error"></p>
+						</div>
+
+						<div>
+							<CampoAyuda id="inciso" etiqueta="¿Qué tipo de trabajo fue?" etiquetaId="l-inciso" requerido>
+								<p>SUNAT necesita saber en qué grupo está tu ingreso. <strong>Casi siempre es la primera opción.</strong></p>
+								<p class="mt-1.5">La segunda es solo para quienes ocupan cargos como director de una empresa, regidor o consejero regional y reciben pagos (dietas) por ello.</p>
+							</CampoAyuda>
+							<div role="radiogroup" aria-labelledby="l-inciso" class="mt-2 grid gap-2">
+								<label class="sol-opcion opcion-larga">
+									<input type="radio" name="inciso" value="A" class="sr-only" checked />
+									<span>
+										<span class="block">
+											<span class="block font-bold">Trabajo independiente (Inciso A)</span>
+											<span class="mt-0.5 block text-xs font-normal opacity-80">Ejerces tu profesión, oficio o arte por tu cuenta. Ej.: médico, profesor particular, diseñador, programador, electricista.</span>
+										</span>
+									</span>
+								</label>
+								<label class="sol-opcion opcion-larga">
+									<input type="radio" name="inciso" value="B" class="sr-only" />
+									<span>
+										<span class="block">
+											<span class="block font-bold">Cargos de dirección o representación (Inciso B)</span>
+											<span class="mt-0.5 block text-xs font-normal opacity-80">Director de empresa, síndico, gestor de negocios, albacea, regidor municipal o consejero regional que recibe dietas.</span>
+										</span>
+									</span>
+								</label>
+							</div>
+						</div>
+					</div>
+				</section>
+
+				<!-- PASO 4 -->
+				<section data-paso="4" hidden aria-labelledby="t-paso-4">
+					<h2 id="t-paso-4" tabindex="-1" class="paso-titulo">
+						<Icon name="calculator" size={20} class="text-sunat-blue dark:text-sky-300" />Cuánto cobras
+					</h2>
+					<p class="paso-intro">Escribe el monto total de tu trabajo. Nosotros calculamos el resto.</p>
+
+					<p id="nota-gratuito" hidden class="nota-aviso mt-4">
+						<Icon name="alert-triangle" size={16} class="mt-0.5 shrink-0" />
+						<span>Como el servicio fue gratis, no habrá retención ni pago. Indica igual cuánto costaría normalmente.</span>
+					</p>
+
+					<div class="mt-5 grid gap-6">
+						<div class="grid gap-4 sm:grid-cols-[200px_minmax(0,1fr)]">
+							<div>
+								<CampoAyuda id="moneda" etiqueta="Moneda" para="moneda" requerido>
+									<p>Es la moneda en la que acordaron el pago. Lo más común es <strong>Soles</strong>.</p>
+								</CampoAyuda>
+								<select id="moneda" class="sol-input mt-1">
+									<option value="PEN" selected>Soles (S/)</option>
+									<option value="USD">Dólares americanos (US$)</option>
+									<option value="EUR">Euros (€)</option>
+									<option value="CAD">Dólares canadienses</option>
+									<option value="GBP">Libras esterlinas</option>
+									<option value="JPY">Yenes</option>
+									<option value="CHF">Francos suizos</option>
+								</select>
+							</div>
+							<div>
+								<CampoAyuda id="monto" etiqueta="Monto total de tu trabajo" para="monto" requerido>
+									<p>Es lo que cobras por el servicio <strong>antes de cualquier descuento</strong>. Por ejemplo, si acordaste cobrar S/ 1,000, escribe 1000.</p>
+									<p class="mt-1.5">Usa punto para los decimales: 1500.50</p>
+								</CampoAyuda>
+								<input id="monto" type="text" inputmode="decimal" class="sol-input mt-1 text-lg font-bold" placeholder="0.00" maxlength="12" autocomplete="off" />
+								<p id="monto-msg" class="sol-field-msg" data-tono="error"></p>
+							</div>
+						</div>
+
+						<div>
+							<CampoAyuda id="retencion" etiqueta="¿Tu cliente te descontará el 8 % de impuesto?" etiquetaId="l-retencion" requerido>
+								<p>Algunas empresas e instituciones están obligadas a <strong>quedarse con el 8 %</strong> de lo que te pagan y entregarlo a SUNAT a tu nombre. A eso se le llama <em>retención</em>. Ese dinero cuenta como un adelanto de tus impuestos.</p>
+								<p class="mt-1.5">Normalmente aplica cuando tu cliente es una <strong>empresa (RUC que empieza con 20)</strong> y el recibo es <strong>mayor a S/ 1,500</strong>. Si tu cliente es una persona común, la respuesta suele ser <strong>No</strong>.</p>
+								<p class="mt-1.5">Si tienes una suspensión de retenciones aprobada por SUNAT, marca No.</p>
+							</CampoAyuda>
+							<div role="radiogroup" aria-labelledby="l-retencion" class="mt-2 grid gap-2 sm:grid-cols-2">
+								<label class="sol-opcion"><input type="radio" name="retencion" value="si" class="sr-only" /><span>Sí, me descontará el 8 %</span></label>
+								<label class="sol-opcion"><input type="radio" name="retencion" value="no" class="sr-only" checked /><span>No</span></label>
+							</div>
+							<p id="retencion-nota" class="sol-field-msg" data-tono="info"></p>
+						</div>
+
+						<div class="grid gap-2 rounded-xl border border-slate-200 bg-slate-50 p-4 text-sm dark:border-slate-800 dark:bg-slate-950/50" aria-live="polite">
+							<div class="flex justify-between gap-3"><span class="text-slate-600 dark:text-slate-400">Monto total</span><strong id="calc-total" class="text-slate-900 dark:text-slate-100">—</strong></div>
+							<div class="flex justify-between gap-3"><span class="text-slate-600 dark:text-slate-400">Descuento por retención (8 %)</span><strong id="calc-ret" class="text-slate-900 dark:text-slate-100">—</strong></div>
+							<div class="flex justify-between gap-3 border-t border-slate-300 pt-2 dark:border-slate-700">
+								<span class="font-bold text-slate-800 dark:text-slate-200">Lo que recibirás</span>
+								<strong id="calc-neto" class="text-lg text-emerald-700 dark:text-emerald-400">—</strong>
+							</div>
+						</div>
+
+						<div id="bloque-pago-ahora">
+							<CampoAyuda id="pago-ahora" etiqueta="¿Tu cliente te paga todo hoy, al recibir el recibo?" etiquetaId="l-pago-ahora" requerido>
+								<p>Marca <strong>Sí</strong> si el pago completo se hace al mismo tiempo que emites este recibo. Luego elige cómo te pagó.</p>
+								<p class="mt-1.5">Si te pagará en otra fecha, marca <strong>No</strong>.</p>
+							</CampoAyuda>
+							<div role="radiogroup" aria-labelledby="l-pago-ahora" class="mt-2 grid gap-2 sm:grid-cols-2">
+								<label class="sol-opcion"><input type="radio" name="pagoAhora" value="si" class="sr-only" /><span>Sí, me paga ahora</span></label>
+								<label class="sol-opcion"><input type="radio" name="pagoAhora" value="no" class="sr-only" checked /><span>No, me pagará después</span></label>
+							</div>
+							<p id="pago-ahora-nota" class="sol-field-msg" data-tono="info"></p>
+
+							<div id="fila-medio" hidden class="mt-4">
+								<CampoAyuda id="medio" etiqueta="¿Cómo te pagó?" para="medioPago" requerido>
+									<p>Elige la forma en que recibiste el dinero: depósito, transferencia, tarjeta, efectivo, etc.</p>
+									<p class="mt-1.5">Recuerda: si el pago es de <strong>S/ 2,000 o más</strong> (o US$ 500), la ley pide que pase por un banco (depósito, transferencia, tarjeta o cheque).</p>
+								</CampoAyuda>
+								<select id="medioPago" class="sol-input mt-1">
+									<option value="">Elige una opción</option>
+									{mediosPago.map(([v, t]) => <option value={v}>{t}</option>)}
+								</select>
+								<p id="medioPago-msg" class="sol-field-msg" data-tono="error"></p>
+							</div>
+						</div>
+
+						<div id="bloque-credito" hidden class="rounded-xl border border-slate-200 p-4 dark:border-slate-800">
+							<p class="flex items-center gap-2 font-bold text-slate-900 dark:text-white"><Icon name="calendar" size={18} class="text-sunat-blue dark:text-sky-300" />Pago en cuotas</p>
+
+							<div class="mt-3">
+								<CampoAyuda id="pendiente" etiqueta="¿Cuánto te falta cobrar?" para="pendiente" requerido>
+									<p>Es el dinero que tu cliente todavía te debe. No puede ser mayor a <strong>lo que recibirás</strong> (el monto después del descuento).</p>
+									<p class="mt-1.5">Si aún no te ha pagado nada, es igual a «Lo que recibirás».</p>
+								</CampoAyuda>
+								<div class="mt-1 flex gap-2">
+									<input id="pendiente" type="text" inputmode="decimal" class="sol-input" placeholder="0.00" maxlength="12" autocomplete="off" />
+									<button type="button" id="btnPendienteTodo" class="sol-btn-secondary shrink-0 text-xs">Usar todo</button>
+								</div>
+								<p id="pendiente-msg" class="sol-field-msg" data-tono="error"></p>
+							</div>
+
+							<div class="mt-4">
+								<CampoAyuda id="cuotas" etiqueta="Cuotas" etiquetaId="l-cuotas" requerido>
+									<p>Agrega cada pago que te hará tu cliente, con su <strong>fecha límite</strong> y su <strong>monto</strong>.</p>
+									<p class="mt-1.5">La suma de todas las cuotas debe ser igual a lo que te falta cobrar. Las fechas deben ser posteriores a la fecha del recibo.</p>
+								</CampoAyuda>
+								<div class="mt-2 grid gap-2 sm:grid-cols-[minmax(0,1fr)_minmax(0,1fr)_auto]" role="group" aria-labelledby="l-cuotas">
+									<div>
+										<label for="cuotaFecha" class="text-xs font-semibold text-slate-600 dark:text-slate-400">Fecha de pago</label>
+										<input id="cuotaFecha" type="date" class="sol-input mt-1" />
+									</div>
+									<div>
+										<label for="cuotaMonto" class="text-xs font-semibold text-slate-600 dark:text-slate-400">Monto de la cuota</label>
+										<input id="cuotaMonto" type="text" inputmode="decimal" class="sol-input mt-1" placeholder="0.00" maxlength="12" />
+									</div>
+									<button type="button" id="btnAgregarCuota" class="sol-btn-primary self-end"><Icon name="check" size={16} />Agregar</button>
+								</div>
+								<div class="mt-2 flex flex-wrap items-center gap-2 text-xs">
+									<span class="font-semibold text-slate-600 dark:text-slate-400">Repartir automáticamente en:</span>
+									<button type="button" data-repartir="1" class="chip-demo">1 cuota</button>
+									<button type="button" data-repartir="2" class="chip-demo">2 cuotas</button>
+									<button type="button" data-repartir="3" class="chip-demo">3 cuotas</button>
+									<span class="text-slate-500 dark:text-slate-400">(una por mes)</span>
+								</div>
+								<p id="cuotas-msg" class="sol-field-msg" data-tono="error" aria-live="polite"></p>
+
+								<div class="mt-3 overflow-x-auto">
+									<table class="w-full text-left text-sm">
+										<thead class="text-xs uppercase tracking-wide text-slate-500 dark:text-slate-400">
+											<tr><th class="py-2 pr-2">N.º</th><th class="py-2 pr-2">Fecha</th><th class="py-2 pr-2 text-right">Monto</th><th class="py-2"><span class="sr-only">Quitar</span></th></tr>
+										</thead>
+										<tbody id="tabla-cuotas" class="divide-y divide-slate-200 dark:divide-slate-800"></tbody>
+									</table>
+									<p id="cuotas-vacio" class="py-3 text-center text-sm text-slate-500 dark:text-slate-400">Todavía no agregaste cuotas.</p>
+								</div>
+								<p class="mt-2 text-right text-sm text-slate-600 dark:text-slate-400">Suma de cuotas: <strong id="cuotas-suma" class="text-slate-900 dark:text-slate-100">—</strong></p>
+							</div>
+						</div>
+					</div>
+				</section>
+
+				<!-- PASO 5 -->
+				<section data-paso="5" hidden aria-labelledby="t-paso-5">
+					<h2 id="t-paso-5" tabindex="-1" class="paso-titulo">
+						<Icon name="file-text" size={20} class="text-sunat-blue dark:text-sky-300" />Revisa tu recibo antes de emitirlo
+					</h2>
+					<p class="paso-intro">Así se verá tu recibo. Revisa que todo esté bien: <strong>una vez emitido no se puede editar</strong>, solo anular.</p>
+
+					<div class="recibo mt-5">
+						<div class="flex flex-col gap-3 border-b border-slate-300 pb-3 sm:flex-row sm:items-start sm:justify-between">
+							<div class="min-w-0">
+								<p class="text-base font-bold uppercase" id="pv-emisor">—</p>
+								<p class="text-xs text-slate-600" id="pv-emisor-dom">—</p>
+							</div>
+							<div class="shrink-0 rounded-lg border-2 border-sky-500 px-3 py-2 text-center">
+								<p class="text-sm font-bold" id="pv-ruc">RUC —</p>
+								<p class="text-[11px] font-bold leading-tight text-sky-700">RECIBO POR HONORARIOS<br />ELECTRÓNICO</p>
+								<p class="text-xs font-bold text-red-700">BORRADOR</p>
+							</div>
+						</div>
+						<dl class="recibo-datos mt-3">
+							<div><dt>Recibí de</dt><dd id="pv-cliente">—</dd></div>
+							<div><dt>Identificado con</dt><dd id="pv-doc">—</dd></div>
+							<div id="pv-fila-dom"><dt>Domicilio</dt><dd id="pv-dom">—</dd></div>
+							<div id="pv-fila-paciente"><dt>Paciente</dt><dd id="pv-paciente">—</dd></div>
+							<div><dt>Forma de pago</dt><dd id="pv-forma">—</dd></div>
+							<div><dt>Por concepto de</dt><dd id="pv-desc">—</dd></div>
+							<div id="pv-fila-obs"><dt>Observación</dt><dd id="pv-obs">—</dd></div>
+							<div><dt>Tipo de renta</dt><dd id="pv-inciso">—</dd></div>
+							<div><dt>Fecha de emisión</dt><dd id="pv-fecha">—</dd></div>
+							<div id="pv-fila-medio"><dt>Medio de pago</dt><dd id="pv-medio">—</dd></div>
+						</dl>
+						<div class="mt-3 ml-auto grid max-w-xs gap-1 border-t border-slate-300 pt-2 text-sm">
+							<div class="flex justify-between gap-3"><span>Total por honorarios</span><strong id="pv-total">—</strong></div>
+							<div class="flex justify-between gap-3"><span id="pv-ret-texto">Retención (8 %) IR</span><strong id="pv-ret">—</strong></div>
+							<div class="flex justify-between gap-3 text-base"><span class="font-bold">Total neto recibido</span><strong id="pv-neto">—</strong></div>
+						</div>
+						<div id="pv-cuotas" hidden class="mt-3 border-t border-slate-300 pt-2 text-sm"></div>
+					</div>
+
+					<div class="mt-3 flex flex-wrap gap-2 text-sm">
+						<span class="text-slate-600 dark:text-slate-400">¿Algo está mal? Corrige:</span>
+						<button type="button" class="link-sunat font-semibold" data-ir="1">Pago</button>
+						<button type="button" class="link-sunat font-semibold" data-ir="2">Cliente</button>
+						<button type="button" class="link-sunat font-semibold" data-ir="3">Servicio</button>
+						<button type="button" class="link-sunat font-semibold" data-ir="4">Montos</button>
+					</div>
+
+					<label class="mt-5 flex cursor-pointer items-start gap-3 rounded-xl border border-slate-200 p-4 dark:border-slate-800">
+						<input id="confirmo" type="checkbox" class="mt-0.5 h-5 w-5 shrink-0 accent-sunat-blue" />
+						<span class="text-sm text-slate-700 dark:text-slate-200">Revisé los datos y confirmo que son correctos. Entiendo que, al emitirlo, el recibo queda registrado en SUNAT.</span>
+					</label>
+					<p id="confirmo-msg" class="sol-field-msg" data-tono="error"></p>
+				</section>
+
+				<!-- ÉXITO -->
+				<section data-paso="exito" hidden aria-labelledby="t-exito" class="text-center">
+					<span class="mx-auto grid h-16 w-16 place-items-center rounded-full bg-emerald-600 text-white dark:bg-emerald-500 dark:text-slate-950">
+						<Icon name="check" size={34} strokeWidth={3} />
+					</span>
+					<h2 id="t-exito" tabindex="-1" class="mt-4 text-2xl font-black text-slate-900 dark:text-white">¡Listo! Tu recibo fue emitido</h2>
+					<p class="mt-1 text-slate-600 dark:text-slate-400">Número de recibo: <strong id="ok-numero" class="text-slate-900 dark:text-white">—</strong></p>
+					<p class="mt-1 text-sm text-slate-600 dark:text-slate-400">Total neto: <strong id="ok-neto">—</strong> · Cliente: <strong id="ok-cliente">—</strong></p>
+
+					<div class="mx-auto mt-5 max-w-md rounded-xl border border-slate-200 p-4 text-left text-sm dark:border-slate-800">
+						<p class="font-bold text-slate-900 dark:text-white">¿Qué sigue?</p>
+						<ol class="mt-2 list-decimal space-y-1.5 pl-5 text-slate-700 dark:text-slate-300">
+							<li>Descarga el recibo en PDF y envíaselo a tu cliente.</li>
+							<li>SUNAT ya lo tiene registrado; no necesitas presentarlo en otro lugar.</li>
+							<li>Si te equivocaste, puedes anularlo desde «Consultar mis recibos por honorarios».</li>
+						</ol>
+					</div>
+
+					<div class="mt-5 flex flex-col justify-center gap-2 sm:flex-row">
+						<button type="button" id="btnPDF" class="sol-btn-primary"><Icon name="download" size={16} /><span id="btnPDF-texto">Descargar recibo en PDF</span></button>
+						<a href="/emitir-rhe" class="sol-btn-secondary"><Icon name="receipt" size={16} />Emitir otro recibo</a>
+						<a href="/sol" class="sol-btn-secondary"><Icon name="home" size={16} />Ir al inicio</a>
+					</div>
+					<p class="mt-4 text-xs text-slate-500 dark:text-slate-400">Demostración del prototipo: este recibo no tiene validez legal.</p>
+				</section>
+
+				<!-- Navegación -->
+				<div id="nav-pasos" class="mt-8 flex flex-col-reverse gap-2 border-t border-slate-200 pt-5 sm:flex-row sm:justify-between dark:border-slate-800">
+					<button type="button" id="btnAtras" class="sol-btn-secondary"><Icon name="arrow-left" size={16} /><span id="btnAtras-texto">Cancelar</span></button>
+					<button type="submit" id="btnSiguiente" class="sol-btn-primary"><span id="btnSiguiente-texto">Continuar</span><Icon name="arrow-right" size={16} /></button>
+				</div>
+			</form>
+
+			<!-- Resumen lateral -->
+			<aside class="sol-panel lg:sticky lg:top-24" aria-labelledby="t-resumen">
+				<h2 id="t-resumen" class="flex items-center gap-2 font-bold text-slate-900 dark:text-white"><Icon name="receipt" size={18} class="text-sunat-blue dark:text-sky-300" />Tu recibo hasta ahora</h2>
+				<dl class="mt-3 grid gap-3 text-sm">
+					<div><dt class="text-xs font-semibold uppercase tracking-wide text-slate-500 dark:text-slate-400">Emitido por</dt><dd class="font-semibold text-slate-900 dark:text-slate-100" id="rs-emisor">—</dd></div>
+					<div><dt class="text-xs font-semibold uppercase tracking-wide text-slate-500 dark:text-slate-400">Forma de pago</dt><dd class="font-semibold text-slate-900 dark:text-slate-100" id="rs-forma">Al contado</dd></div>
+					<div><dt class="text-xs font-semibold uppercase tracking-wide text-slate-500 dark:text-slate-400">Cliente</dt><dd class="font-semibold text-slate-900 dark:text-slate-100" id="rs-cliente">—</dd></div>
+					<div><dt class="text-xs font-semibold uppercase tracking-wide text-slate-500 dark:text-slate-400">Servicio</dt><dd class="line-clamp-3 font-semibold text-slate-900 dark:text-slate-100" id="rs-servicio">—</dd></div>
+					<div class="rounded-xl bg-slate-50 p-3 dark:bg-slate-950/50">
+						<div class="flex justify-between gap-2"><dt class="text-slate-600 dark:text-slate-400">Total</dt><dd class="font-semibold" id="rs-total">—</dd></div>
+						<div class="mt-1 flex justify-between gap-2"><dt class="text-slate-600 dark:text-slate-400">Retención</dt><dd class="font-semibold" id="rs-ret">—</dd></div>
+						<div class="mt-1 flex justify-between gap-2 border-t border-slate-200 pt-1 dark:border-slate-800"><dt class="font-bold">Recibirás</dt><dd class="font-bold text-emerald-700 dark:text-emerald-400" id="rs-neto">—</dd></div>
+					</div>
+				</dl>
+				<p class="mt-4 flex items-start gap-2 text-xs text-slate-500 dark:text-slate-400">
+					<Icon name="info" size={15} class="mt-0.5 shrink-0" />
+					Puedes volver a cualquier paso ya completado tocando su número arriba.
+				</p>
+			</aside>
+		</div>
+	</div>
+
+	<style>
+		@reference '../styles/global.css';
+
+		.paso-titulo {
+			@apply flex items-center gap-2 text-lg font-bold text-slate-900 outline-none dark:text-white;
+		}
+		.paso-intro {
+			@apply mt-1 text-sm text-slate-600 dark:text-slate-400;
+		}
+		.nota-info {
+			@apply flex items-start gap-2 rounded-xl border border-sky-200 bg-sky-50 p-3 text-sm text-slate-700 dark:border-sky-900 dark:bg-sky-950/40 dark:text-slate-200;
+		}
+		.nota-aviso {
+			@apply flex items-start gap-2 rounded-xl border border-amber-200 bg-amber-50 p-3 text-sm text-amber-950 dark:border-amber-900 dark:bg-amber-950/40 dark:text-amber-100;
+		}
+		.opcion-larga > span {
+			height: auto;
+			min-height: 3rem;
+			justify-content: flex-start;
+			text-align: left;
+			padding: 0.75rem 0.875rem;
+		}
+		.rhe-intro summary::-webkit-details-marker {
+			display: none;
+		}
+
+		.recibo {
+			border: 1px solid #94a3b8;
+			border-radius: 0.75rem;
+			background: #fff;
+			color: #0f172a;
+			padding: 1.25rem;
+			box-shadow: 0 2px 8px rgb(0 0 0 / 0.08);
+		}
+		.recibo-datos {
+			display: grid;
+			gap: 0.35rem;
+			font-size: 0.85rem;
+		}
+		.recibo-datos > div {
+			display: grid;
+			grid-template-columns: 9.5rem minmax(0, 1fr);
+			gap: 0.75rem;
+		}
+		.recibo-datos dt {
+			color: #475569;
+		}
+		.recibo-datos dd {
+			font-weight: 600;
+			overflow-wrap: anywhere;
+		}
+		@media (max-width: 480px) {
+			.recibo-datos > div {
+				grid-template-columns: 1fr;
+				gap: 0;
+			}
+		}
+
+		/* Stepper */
+		.paso-btn :global(.paso-check) {
+			display: none;
+		}
+		.paso-btn[data-estado='pendiente'] .paso-circulo {
+			@apply border-slate-300 text-slate-400 dark:border-slate-700 dark:text-slate-500;
+		}
+		.paso-btn[data-estado='pendiente'] .paso-texto {
+			@apply text-slate-400 dark:text-slate-500;
+		}
+		.paso-btn[data-estado='actual'] .paso-circulo {
+			@apply border-sunat-blue bg-sunat-blue text-white ring-4 ring-sky-100 dark:border-sky-500 dark:bg-sky-500 dark:text-slate-950 dark:ring-sky-950;
+		}
+		.paso-btn[data-estado='actual'] .paso-texto {
+			@apply text-sunat-blue dark:text-sky-300;
+		}
+		.paso-btn[data-estado='hecho'] .paso-circulo {
+			@apply border-emerald-600 bg-emerald-600 text-white dark:border-emerald-500 dark:bg-emerald-500 dark:text-slate-950;
+		}
+		.paso-btn[data-estado='hecho'] .paso-texto {
+			@apply text-slate-700 dark:text-slate-300;
+		}
+		.paso-btn[data-estado='hecho'] .paso-num {
+			display: none;
+		}
+		.paso-btn[data-estado='hecho'] :global(.paso-check) {
+			display: block;
+		}
+		.paso-btn:not(:disabled):hover .paso-circulo {
+			transform: scale(1.08);
+		}
+	</style>
+
+	<style is:global>
+		@reference '../styles/global.css';
+
+		.sugerencias {
+			@apply absolute left-0 right-0 top-full z-40 mt-1 max-h-72 overflow-y-auto rounded-xl border border-slate-200 bg-white p-1 shadow-xl dark:border-slate-700 dark:bg-slate-900;
+		}
+		.sugerencias-titulo {
+			@apply flex items-center justify-between gap-2 px-3 pb-1 pt-2 text-[11px] font-bold uppercase tracking-wider text-amber-700 dark:text-amber-300;
+		}
+		.sugerencia {
+			@apply flex cursor-pointer flex-col rounded-lg px-3 py-2 text-left text-sm text-slate-800 dark:text-slate-200;
+		}
+		.sugerencia:hover,
+		.sugerencia[aria-selected='true'] {
+			@apply bg-sky-50 text-sunat-blue dark:bg-slate-800 dark:text-sky-300;
+		}
+		.chip-demo {
+			@apply inline-flex min-h-8 items-center gap-1.5 rounded-full border border-slate-300 bg-white px-3 py-1 text-xs font-semibold text-slate-700 transition hover:border-sunat-blue hover:text-sunat-blue dark:border-slate-700 dark:bg-slate-900 dark:text-slate-300 dark:hover:border-sky-400 dark:hover:text-sky-300;
+		}
+		.chip-demo:disabled {
+			@apply cursor-not-allowed opacity-40 hover:border-slate-300 hover:text-slate-700;
+		}
+
+		.sol-field-msg[data-tono='error'] {
+			color: #b91c1c;
+		}
+		.sol-field-msg[data-tono='ok'] {
+			color: #047857;
+		}
+		.sol-field-msg[data-tono='info'] {
+			color: #475569;
+			font-weight: 500;
+		}
+		.dark .sol-field-msg[data-tono='error'] {
+			color: #fda4af;
+		}
+		.dark .sol-field-msg[data-tono='ok'] {
+			color: #6ee7b7;
+		}
+		.dark .sol-field-msg[data-tono='info'] {
+			color: #94a3b8;
+		}
+		.sol-input[aria-invalid='true'] {
+			border-color: #dc2626;
+			box-shadow: 0 0 0 3px rgb(220 38 38 / 0.15);
+		}
+		.sol-input:read-only:not(select) {
+			background: #f1f5f9;
+		}
+		.dark .sol-input:read-only:not(select) {
+			background: #1e293b;
+		}
+	</style>
+
+	<script>
+		import { descargarReciboPDF } from '../lib/rhe-pdf';
+
+		const $ = (selector) => document.querySelector(selector);
+		const $$ = (selector) => [...document.querySelectorAll(selector)];
+		const valor = (name) => document.querySelector(`input[name="${name}"]:checked`)?.value;
+		const marcar = (name, v) => {
+			const input = document.querySelector(`input[name="${name}"][value="${v}"]`);
+			if (input) input.checked = true;
+		};
+
+		const sol = window.sunatSol || {};
+		const f = sol.fields || {};
+		const emisor = {
+			nombre: (f.nombreCompleto || 'Contribuyente de prueba').toUpperCase(),
+			ruc: f.ruc || '10748811741',
+			dni: f.dni || '',
+			domicilio: f.domicilio || '—',
+		};
+		const toast = (m, t) => (sol.toast ? sol.toast(m, t) : alert(m));
+
+		const PASOS = ['Cómo te pagan', 'Tu cliente', 'El servicio', 'Montos', 'Revisar y emitir'];
+		const TOTAL_PASOS = PASOS.length;
+		const TASA = 0.08;
+		const TIPOS_DOC = { '1': 'DNI', '6': 'RUC', '4': 'Carné de extranjería', '7': 'Pasaporte', A: 'Cédula diplomática', '-': 'Sin documento' };
+		/* ---------- datos simulados para pruebas ---------- */
+		const CLIENTES_DEMO = [
+			{ tipo: '6', num: '20512345678', nombre: 'EMPRESA ABC S.A.C.', departamento: 'LIMA', direccion: 'AV. JAVIER PRADO ESTE 1234, SAN ISIDRO', nota: 'Empresa · te retiene el 8 %' },
+			{ tipo: '6', num: '20601234567', nombre: 'INVERSIONES ANDINAS DEL SUR S.A.C.', departamento: 'LIMA', direccion: 'AV. LOS PRÓCERES 456, SANTIAGO DE SURCO', nota: 'Empresa · te retiene el 8 %' },
+			{ tipo: '6', num: '20487654321', nombre: 'CONSTRUCTORA LOS ANDES E.I.R.L.', departamento: 'AREQUIPA', direccion: 'CALLE MERCADERES 210, CERCADO', nota: 'Empresa de Arequipa' },
+			{ tipo: '6', num: '20556677889', nombre: 'COLEGIO SAN MARTÍN DE PORRES S.A.C.', departamento: 'LA LIBERTAD', direccion: 'JR. AYACUCHO 845, TRUJILLO', nota: 'Colegio privado' },
+			{ tipo: '6', num: '10458923101', nombre: 'QUISPE MAMANI LUIS ALBERTO', departamento: 'CUSCO', direccion: 'JR. PUNO 320, WANCHAQ', nota: 'Persona con negocio' },
+			{ tipo: '1', num: '45678912', nombre: 'GARCÍA LÓPEZ MARÍA FERNANDA', departamento: 'LIMA', direccion: 'CALLE LAS FLORES 155, MIRAFLORES', nota: 'Persona · paciente frecuente' },
+			{ tipo: '1', num: '71234567', nombre: 'TORRES VEGA CARLOS ANDRÉS', departamento: 'LIMA', direccion: 'AV. BRASIL 2450, PUEBLO LIBRE', nota: 'Persona · alumno particular' },
+			{ tipo: '1', num: '40998877', nombre: 'ROJAS PAREDES ANA LUCÍA', departamento: 'PIURA', direccion: 'AV. GRAU 980, PIURA', nota: 'Persona' },
+			{ tipo: '4', num: '001234567', nombre: 'SMITH JOHN MICHAEL', departamento: 'LIMA', direccion: 'CALLE BOLOGNESI 340, BARRANCO', nota: 'Extranjero · carné de extranjería' },
+			{ tipo: '7', num: 'AB1234567', nombre: 'MÜLLER ANNA SOPHIE', departamento: '', direccion: '', nota: 'Turista · pasaporte' },
+		];
+		const DEMO = Object.fromEntries(CLIENTES_DEMO.map((c) => [c.num, c]));
+
+		const PACIENTES_DEMO = [
+			{ tipo: '1', num: '76543210', nombre: 'TORRES GARCÍA LUCÍA', nota: 'Hija de la clienta' },
+			{ tipo: '1', num: '08123456', nombre: 'GARCÍA RAMOS PEDRO', nota: 'Padre de la clienta' },
+			{ tipo: '4', num: '002345678', nombre: 'SMITH LAURA', nota: 'Carné de extranjería' },
+		];
+
+		const SERVICIOS_DEMO = [
+			{ texto: 'DESARROLLO DE PÁGINA WEB INSTITUCIONAL', nota: 'Programación', monto: 2500 },
+			{ texto: 'ASESORÍA CONTABLE DEL MES DE OCTUBRE 2026', nota: 'Contabilidad', monto: 1200 },
+			{ texto: 'DISEÑO DE LOGOTIPO E IDENTIDAD VISUAL', nota: 'Diseño gráfico', monto: 1800 },
+			{ texto: 'CONSULTA PSICOLÓGICA (4 SESIONES)', nota: 'Salud', monto: 600 },
+			{ texto: 'CLASES PARTICULARES DE MATEMÁTICA (8 HORAS)', nota: 'Educación', monto: 400 },
+			{ texto: 'TRADUCCIÓN DE DOCUMENTOS DEL INGLÉS AL ESPAÑOL', nota: 'Idiomas', monto: 950 },
+			{ texto: 'MANTENIMIENTO DE EQUIPOS DE CÓMPUTO', nota: 'Soporte técnico', monto: 750 },
+			{ texto: 'CAPACITACIÓN EN SEGURIDAD Y SALUD EN EL TRABAJO', nota: 'Capacitación', monto: 3500 },
+		];
+
+		const OBSERVACIONES_DEMO = [
+			'SEGÚN CONTRATO N.º 045-2026',
+			'ORDEN DE SERVICIO N.º 0001234',
+			'CORRESPONDE AL MES DE OCTUBRE 2026',
+			'PRIMER ADELANTO DEL PROYECTO',
+		];
+
+		const MONTOS_DEMO = [
+			{ valor: 400, nota: 'Monto pequeño · sin retención' },
+			{ valor: 1500, nota: 'Justo en el límite de S/ 1,500' },
+			{ valor: 2500, nota: 'Monto medio' },
+			{ valor: 3500, nota: 'Monto alto' },
+		];
+
+		let paso = 1;
+		let maxPaso = 1;
+		let emitido = false;
+		let modificado = false;
+		let clienteValidado = false;
+		let retencionTocada = false;
+		let numeroEmitido = '';
+		let cuotas = [];
+
+		const form = $('#rheForm');
+		const secciones = $$('[data-paso]');
+
+		/* ---------- utilidades ---------- */
+		const hoyISO = (offset = 0) => {
+			const d = new Date();
+			d.setDate(d.getDate() + offset);
+			return `${d.getFullYear()}-${String(d.getMonth() + 1).padStart(2, '0')}-${String(d.getDate()).padStart(2, '0')}`;
+		};
+		const fechaTexto = (iso) => {
+			if (!iso) return '—';
+			const [y, m, d] = iso.split('-');
+			return `${d}/${m}/${y}`;
+		};
+		const numero = (texto) => {
+			const limpio = String(texto || '').replace(/,/g, '').trim();
+			if (!/^\d+(\.\d{0,2})?$/.test(limpio)) return NaN;
+			return Number.parseFloat(limpio);
+		};
+		const redondear = (n) => Math.round(n * 100) / 100;
+		const dinero = (n) => {
+			if (!Number.isFinite(n)) return '—';
+			try {
+				return new Intl.NumberFormat('es-PE', { style: 'currency', currency: $('#moneda').value }).format(n);
+			} catch {
+				return n.toFixed(2);
+			}
+		};
+
+		const mensaje = (id, texto, tono = 'error') => {
+			const msg = document.getElementById(`${id}-msg`);
+			const campo = document.getElementById(id);
+			if (msg) {
+				msg.textContent = texto || '';
+				msg.dataset.tono = tono;
+			}
+			if (campo && 'setAttribute' in campo) {
+				if (texto && tono === 'error') campo.setAttribute('aria-invalid', 'true');
+				else campo.removeAttribute('aria-invalid');
+			}
+		};
+		const limpiarMensajes = (seccion) => {
+			seccion.querySelectorAll('.sol-field-msg[data-tono="error"]').forEach((m) => (m.textContent = ''));
+			seccion.querySelectorAll('[aria-invalid]').forEach((c) => c.removeAttribute('aria-invalid'));
+		};
+
+		/* ---------- cálculo de montos ---------- */
+		const montos = () => {
+			const total = numero($('#monto').value);
+			const gratuito = valor('gratuito') === 'si';
+			const conRetencion = valor('retencion') === 'si' && !gratuito;
+			const retencion = Number.isFinite(total) && conRetencion ? redondear(total * TASA) : 0;
+			const neto = Number.isFinite(total) ? redondear(total - retencion) : NaN;
+			return { total, retencion, neto, conRetencion, gratuito };
+		};
+
+		/* ---------- cliente ---------- */
+		const textoDocCliente = () => {
+			const tipo = $('#tipoDoc').value;
+			if (!tipo) return '—';
+			if (tipo === '-') return 'Sin documento';
+			return `${TIPOS_DOC[tipo]} ${$('#numDoc').value.trim().toUpperCase()}`.trim();
+		};
+		const domicilioCliente = () => {
+			const dir = $('#direccion').value.trim().toUpperCase();
+			const dep = $('#departamento').value;
+			return [dir, dep].filter(Boolean).join(' - ');
+		};
+
+		const reglaDoc = (tipo, num) => {
+			if (tipo === '1') return /^\d{8}$/.test(num) ? '' : 'El DNI debe tener 8 números.';
+			if (tipo === '6') {
+				if (!/^\d{11}$/.test(num)) return 'El RUC debe tener 11 números.';
+				if (!['10', '15', '16', '17', '20'].includes(num.slice(0, 2))) return 'Ese RUC no es válido. Revisa los dos primeros números.';
+				return '';
+			}
+			if (tipo === '4' || tipo === '7') return /^[A-Z0-9]{6,12}$/i.test(num) ? '' : 'Debe tener entre 6 y 12 letras o números.';
+			if (tipo === 'A') return /^[A-Z0-9]{6,15}$/i.test(num) ? '' : 'Debe tener entre 6 y 15 letras o números.';
+			return '';
+		};
+
+		const buscarCliente = () =>
+			new Promise((resolve) => {
+				const tipo = $('#tipoDoc').value;
+				const num = $('#numDoc').value.trim();
+				const error = reglaDoc(tipo, num);
+				if (error) {
+					mensaje('numDoc', error);
+					return resolve(false);
+				}
+				if (num === emisor.ruc || (emisor.dni && num === emisor.dni)) {
+					mensaje('numDoc', 'No puedes emitirte un recibo a ti mismo. Escribe el documento de tu cliente.');
+					return resolve(false);
+				}
+				const boton = $('#btnBuscar');
+				boton.disabled = true;
+				mensaje('numDoc', 'Buscando en el padrón de SUNAT…', 'info');
+				setTimeout(() => {
+					const encontrado = DEMO[num];
+					let nombre = encontrado?.nombre;
+					if (!nombre) {
+						if (tipo === '1') nombre = 'PERSONA DE PRUEBA';
+						else nombre = num.startsWith('20') ? 'EMPRESA DE PRUEBA S.A.C.' : 'PERSONA CON NEGOCIO DE PRUEBA';
+					}
+					$('#nombreCliente').value = nombre;
+					if (encontrado?.direccion && !$('#direccion').value) {
+						$('#departamento').value = encontrado.departamento;
+						$('#direccion').value = encontrado.direccion;
+					}
+					clienteValidado = true;
+					boton.disabled = false;
+					mensaje('numDoc', `Encontrado: ${nombre}`, 'ok');
+					mensaje('nombreCliente', '');
+					$('#fila-nombre').hidden = false;
+					actualizarResumen();
+					resolve(true);
+				}, 650);
+			});
+
+		/* ---------- condicionales ---------- */
+		const actualizarCondicionales = () => {
+			const credito = valor('formaPago') === 'credito';
+			const deduccion = valor('deduccion') === 'si';
+			const gratuito = valor('gratuito') === 'si';
+			const tipo = $('#tipoDoc').value;
+
+			// Documento del cliente
+			$$('#tipoDoc option').forEach((op) => {
+				if (!op.value) return;
+				op.disabled = deduccion && !['1', '6'].includes(op.value);
+			});
+			if (deduccion && tipo && !['1', '6'].includes(tipo)) {
+				$('#tipoDoc').value = '';
+				clienteValidado = false;
+			}
+			$('#nota-deduccion').hidden = !deduccion;
+
+			const tipoActual = $('#tipoDoc').value;
+			const busca = tipoActual === '1' || tipoActual === '6';
+			$('#fila-numDoc').hidden = !tipoActual || tipoActual === '-';
+			$('#btnBuscar').hidden = !busca;
+			$('#numDoc').maxLength = tipoActual === '1' ? 8 : tipoActual === '6' ? 11 : 15;
+			$('#numDoc').inputMode = busca ? 'numeric' : 'text';
+			$('#numDoc').placeholder = tipoActual === '1' ? '8 números' : tipoActual === '6' ? '11 números' : 'Letras y números';
+			$('#fila-nombre').hidden = !tipoActual || (busca && !clienteValidado);
+			$('#nombreCliente').readOnly = busca;
+			$('#bloque-domicilio').hidden = !tipoActual;
+			$('#domicilio-nota').textContent = credito
+				? 'Obligatoria porque el pago es al crédito.'
+				: 'Opcional cuando el pago es al contado.';
+
+			// Paciente
+			$('#bloque-paciente').hidden = !deduccion;
+			$('#datos-paciente').hidden = !(deduccion && valor('paciente') === 'si');
+
+			// Montos
+			$('#nota-gratuito').hidden = !gratuito;
+			$$('input[name="retencion"]').forEach((r) => (r.disabled = gratuito));
+			if (gratuito) marcar('retencion', 'no');
+
+			const pagoBloqueado = gratuito || credito;
+			$$('input[name="pagoAhora"]').forEach((r) => (r.disabled = pagoBloqueado));
+			if (pagoBloqueado) marcar('pagoAhora', 'no');
+			$('#pago-ahora-nota').textContent = gratuito
+				? 'Al ser gratuito no hay pago que registrar.'
+				: credito
+					? 'Como el pago es al crédito, las fechas de pago se indican en las cuotas de abajo.'
+					: '';
+			$('#fila-medio').hidden = valor('pagoAhora') !== 'si';
+			$('#bloque-credito').hidden = !credito;
+
+			calcular();
+		};
+
+		const calcular = () => {
+			const { total, retencion, neto, conRetencion } = montos();
+			$('#calc-total').textContent = dinero(total);
+			$('#calc-ret').textContent = Number.isFinite(total) ? (conRetencion ? `- ${dinero(retencion)}` : dinero(0)) : '—';
+			$('#calc-neto').textContent = dinero(neto);
+
+			const nota = $('#retencion-nota');
+			if (conRetencion && $('#moneda').value === 'PEN' && Number.isFinite(total) && total <= 1500) {
+				nota.textContent = 'Ojo: normalmente no se descuenta el 8 % en recibos de S/ 1,500 o menos. Confírmalo con tu cliente.';
+			} else if (!retencionTocada && !montos().gratuito) {
+				nota.textContent = 'Lo marcamos según el tipo de cliente. Cámbialo si no es así.';
+			} else nota.textContent = '';
+
+			const suma = redondear(cuotas.reduce((s, c) => s + c.monto, 0));
+			$('#cuotas-suma').textContent = cuotas.length ? dinero(suma) : '—';
+			actualizarResumen();
+		};
+
+		const pintarCuotas = () => {
+			const cuerpo = $('#tabla-cuotas');
+			cuerpo.innerHTML = '';
+			cuotas
+				.sort((a, b) => a.fecha.localeCompare(b.fecha))
+				.forEach((c, i) => {
+					const tr = document.createElement('tr');
+					tr.innerHTML = `<td class="py-2 pr-2 font-semibold">${i + 1}</td><td class="py-2 pr-2">${fechaTexto(c.fecha)}</td><td class="py-2 pr-2 text-right font-semibold">${dinero(c.monto)}</td><td class="py-2 text-right"><button type="button" data-quitar="${i}" class="inline-flex h-8 items-center gap-1 rounded-lg px-2 text-xs font-bold text-red-700 hover:bg-red-50 dark:text-rose-300 dark:hover:bg-rose-950/40" aria-label="Quitar cuota ${i + 1}">Quitar</button></td>`;
+					cuerpo.append(tr);
+				});
+			$('#cuotas-vacio').hidden = cuotas.length > 0;
+			calcular();
+		};
+
+		/* ---------- resumen ---------- */
+		const actualizarResumen = () => {
+			const { total, retencion, neto, conRetencion } = montos();
+			$('#rs-emisor').textContent = `${emisor.nombre} · RUC ${emisor.ruc}`;
+			$('#rs-forma').textContent = valor('formaPago') === 'credito' ? 'Al crédito (en cuotas)' : 'Al contado';
+			const nombre = $('#nombreCliente').value.trim().toUpperCase();
+			$('#rs-cliente').textContent = nombre ? `${nombre} (${textoDocCliente()})` : '—';
+			$('#rs-servicio').textContent = $('#descripcion').value.trim().toUpperCase() || '—';
+			$('#rs-total').textContent = dinero(total);
+			$('#rs-ret').textContent = Number.isFinite(total) ? (conRetencion ? `- ${dinero(retencion)}` : dinero(0)) : '—';
+			$('#rs-neto').textContent = dinero(neto);
+		};
+
+		const pintarVistaPrevia = () => {
+			const { total, retencion, neto, conRetencion, gratuito } = montos();
+			const credito = valor('formaPago') === 'credito';
+			const set = (id, texto) => ($(`#${id}`).textContent = texto || '—');
+			set('pv-emisor', emisor.nombre);
+			set('pv-emisor-dom', emisor.domicilio);
+			set('pv-ruc', `RUC ${emisor.ruc}`);
+			set('pv-cliente', $('#nombreCliente').value.trim().toUpperCase());
+			set('pv-doc', textoDocCliente());
+			const dom = domicilioCliente();
+			$('#pv-fila-dom').hidden = !dom;
+			set('pv-dom', dom);
+			const conPaciente = valor('deduccion') === 'si' && valor('paciente') === 'si';
+			$('#pv-fila-paciente').hidden = !conPaciente;
+			set('pv-paciente', `${$('#pacNombre').value.trim().toUpperCase()} (${TIPOS_DOC[$('#pacTipo').value] || ''} ${$('#pacNum').value.trim()})`);
+			set('pv-forma', credito ? 'AL CRÉDITO' : 'AL CONTADO');
+			set('pv-desc', $('#descripcion').value.trim().toUpperCase() + (gratuito ? ' (SERVICIO GRATUITO)' : ''));
+			const obs = $('#observacion').value.trim().toUpperCase();
+			$('#pv-fila-obs').hidden = !obs;
+			set('pv-obs', obs);
+			set('pv-inciso', valor('inciso') === 'B' ? 'Inciso B: cargos de dirección o representación' : 'Inciso A: trabajo independiente');
+			set('pv-fecha', fechaTexto($('#fechaEmision').value));
+			const medio = $('#medioPago');
+			$('#pv-fila-medio').hidden = valor('pagoAhora') !== 'si';
+			set('pv-medio', medio.selectedOptions[0]?.textContent);
+			set('pv-total', dinero(total));
+			set('pv-ret-texto', conRetencion ? 'Retención (8 %) IR' : 'Retención IR');
+			set('pv-ret', dinero(retencion));
+			set('pv-neto', dinero(neto));
+
+			const caja = $('#pv-cuotas');
+			caja.hidden = !credito;
+			if (credito) {
+				const filas = cuotas.map((c, i) => `<li class="flex justify-between gap-3"><span>Cuota ${i + 1} · ${fechaTexto(c.fecha)}</span><strong>${dinero(c.monto)}</strong></li>`).join('');
+				caja.innerHTML = `<p><strong>Pendiente de pago:</strong> ${dinero(numero($('#pendiente').value))}</p><ul class="mt-1 grid gap-0.5">${filas}</ul>`;
+			}
+		};
+
+		/* ---------- validación por paso ---------- */
+		const validar = async (n) => {
+			const seccion = $(`[data-paso="${n}"]`);
+			limpiarMensajes(seccion);
+			const errores = [];
+			const error = (id, texto) => {
+				mensaje(id, texto);
+				errores.push(id);
+			};
+
+			if (n === 2) {
+				const tipo = $('#tipoDoc').value;
+				const num = $('#numDoc').value.trim();
+				if (!tipo) error('tipoDoc', 'Elige el tipo de documento de tu cliente.');
+				else if (tipo !== '-') {
+					const regla = reglaDoc(tipo, num);
+					if (!num) error('numDoc', 'Escribe el número de documento.');
+					else if (regla) error('numDoc', regla);
+					else if ((tipo === '1' || tipo === '6') && !clienteValidado) {
+						const ok = await buscarCliente();
+						if (!ok) errores.push('numDoc');
+					} else if (num === emisor.ruc || num === emisor.dni) error('numDoc', 'No puedes emitirte un recibo a ti mismo.');
+				}
+				if (tipo && !errores.length && $('#nombreCliente').value.trim().length < 3) error('nombreCliente', 'Escribe el nombre completo o la razón social.');
+				if (valor('formaPago') === 'credito' && tipo) {
+					if (!$('#departamento').value) error('departamento', 'Elige el departamento.');
+					if ($('#direccion').value.trim().length < 5) error('direccion', 'Escribe la dirección (es obligatoria al crédito).');
+				}
+				if (valor('deduccion') === 'si' && valor('paciente') === 'si') {
+					const pt = $('#pacTipo').value;
+					const pn = $('#pacNum').value.trim();
+					if (!pt) error('pacTipo', 'Elige el documento.');
+					if (pt === '1' && !/^\d{8}$/.test(pn)) error('pacNum', 'El DNI debe tener 8 números.');
+					else if (pt && pt !== '1' && !/^[A-Z0-9]{6,12}$/i.test(pn)) error('pacNum', 'Revisa el número.');
+					if ($('#pacNombre').value.trim().length < 3) error('pacNombre', 'Escribe el nombre de la persona atendida.');
+				}
+			}
+
+			if (n === 3) {
+				if ($('#descripcion').value.trim().length < 6) error('descripcion', 'Describe el servicio con al menos 6 caracteres.');
+				const fecha = $('#fechaEmision').value;
+				if (!fecha) error('fechaEmision', 'Elige la fecha del recibo.');
+				else if (fecha > hoyISO()) error('fechaEmision', 'La fecha no puede ser futura.');
+				else if (fecha < hoyISO(-2)) error('fechaEmision', 'Solo puedes elegir hasta 2 días antes de hoy.');
+			}
+
+			if (n === 4) {
+				const { total, neto, gratuito } = montos();
+				if (!Number.isFinite(total) || total <= 0) error('monto', 'Escribe un monto mayor a 0. Ej.: 1500 o 1500.50');
+				else if (total > 9999999.99) error('monto', 'El monto es demasiado alto.');
+				if (valor('pagoAhora') === 'si' && !$('#medioPago').value) error('medioPago', 'Elige cómo te pagó tu cliente.');
+				if (valor('formaPago') === 'credito') {
+					if (gratuito) {
+						error('cuotas', 'Un servicio gratuito no puede ser al crédito. Vuelve al paso 1 y elige «Al contado».');
+					} else {
+						const pendiente = numero($('#pendiente').value);
+						if (!Number.isFinite(pendiente) || pendiente <= 0) error('pendiente', 'Escribe cuánto te falta cobrar.');
+						else if (Number.isFinite(neto) && pendiente > neto) error('pendiente', `No puede ser mayor a lo que recibirás (${dinero(neto)}).`);
+						if (!cuotas.length) error('cuotas', 'Agrega al menos una cuota.');
+						else if (Number.isFinite(pendiente)) {
+							const suma = redondear(cuotas.reduce((s, c) => s + c.monto, 0));
+							if (Math.abs(suma - pendiente) > 0.001) error('cuotas', `Las cuotas suman ${dinero(suma)}, pero te falta cobrar ${dinero(pendiente)}. Deben ser iguales.`);
+							if (cuotas.some((c) => c.fecha <= $('#fechaEmision').value)) error('cuotas', 'Todas las cuotas deben vencer después de la fecha del recibo.');
+						}
+					}
+				}
+			}
+
+			if (n === 5 && !$('#confirmo').checked) error('confirmo', 'Marca la casilla para confirmar que revisaste los datos.');
+
+			if (errores.length) {
+				const primero = document.getElementById(errores[0]);
+				if (primero && !primero.hidden) primero.focus({ preventScroll: false });
+				else document.getElementById(`${errores[0]}-msg`)?.scrollIntoView({ behavior: 'smooth', block: 'center' });
+				toast(errores.length === 1 ? 'Revisa el campo marcado en rojo.' : `Revisa los ${errores.length} campos marcados en rojo.`, 'error');
+				return false;
+			}
+			return true;
+		};
+
+		/* ---------- navegación ---------- */
+		const pintarProgreso = () => {
+			const pct = emitido ? 100 : Math.round(((paso - 1) / TOTAL_PASOS) * 100);
+			$('#progreso-pct').textContent = String(pct);
+			$('#progreso-relleno').style.width = `${pct}%`;
+			$('#progreso-barra').setAttribute('aria-valuenow', String(pct));
+			$('#progreso-paso').textContent = emitido ? 'Completado' : `Paso ${paso} de ${TOTAL_PASOS}`;
+			$('#progreso-titulo').textContent = emitido ? 'Recibo emitido' : PASOS[paso - 1];
+
+			$$('.paso-btn').forEach((btn) => {
+				const n = Number(btn.dataset.ir);
+				const estado = emitido || n < paso || (n <= maxPaso && n !== paso) ? 'hecho' : n === paso ? 'actual' : 'pendiente';
+				btn.dataset.estado = estado;
+				btn.disabled = emitido || n > maxPaso;
+				if (n === paso && !emitido) btn.setAttribute('aria-current', 'step');
+				else btn.removeAttribute('aria-current');
+			});
+
+			$('#btnAtras-texto').textContent = paso === 1 ? 'Cancelar' : 'Atrás';
+			$('#btnSiguiente-texto').textContent = paso === TOTAL_PASOS ? 'Emitir recibo' : 'Continuar';
+			$('#nav-pasos').hidden = emitido;
+		};
+
+		const irA = (n, enfocar = true) => {
+			paso = n;
+			maxPaso = Math.max(maxPaso, n);
+			secciones.forEach((s) => (s.hidden = s.dataset.paso !== String(emitido ? 'exito' : n)));
+			if (n === 4 && !retencionTocada) {
+				const num = $('#numDoc').value.trim();
+				marcar('retencion', $('#tipoDoc').value === '6' && num.startsWith('20') && valor('gratuito') !== 'si' ? 'si' : 'no');
+				actualizarCondicionales();
+			}
+			if (n === 5) pintarVistaPrevia();
+			pintarProgreso();
+			if (enfocar) {
+				$('#progreso').scrollIntoView({ behavior: 'smooth', block: 'start' });
+				const titulo = emitido ? $('#t-exito') : $(`#t-paso-${n}`);
+				setTimeout(() => titulo?.focus({ preventScroll: true }), 250);
+			}
+		};
+
+		const emitir = () => {
+			const boton = $('#btnSiguiente');
+			boton.disabled = true;
+			$('#btnSiguiente-texto').textContent = 'Emitiendo…';
+			setTimeout(() => {
+				let correlativo = 143;
+				try {
+					correlativo = Number(localStorage.getItem('sunat-rhe-correlativo') || '142') + 1;
+					localStorage.setItem('sunat-rhe-correlativo', String(correlativo));
+				} catch {}
+				numeroEmitido = `E001-${correlativo}`;
+				emitido = true;
+				modificado = false;
+				boton.disabled = false;
+				$('#ok-numero').textContent = numeroEmitido;
+				$('#ok-neto').textContent = dinero(montos().neto);
+				$('#ok-cliente').textContent = $('#nombreCliente').value.trim().toUpperCase();
+				irA(TOTAL_PASOS);
+				toast(`Recibo ${numeroEmitido} emitido correctamente.`, 'success');
+			}, 900);
+		};
+
+		form.addEventListener('submit', async (event) => {
+			event.preventDefault();
+			if (emitido) return;
+			if (!(await validar(paso))) return;
+			if (paso === TOTAL_PASOS) emitir();
+			else irA(paso + 1);
+		});
+
+		$('#btnAtras').addEventListener('click', () => {
+			if (paso === 1) {
+				location.href = '/sol';
+				return;
+			}
+			irA(paso - 1);
+		});
+
+		document.addEventListener('click', async (event) => {
+			const target = event.target instanceof Element ? event.target : null;
+			if (!target) return;
+
+			const ayuda = target.closest('[data-ayuda]');
+			if (ayuda) {
+				const panel = document.getElementById(ayuda.getAttribute('aria-controls'));
+				const abierto = ayuda.getAttribute('aria-expanded') === 'true';
+				ayuda.setAttribute('aria-expanded', String(!abierto));
+				if (panel) panel.hidden = abierto;
+				return;
+			}
+
+			const ir = target.closest('[data-ir]');
+			if (ir && !emitido) {
+				const destino = Number(ir.dataset.ir);
+				if (destino > paso) {
+					// avanzar solo validando los pasos intermedios
+					for (let n = paso; n < destino; n++) {
+						if (!(await validar(n))) {
+							if (n !== paso) irA(n);
+							return;
+						}
+					}
+				}
+				irA(destino);
+				return;
+			}
+
+			const quitar = target.closest('[data-quitar]');
+			if (quitar) {
+				cuotas.splice(Number(quitar.dataset.quitar), 1);
+				pintarCuotas();
+			}
+		});
+
+		/* ---------- eventos de campos ---------- */
+		form.addEventListener('input', (event) => {
+			modificado = true;
+			const t = event.target;
+			if (t.id && t.getAttribute('aria-invalid')) mensaje(t.id, '');
+			if (t.id === 'descripcion') $('#descripcion-cuenta').textContent = String(t.value.length);
+			if (t.id === 'numDoc') {
+				const tipo = $('#tipoDoc').value;
+				if (tipo === '1' || tipo === '6') t.value = t.value.replace(/\D/g, '');
+				else t.value = t.value.replace(/[^a-zA-Z0-9]/g, '').toUpperCase();
+				clienteValidado = false;
+				if (tipo === '1' || tipo === '6') {
+					$('#nombreCliente').value = '';
+					mensaje('numDoc', '');
+					actualizarCondicionales();
+					if (t.value.length === t.maxLength) buscarCliente();
+				}
+			}
+			if (['monto', 'pendiente', 'cuotaMonto'].includes(t.id)) t.value = t.value.replace(/[^\d.,]/g, '');
+			if (t.id === 'monto' && valor('formaPago') === 'credito' && !cuotas.length) $('#pendiente').value = '';
+			calcular();
+		});
+
+		form.addEventListener('change', (event) => {
+			modificado = true;
+			const t = event.target;
+			if (t.name === 'retencion') retencionTocada = true;
+			if (t.id === 'tipoDoc') {
+				clienteValidado = false;
+				$('#numDoc').value = '';
+				$('#nombreCliente').value = '';
+				mensaje('numDoc', '');
+				mensaje('tipoDoc', '');
+				retencionTocada = false;
+				if (t.value && t.value !== '-') setTimeout(() => $('#numDoc').focus(), 0);
+				else if (t.value === '-') setTimeout(() => $('#nombreCliente').focus(), 0);
+			}
+			actualizarCondicionales();
+		});
+
+		$('#btnBuscar').addEventListener('click', () => buscarCliente());
+
+		$('#btnPendienteTodo').addEventListener('click', () => {
+			const { neto } = montos();
+			if (Number.isFinite(neto)) {
+				$('#pendiente').value = neto.toFixed(2);
+				mensaje('pendiente', '');
+				calcular();
+			} else mensaje('pendiente', 'Primero escribe el monto total arriba.');
+		});
+
+		$('#btnAgregarCuota').addEventListener('click', () => {
+			const fecha = $('#cuotaFecha').value;
+			const monto = numero($('#cuotaMonto').value);
+			if (!fecha) return mensaje('cuotas', 'Elige la fecha de pago de la cuota.');
+			if (fecha <= $('#fechaEmision').value) return mensaje('cuotas', 'La fecha de la cuota debe ser posterior a la fecha del recibo.');
+			if (!Number.isFinite(monto) || monto <= 0) return mensaje('cuotas', 'Escribe un monto mayor a 0 para la cuota.');
+			cuotas.push({ fecha, monto: redondear(monto) });
+			$('#cuotaFecha').value = '';
+			$('#cuotaMonto').value = '';
+			mensaje('cuotas', '');
+			pintarCuotas();
+			$('#cuotaFecha').focus();
+		});
+
+		$('#btnPDF').addEventListener('click', async () => {
+			const boton = $('#btnPDF');
+			boton.disabled = true;
+			$('#btnPDF-texto').textContent = 'Generando PDF…';
+			const { total, retencion, neto, conRetencion, gratuito } = montos();
+			const credito = valor('formaPago') === 'credito';
+			try {
+				await descargarReciboPDF({
+					numero: numeroEmitido,
+					emisorNombre: emisor.nombre,
+					emisorRuc: emisor.ruc,
+					emisorDomicilio: emisor.domicilio,
+					clienteNombre: $('#nombreCliente').value.trim().toUpperCase(),
+					clienteDocumento: textoDocCliente(),
+					clienteDomicilio: domicilioCliente() || undefined,
+					fecha: fechaTexto($('#fechaEmision').value),
+					formaPago: credito ? 'Al crédito' : 'Al contado',
+					descripcion: $('#descripcion').value.trim().toUpperCase(),
+					observacion: $('#observacion').value.trim().toUpperCase() || undefined,
+					inciso: valor('inciso') === 'B' ? 'Inciso B: cargos de dirección o representación' : 'Inciso A: trabajo independiente',
+					gratuito,
+					total: dinero(total),
+					retencionTexto: conRetencion ? 'Retención (8 %) IR' : 'Retención IR',
+					retencion: dinero(retencion),
+					neto: dinero(neto),
+					medioPago: valor('pagoAhora') === 'si' ? $('#medioPago').selectedOptions[0]?.textContent : undefined,
+					pendiente: credito ? dinero(numero($('#pendiente').value)) : undefined,
+					cuotas: credito ? cuotas.map((c, i) => ({ numero: i + 1, fecha: fechaTexto(c.fecha), monto: dinero(c.monto) })) : undefined,
+					paciente:
+						valor('deduccion') === 'si' && valor('paciente') === 'si'
+							? `${$('#pacNombre').value.trim().toUpperCase()} (${TIPOS_DOC[$('#pacTipo').value]} ${$('#pacNum').value.trim()})`
+							: undefined,
+				});
+			} catch {
+				toast('No se pudo generar el PDF. Inténtalo otra vez.', 'error');
+			} finally {
+				boton.disabled = false;
+				$('#btnPDF-texto').textContent = 'Descargar recibo en PDF';
+			}
+		});
+
+		window.addEventListener('beforeunload', (event) => {
+			if (modificado && !emitido) {
+				event.preventDefault();
+				event.returnValue = '';
+			}
+		});
+
+		/* ---------- sugerencias al tocar un campo ---------- */
+		const escapar = (t) =>
+			String(t ?? '').replace(/[&<>"']/g, (c) => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;' })[c]);
+		const normalizar = (t) => String(t || '').normalize('NFD').replace(/[̀-ͯ]/g, '').toLowerCase();
+
+		const sugerir = (input, { titulo, items, alElegir }) => {
+			const envoltura = document.createElement('div');
+			envoltura.className = 'relative min-w-0 flex-1';
+			input.before(envoltura);
+			envoltura.append(input);
+
+			const lista = document.createElement('ul');
+			const listaId = `${input.id}-sugerencias`;
+			lista.id = listaId;
+			lista.className = 'sugerencias';
+			lista.setAttribute('role', 'listbox');
+			lista.setAttribute('aria-label', titulo);
+			lista.hidden = true;
+			envoltura.append(lista);
+
+			input.setAttribute('role', 'combobox');
+			input.setAttribute('aria-autocomplete', 'list');
+			input.setAttribute('aria-expanded', 'false');
+			input.setAttribute('aria-controls', listaId);
+			input.setAttribute('autocomplete', 'off');
+
+			let activos = [];
+			let indice = -1;
+
+			const marcarActivo = () => {
+				lista.querySelectorAll('[role="option"]').forEach((op, i) => op.setAttribute('aria-selected', String(i === indice)));
+				if (indice >= 0) {
+					input.setAttribute('aria-activedescendant', `${listaId}-${indice}`);
+					document.getElementById(`${listaId}-${indice}`)?.scrollIntoView({ block: 'nearest' });
+				} else input.removeAttribute('aria-activedescendant');
+			};
+			const cerrar = () => {
+				lista.hidden = true;
+				input.setAttribute('aria-expanded', 'false');
+				input.removeAttribute('aria-activedescendant');
+				indice = -1;
+			};
+			const abrir = () => {
+				if (input.readOnly || input.disabled) return cerrar();
+				activos = items(input.value.trim());
+				if (!activos.length) return cerrar();
+				lista.innerHTML =
+					`<li class="sugerencias-titulo" role="presentation"><span>${escapar(titulo)}</span><span class="font-semibold normal-case tracking-normal text-slate-400">Datos de prueba</span></li>` +
+					activos
+						.map(
+							(it, i) =>
+								`<li role="option" id="${listaId}-${i}" data-i="${i}" aria-selected="false" class="sugerencia"><span class="font-semibold">${escapar(it.principal)}</span>${it.secundario ? `<span class="text-xs text-slate-500 dark:text-slate-400">${escapar(it.secundario)}</span>` : ''}</li>`,
+						)
+						.join('');
+				lista.hidden = false;
+				input.setAttribute('aria-expanded', 'true');
+				indice = -1;
+			};
+			const elegir = (i) => {
+				const it = activos[i];
+				if (!it) return;
+				cerrar();
+				modificado = true;
+				alElegir(it.dato);
+			};
+
+			input.addEventListener('focus', abrir);
+			input.addEventListener('click', () => lista.hidden && abrir());
+			input.addEventListener('input', abrir);
+			input.addEventListener('blur', () => setTimeout(cerrar, 120));
+			input.addEventListener('keydown', (event) => {
+				if (lista.hidden) {
+					if (event.key === 'ArrowDown') {
+						abrir();
+						event.preventDefault();
+					}
+					return;
+				}
+				if (event.key === 'ArrowDown' || event.key === 'ArrowUp') {
+					event.preventDefault();
+					const paso = event.key === 'ArrowDown' ? 1 : -1;
+					indice = (indice + paso + activos.length) % activos.length;
+					marcarActivo();
+				} else if (event.key === 'Enter' && indice >= 0) {
+					event.preventDefault();
+					elegir(indice);
+				} else if (event.key === 'Escape') {
+					event.preventDefault();
+					cerrar();
+				}
+			});
+			lista.addEventListener('mousedown', (event) => event.preventDefault());
+			lista.addEventListener('click', (event) => {
+				const op = event.target instanceof Element ? event.target.closest('[data-i]') : null;
+				if (op) elegir(Number(op.dataset.i));
+			});
+		};
+
+		const aplicarCliente = (c) => {
+			if (valor('deduccion') === 'si' && !['1', '6'].includes(c.tipo)) {
+				toast('Con deducción de impuestos solo se aceptan clientes con DNI o RUC.', 'error');
+				return;
+			}
+			$('#tipoDoc').value = c.tipo;
+			$('#numDoc').value = c.num;
+			$('#nombreCliente').value = c.nombre;
+			$('#departamento').value = c.departamento || '';
+			$('#direccion').value = c.direccion || '';
+			clienteValidado = true;
+			retencionTocada = false;
+			modificado = true;
+			['tipoDoc', 'nombreCliente', 'departamento', 'direccion'].forEach((id) => mensaje(id, ''));
+			mensaje('numDoc', `Cliente de prueba cargado: ${c.nombre}`, 'ok');
+			actualizarCondicionales();
+		};
+
+		const clientesPermitidos = () =>
+			CLIENTES_DEMO.filter((c) => valor('deduccion') !== 'si' || ['1', '6'].includes(c.tipo));
+
+		const pintarChipsClientes = () => {
+			const caja = $('#chips-clientes');
+			caja.innerHTML = clientesPermitidos()
+				.slice(0, 6)
+				.map(
+					(c) =>
+						`<button type="button" class="chip-demo" data-cliente="${escapar(c.num)}" title="${escapar(c.nota)}"><span class="text-slate-400">${TIPOS_DOC[c.tipo]}</span>${escapar(c.nombre)}</button>`,
+				)
+				.join('');
+		};
+
+		sugerir($('#numDoc'), {
+			titulo: 'Clientes de ejemplo',
+			items: (texto) => {
+				const tipo = $('#tipoDoc').value;
+				const q = normalizar(texto);
+				return clientesPermitidos()
+					.filter((c) => (!tipo || tipo === '-' || c.tipo === tipo) && (!q || c.num.toLowerCase().includes(q) || normalizar(c.nombre).includes(q)))
+					.map((c) => ({ principal: `${c.num} · ${c.nombre}`, secundario: `${TIPOS_DOC[c.tipo]} · ${c.nota}`, dato: c }));
+			},
+			alElegir: aplicarCliente,
+		});
+
+		sugerir($('#nombreCliente'), {
+			titulo: 'Clientes de ejemplo',
+			items: (texto) => {
+				const tipo = $('#tipoDoc').value;
+				const q = normalizar(texto);
+				return clientesPermitidos()
+					.filter((c) => (!tipo || tipo === '-' || c.tipo === tipo) && (!q || normalizar(c.nombre).includes(q)))
+					.map((c) => ({ principal: c.nombre, secundario: `${TIPOS_DOC[c.tipo]} ${c.num} · ${c.nota}`, dato: c }));
+			},
+			alElegir: (c) => {
+				if ($('#tipoDoc').value === '-') {
+					$('#nombreCliente').value = c.nombre;
+					mensaje('nombreCliente', '');
+					actualizarResumen();
+				} else aplicarCliente(c);
+			},
+		});
+
+		sugerir($('#direccion'), {
+			titulo: 'Direcciones de ejemplo',
+			items: (texto) => {
+				const q = normalizar(texto);
+				return CLIENTES_DEMO.filter((c) => c.direccion && (!q || normalizar(c.direccion).includes(q))).map((c) => ({
+					principal: c.direccion,
+					secundario: c.departamento,
+					dato: c,
+				}));
+			},
+			alElegir: (c) => {
+				$('#direccion').value = c.direccion;
+				$('#departamento').value = c.departamento;
+				mensaje('direccion', '');
+				mensaje('departamento', '');
+				actualizarResumen();
+			},
+		});
+
+		const aplicarPaciente = (p) => {
+			$('#pacTipo').value = p.tipo;
+			$('#pacNum').value = p.num;
+			$('#pacNombre').value = p.nombre;
+			['pacTipo', 'pacNum', 'pacNombre'].forEach((id) => mensaje(id, ''));
+		};
+		const itemsPaciente = (texto) => {
+			const q = normalizar(texto);
+			return PACIENTES_DEMO.filter((p) => !q || p.num.includes(q) || normalizar(p.nombre).includes(q)).map((p) => ({
+				principal: `${p.nombre}`,
+				secundario: `${TIPOS_DOC[p.tipo]} ${p.num} · ${p.nota}`,
+				dato: p,
+			}));
+		};
+		sugerir($('#pacNum'), { titulo: 'Pacientes de ejemplo', items: itemsPaciente, alElegir: aplicarPaciente });
+		sugerir($('#pacNombre'), { titulo: 'Pacientes de ejemplo', items: itemsPaciente, alElegir: aplicarPaciente });
+
+		sugerir($('#descripcion'), {
+			titulo: 'Servicios de ejemplo',
+			items: (texto) => {
+				const q = normalizar(texto);
+				return SERVICIOS_DEMO.filter((s) => !q || normalizar(s.texto).includes(q)).map((s) => ({
+					principal: s.texto,
+					secundario: `${s.nota} · precio sugerido ${dinero(s.monto)}`,
+					dato: s,
+				}));
+			},
+			alElegir: (s) => {
+				$('#descripcion').value = s.texto;
+				$('#descripcion-cuenta').textContent = String(s.texto.length);
+				mensaje('descripcion', '');
+				if (!$('#monto').value) $('#monto').value = s.monto.toFixed(2);
+				calcular();
+			},
+		});
+
+		sugerir($('#observacion'), {
+			titulo: 'Notas de ejemplo',
+			items: (texto) => {
+				const q = normalizar(texto);
+				return OBSERVACIONES_DEMO.filter((o) => !q || normalizar(o).includes(q)).map((o) => ({ principal: o, dato: o }));
+			},
+			alElegir: (o) => {
+				$('#observacion').value = o;
+				actualizarResumen();
+			},
+		});
+
+		sugerir($('#monto'), {
+			titulo: 'Montos de ejemplo',
+			items: () => MONTOS_DEMO.map((m) => ({ principal: dinero(m.valor), secundario: m.nota, dato: m })),
+			alElegir: (m) => {
+				$('#monto').value = m.valor.toFixed(2);
+				mensaje('monto', '');
+				calcular();
+			},
+		});
+
+		sugerir($('#cuotaMonto'), {
+			titulo: 'Montos de cuota',
+			items: () => {
+				const pendiente = numero($('#pendiente').value);
+				if (!Number.isFinite(pendiente) || pendiente <= 0) return [];
+				const usado = cuotas.reduce((s, c) => s + c.monto, 0);
+				const resta = redondear(pendiente - usado);
+				const opciones = [
+					{ valor: resta, nota: 'Lo que falta repartir' },
+					{ valor: redondear(pendiente / 2), nota: 'La mitad de lo pendiente' },
+					{ valor: redondear(pendiente / 3), nota: 'Un tercio de lo pendiente' },
+				];
+				return opciones.filter((o) => o.valor > 0).map((o) => ({ principal: dinero(o.valor), secundario: o.nota, dato: o }));
+			},
+			alElegir: (o) => {
+				$('#cuotaMonto').value = o.valor.toFixed(2);
+				if (!$('#cuotaFecha').value) {
+					const base = new Date(`${$('#fechaEmision').value}T12:00:00`);
+					base.setMonth(base.getMonth() + cuotas.length + 1);
+					$('#cuotaFecha').value = base.toISOString().slice(0, 10);
+				}
+				mensaje('cuotas', '');
+			},
+		});
+
+		/* ---------- reparto automático de cuotas ---------- */
+		const repartirCuotas = (cantidad) => {
+			const pendiente = numero($('#pendiente').value);
+			if (!Number.isFinite(pendiente) || pendiente <= 0) {
+				mensaje('pendiente', 'Primero indica cuánto te falta cobrar (o toca «Usar todo»).');
+				return false;
+			}
+			const base = redondear(Math.floor((pendiente / cantidad) * 100) / 100);
+			cuotas = Array.from({ length: cantidad }, (_, i) => {
+				const fecha = new Date(`${$('#fechaEmision').value}T12:00:00`);
+				fecha.setMonth(fecha.getMonth() + i + 1);
+				const monto = i === cantidad - 1 ? redondear(pendiente - base * (cantidad - 1)) : base;
+				return { fecha: fecha.toISOString().slice(0, 10), monto };
+			});
+			mensaje('cuotas', '');
+			pintarCuotas();
+			return true;
+		};
+
+		/* ---------- llenar todo con un ejemplo ---------- */
+		const llenarEjemplo = (tipo) => {
+			const credito = tipo === 'credito';
+			const cliente = DEMO[credito ? '20601234567' : '20512345678'];
+			const servicio = credito ? SERVICIOS_DEMO[7] : SERVICIOS_DEMO[0];
+
+			marcar('formaPago', credito ? 'credito' : 'contado');
+			marcar('deduccion', 'no');
+			marcar('paciente', 'no');
+			actualizarCondicionales();
+			aplicarCliente(cliente);
+
+			marcar('gratuito', 'no');
+			$('#descripcion').value = servicio.texto;
+			$('#descripcion-cuenta').textContent = String(servicio.texto.length);
+			$('#observacion').value = credito ? 'SEGÚN CONTRATO N.º 045-2026' : 'ORDEN DE SERVICIO N.º 0001234';
+			$('#fechaEmision').value = hoyISO();
+			marcar('inciso', 'A');
+
+			$('#moneda').value = 'PEN';
+			$('#monto').value = servicio.monto.toFixed(2);
+			marcar('retencion', 'si');
+			retencionTocada = true;
+			marcar('pagoAhora', credito ? 'no' : 'si');
+			$('#medioPago').value = credito ? '' : '003';
+			actualizarCondicionales();
+
+			cuotas = [];
+			if (credito) {
+				$('#pendiente').value = montos().neto.toFixed(2);
+				repartirCuotas(2);
+			} else {
+				$('#pendiente').value = '';
+				pintarCuotas();
+			}
+
+			$('#confirmo').checked = false;
+			secciones.forEach((s) => limpiarMensajes(s));
+			pintarChipsClientes();
+			modificado = true;
+			maxPaso = TOTAL_PASOS;
+			irA(TOTAL_PASOS);
+			toast(
+				`Listo: llenamos un recibo de ejemplo ${credito ? 'al crédito' : 'al contado'}. Revisa cada paso tocando su número o emítelo.`,
+				'success',
+			);
+		};
+
+		document.addEventListener('click', (event) => {
+			const target = event.target instanceof Element ? event.target : null;
+			if (!target || emitido) return;
+			const chip = target.closest('[data-cliente]');
+			if (chip) {
+				aplicarCliente(DEMO[chip.dataset.cliente]);
+				return;
+			}
+			const repartir = target.closest('[data-repartir]');
+			if (repartir) {
+				repartirCuotas(Number(repartir.dataset.repartir));
+				return;
+			}
+			const ejemplo = target.closest('[data-ejemplo]');
+			if (ejemplo) llenarEjemplo(ejemplo.dataset.ejemplo);
+		});
+
+		form.addEventListener('change', (event) => {
+			if (event.target instanceof HTMLInputElement && event.target.name === 'deduccion') pintarChipsClientes();
+		});
+
+		/* ---------- inicio ---------- */
+		pintarChipsClientes();
+		const fecha = $('#fechaEmision');
+		fecha.value = hoyISO();
+		fecha.min = hoyISO(-2);
+		fecha.max = hoyISO();
+		$('#cuotaFecha').min = hoyISO(1);
+		actualizarCondicionales();
+		pintarCuotas();
+		pintarProgreso();
+	</script>
+</SolLayout>

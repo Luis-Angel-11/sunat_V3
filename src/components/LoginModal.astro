@@ -1,0 +1,163 @@
+---
+import Icon from './Icon.astro';
+---
+
+<!-- CONTENEDOR MODAL OCULTO POR DEFECTO -->
+<div
+	id="login-modal"
+	class="fixed inset-0 z-50 hidden items-center justify-center bg-slate-900/60 p-4 backdrop-blur-md transition-opacity duration-300"
+	aria-labelledby="modal-title"
+	role="dialog"
+	aria-modal="true"
+>
+	<!-- CAJA DEL MODAL TIPO FIGMA -->
+	<div class="relative w-full max-w-md rounded-3xl bg-white p-6 shadow-2xl transition-all dark:bg-slate-900 dark:border dark:border-slate-800 sm:p-8">
+		
+		<!-- CABECERA DE LOGO Y BOTONES DE ACCIÓN -->
+		<div class="flex items-center justify-between">
+			<div class="flex items-center gap-2">
+				<div class="grid h-9 w-9 place-items-center rounded-xl bg-[#0877a7] font-black text-white shadow-sm">
+					S
+				</div>
+				<span class="text-xl font-black tracking-tight text-[#075782] dark:text-sky-400">SUNAT</span>
+			</div>
+
+			<div class="flex items-center gap-3">
+				<!-- BOTÓN MODO OSCURO -->
+				<button
+					type="button"
+					id="modal-theme-toggle"
+					class="grid h-10 w-10 place-items-center rounded-2xl border border-slate-200 bg-white text-slate-700 transition hover:bg-slate-100 dark:border-slate-700 dark:bg-slate-800 dark:text-slate-200"
+					aria-label="Cambiar tema"
+				>
+					<Icon name="moon" size={20} class="text-slate-700 dark:text-slate-200" />
+				</button>
+
+				<!-- BOTÓN PARA CERRAR (X) -->
+				<button
+					type="button"
+					id="close-login-modal"
+					class="grid h-10 w-10 place-items-center rounded-xl text-slate-400 transition hover:text-slate-700 dark:hover:text-slate-200"
+					aria-label="Cerrar ventana"
+				>
+					<Icon name="x" size={22} />
+				</button>
+			</div>
+		</div>
+
+		<!-- TÍTULOS Y SUBTÍTULO -->
+		<div class="mt-5">
+			<span class="text-[11px] font-bold uppercase tracking-wider text-[#0877a7] dark:text-sky-400">
+				SUNAT OPERACIONES EN LÍNEA
+			</span>
+			<h2 id="modal-title" class="mt-1 text-2xl font-extrabold text-slate-900 dark:text-white">
+				Ingresa con tu Clave SOL
+			</h2>
+		</div>
+
+		<!-- SELECTOR DE TIPO DE ACCESO (RUC / DNI) -->
+		<div class="mt-4 flex rounded-xl bg-slate-100 p-1 dark:bg-slate-800" role="tablist">
+			<button
+				type="button"
+				id="tab-ruc"
+				role="tab"
+				aria-selected="true"
+				class="flex-1 rounded-lg py-2 text-xs font-bold transition-all bg-white text-[#0877a7] shadow-sm dark:bg-slate-900 dark:text-sky-400"
+			>
+				Con RUC (Empresa)
+			</button>
+			<button
+				type="button"
+				id="tab-dni"
+				role="tab"
+				aria-selected="false"
+				class="flex-1 rounded-lg py-2 text-xs font-bold transition-all text-slate-600 hover:text-slate-900 dark:text-slate-400 dark:hover:text-white"
+			>
+				Con DNI (Persona)
+			</button>
+		</div>
+
+		<!-- FORMULARIO DE INGRESO -->
+		<form id="form-login-sol" class="mt-4 space-y-3.5" novalidate>
+			
+			<!-- CAMPO RUC / DNI -->
+			<div>
+				<label id="label-tipo-doc" for="input-ruc" class="block text-xs font-bold text-slate-700 dark:text-slate-300 mb-1.5">
+					RUC
+				</label>
+				<input
+					type="text"
+					id="input-ruc"
+					value="10616288475"
+					maxlength="11"
+					required
+					class="w-full rounded-xl border border-slate-300 bg-white px-4 py-3 text-sm font-medium text-slate-900 outline-none transition focus:border-[#0877a7] focus:ring-2 focus:ring-[#0877a7]/20 dark:border-slate-700 dark:bg-slate-800 dark:text-white"
+				/>
+				<p id="err-login-ruc" class="text-[11px] font-semibold text-rose-600 dark:text-rose-400 mt-1 hidden"></p>
+			</div>
+
+			<!-- Usuario (Solo visible para RUC) -->
+			<div id="container-usuario">
+				<label for="input-usuario" class="block text-xs font-bold text-slate-700 dark:text-slate-300 mb-1.5">
+					Usuario
+				</label>
+				<input
+					type="text"
+					id="input-usuario"
+					value="PRUEBA"
+					required
+					class="w-full rounded-xl border border-slate-300 bg-white px-4 py-3 text-sm font-medium text-slate-900 outline-none transition focus:border-[#0877a7] focus:ring-2 focus:ring-[#0877a7]/20 dark:border-slate-700 dark:bg-slate-800 dark:text-white"
+				/>
+				<p id="err-login-usuario" class="text-[11px] font-semibold text-rose-600 dark:text-rose-400 mt-1 hidden"></p>
+			</div>
+
+			<!-- Contraseña con ojo alternable (Precargada con 12345678) -->
+			<div>
+				<label for="input-password" class="block text-xs font-bold text-slate-700 dark:text-slate-300 mb-1.5">
+					Contraseña (Clave SOL)
+				</label>
+				<div class="relative">
+					<input
+						type="password"
+						id="input-password"
+						value="12345678"
+						required
+						class="w-full rounded-xl border border-slate-300 bg-white pl-4 pr-11 py-3 text-sm font-medium text-slate-900 outline-none transition focus:border-[#0877a7] focus:ring-2 focus:ring-[#0877a7]/20 dark:border-slate-700 dark:bg-slate-800 dark:text-white"
+					/>
+					<button
+						type="button"
+						id="toggle-password-visibility"
+						class="absolute right-3 top-1/2 -translate-y-1/2 text-slate-400 hover:text-slate-600 dark:hover:text-slate-200"
+						aria-label="Mostrar contraseña"
+					>
+						<Icon name="eye" size={18} />
+					</button>
+				</div>
+				<p id="err-login-password" class="text-[11px] font-semibold text-rose-600 dark:text-rose-400 mt-1 hidden"></p>
+			</div>
+
+			<!-- BOTÓN DE ENVIAR -->
+			<button
+				type="submit"
+				id="btn-login-submit"
+				class="mt-2 flex w-full items-center justify-center gap-2 rounded-xl bg-[#0877a7] py-3.5 text-sm font-bold text-white shadow-lg transition hover:bg-[#075782] focus-visible:outline-[#0877a7]"
+			>
+				<span>Iniciar sesión</span>
+				<Icon name="arrow-right" size={18} />
+			</button>
+		</form>
+
+		<!-- ENLACES DE RECUPERACIÓN / CREACIÓN -->
+		<div class="mt-6 flex items-center justify-between border-t border-slate-100 pt-4 text-xs font-bold dark:border-slate-800">
+			<a href="#olvidaste" class="text-[#0877a7] hover:underline dark:text-sky-400">
+				¿Olvidaste tu contraseña?
+			</a>
+			<a href="#crear" class="text-[#0877a7] hover:underline dark:text-sky-400">
+				Crear Clave SOL
+			</a>
+		</div>
+
+	</div>
+</div>
+
+<script src="../scripts/loginModal.js"></script>

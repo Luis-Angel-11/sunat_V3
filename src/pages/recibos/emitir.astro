@@ -1,0 +1,263 @@
+---
+import Layout from '../../layouts/Layout.astro';
+import SolHeader from '../../components/sol/SolHeader.astro';
+import SolSidebar from '../../components/sol/SolSidebar.astro';
+import SolFooter from '../../components/sol/SolFooter.astro';
+import Icon from '../../components/Icon.astro';
+---
+
+<Layout title="Emitir Recibo por Honorarios Electrónico - SUNAT SOL">
+	<!-- 1. HEADER OFICIAL UNIFICADO -->
+	<SolHeader current="inicio" />
+
+	<!-- 2. ESTRUCTURA FLEX DE 2 COLUMNAS (SIDEBAR + CONTENIDO) -->
+	<div class="flex min-h-[calc(100vh-104px)] bg-[#f8fafc] dark:bg-slate-950">
+		
+		<!-- SIDEBAR LATERAL (Con 'emitir' marcado como activo) -->
+		<SolSidebar activeMenu="emitir" />
+
+		<!-- CONTENIDO PRINCIPAL INTERFAZ WEB -->
+		<main class="flex-1 p-6 lg:p-8 max-w-7xl print:hidden">
+			<div class="space-y-6">
+				
+				<!-- Migas de Pan (Ruta de navegación corregida) -->
+				<nav class="flex text-xs font-semibold text-slate-500 dark:text-slate-400 print:hidden" aria-label="Breadcrumb">
+					<ol class="inline-flex items-center gap-1.5">
+						<li><a href="/prueba" class="hover:text-[#0877a7] dark:hover:text-sky-300">Inicio SOL</a></li>
+						<li><Icon name="chevron-right" size={12} /></li>
+						<li><span class="text-slate-800 dark:text-slate-200 font-bold">Recibo por Honorarios Electrónico (RHE)</span></li>
+					</ol>
+				</nav>
+
+				<!-- BANNER CONTEXTUAL DE AYUDA (UNIFICADO AL ESTILO FACTURAS) -->
+<div class="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-3 rounded-2xl border border-sky-200 bg-sky-50/80 p-4 dark:border-sky-900/60 dark:bg-sky-950/40 print:hidden">
+	<div class="flex items-center gap-3">
+		<span class="grid h-9 w-9 shrink-0 place-items-center rounded-xl bg-[#003366] text-white dark:bg-sky-500 dark:text-slate-950">
+			<Icon name="info" size={20} />
+		</span>
+		<div>
+			<h2 class="text-xs font-bold text-slate-900 dark:text-white">
+				¿Es tu primera vez emitiendo un Recibo por Honorarios o necesitas ayuda con algún campo?
+			</h2>
+			<p class="text-[11px] text-slate-600 dark:text-slate-300">
+				Consulta nuestra guía paso a paso con video tutorial integrado para resolver tus dudas antes de emitir.
+			</p>
+		</div>
+	</div>
+
+	<a href="/guias/emitir" class="inline-flex shrink-0 items-center justify-center gap-1.5 rounded-xl bg-[#0877a7] px-4 py-2 text-xs font-bold text-white shadow-sm transition hover:bg-[#075782] dark:bg-sky-600 dark:hover:bg-sky-500">
+		<span>Ver Guía y Video Tutorial</span>
+		<Icon name="arrow-right" size={14} />
+	</a>
+</div>
+
+				<!-- FORMULARIO RHE -->
+				<form id="form-rhe" class="rounded-2xl border border-slate-200 bg-white p-6 shadow-sm dark:border-slate-800 dark:bg-slate-900 space-y-6" novalidate>
+					
+					<!-- DATOS DEL USUARIO / RECEPTOR -->
+					<div class="space-y-4">
+						<h3 class="text-sm font-extrabold text-slate-900 dark:text-white uppercase border-b border-slate-100 pb-3 dark:border-slate-800">
+							1. Datos del Usuaria/o o Usuario a quien se le presta el servicio
+						</h3>
+
+						<div class="grid grid-cols-1 md:grid-cols-3 gap-4 text-xs">
+							<div>
+								<label class="block font-bold mb-1 text-slate-700 dark:text-slate-300">Tipo de Documento <span class="text-rose-500">*</span></label>
+								<select id="rhe-tipo-doc" class="h-9 w-full rounded-lg border border-slate-300 px-3 text-xs dark:border-slate-700 dark:bg-slate-950 dark:text-white font-semibold">
+									<option value="6">RUC (Registro Único de Contribuyentes)</option>
+									<option value="1">DNI (Doc. Nacional de Identidad)</option>
+									<option value="4">Carnet de Extranjería</option>
+								</select>
+							</div>
+
+							<div>
+								<label class="block font-bold mb-1 text-slate-700 dark:text-slate-300">Número de Documento <span class="text-rose-500">*</span></label>
+								<div class="flex gap-2">
+									<input type="text" id="rhe-num-doc" maxlength="11" placeholder="Ej: 20615611809" class="h-9 w-full rounded-lg border border-slate-300 px-3 text-xs dark:border-slate-700 dark:bg-slate-950 dark:text-white" />
+									<button type="button" id="btn-buscar-receptor" class="h-9 px-3 rounded-lg bg-[#0877a7] text-xs font-bold text-white hover:bg-[#075782] shrink-0">
+										Validar
+									</button>
+								</div>
+								<p id="err-rhe-num-doc" class="text-[11px] font-semibold text-rose-600 dark:text-rose-400 mt-1 hidden"></p>
+							</div>
+
+							<div>
+								<label class="block font-bold mb-1 text-slate-700 dark:text-slate-300">Nombres / Razón Social <span class="text-rose-500">*</span></label>
+								<input type="text" id="rhe-nom-receptor" placeholder="Nombre completo o Razón Social" class="h-9 w-full rounded-lg border border-slate-300 px-3 text-xs dark:border-slate-700 dark:bg-slate-950 dark:text-white" />
+								<p id="err-rhe-nom-receptor" class="text-[11px] font-semibold text-rose-600 dark:text-rose-400 mt-1 hidden"></p>
+							</div>
+						</div>
+					</div>
+
+					<!-- DETALLE DEL SERVICIO -->
+					<div class="space-y-4 pt-2">
+						<h3 class="text-sm font-extrabold text-slate-900 dark:text-white uppercase border-b border-slate-100 pb-3 dark:border-slate-800">
+							2. Información del Servicio Prestado
+						</h3>
+
+						<div class="space-y-4 text-xs">
+							<div>
+								<label class="block font-bold mb-1 text-slate-700 dark:text-slate-300">Descripción del Servicio <span class="text-rose-500">*</span></label>
+								<textarea id="rhe-descripcion" rows="3" placeholder="Escriba detalladamente el servicio profesional prestado..." class="w-full rounded-lg border border-slate-300 p-3 text-xs dark:border-slate-700 dark:bg-slate-950 dark:text-white"></textarea>
+								<p id="err-rhe-descripcion" class="text-[11px] font-semibold text-rose-600 dark:text-rose-400 mt-1 hidden"></p>
+							</div>
+
+							<div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+								<div>
+									<label class="block font-bold mb-1 text-slate-700 dark:text-slate-300">Fecha de Emisión <span class="text-rose-500">*</span></label>
+									<input type="date" id="rhe-fec-emision" class="h-9 w-full rounded-lg border border-slate-300 px-3 text-xs dark:border-slate-700 dark:bg-slate-950 dark:text-white font-semibold" />
+									<p id="err-rhe-fec-emision" class="text-[11px] font-semibold text-rose-600 dark:text-rose-400 mt-1 hidden"></p>
+								</div>
+
+								<div>
+									<label class="block font-bold mb-1 text-slate-700 dark:text-slate-300">Tipo de Moneda <span class="text-rose-500">*</span></label>
+									<select id="rhe-moneda" class="h-9 w-full rounded-lg border border-slate-300 px-3 text-xs dark:border-slate-700 dark:bg-slate-950 dark:text-white font-semibold">
+										<option value="PEN">SOLES (S/)</option>
+										<option value="USD">DÓLARES ESTADOUNIDENSES ($)</option>
+									</select>
+								</div>
+							</div>
+						</div>
+					</div>
+
+					<!-- IMPORTES Y RETENCIÓN DE IR -->
+					<div class="space-y-4 pt-2">
+						<h3 class="text-sm font-extrabold text-slate-900 dark:text-white uppercase border-b border-slate-100 pb-3 dark:border-slate-800">
+							3. Importes del Honorario y Retención del Impuesto a la Renta
+						</h3>
+
+						<div class="grid grid-cols-1 md:grid-cols-3 gap-4 text-xs bg-slate-50 p-4 rounded-xl border border-slate-200 dark:bg-slate-950 dark:border-slate-800">
+							<div>
+								<label class="block font-bold mb-1 text-slate-700 dark:text-slate-300">Honorario Total <span class="text-rose-500">*</span></label>
+								<input type="number" id="rhe-monto-total" placeholder="0.00" step="0.01" class="h-9 w-full rounded-lg border border-slate-300 px-3 text-xs dark:border-slate-700 dark:bg-slate-900 dark:text-white font-bold" />
+								<p id="err-rhe-monto-total" class="text-[11px] font-semibold text-rose-600 dark:text-rose-400 mt-1 hidden"></p>
+							</div>
+
+							<div>
+								<label class="block font-bold mb-1 text-slate-700 dark:text-slate-300">Retención 8% Impuesto a la Renta</label>
+								<div class="flex items-center gap-2">
+									<input type="checkbox" id="rhe-aplica-retencion" class="h-4 w-4 rounded border-slate-300 text-[#0877a7] focus:ring-[#0877a7]" />
+									<span class="text-[11px] text-slate-600 dark:text-slate-400">Retener 8%</span>
+									<input type="text" id="rhe-monto-retencion" value="0.00" readonly class="h-9 w-full rounded-lg border border-slate-200 bg-slate-100 px-3 text-xs font-bold text-slate-700 dark:border-slate-800 dark:bg-slate-900 dark:text-slate-400 text-right" />
+								</div>
+							</div>
+
+							<div>
+								<label class="block font-bold mb-1 text-slate-700 dark:text-slate-300">Neto a Recibir</label>
+								<input type="text" id="rhe-monto-neto" value="0.00" readonly class="h-9 w-full rounded-lg border border-slate-200 bg-emerald-50 px-3 text-xs font-black text-emerald-700 dark:border-emerald-900 dark:bg-emerald-950/40 dark:text-emerald-400 text-right" />
+							</div>
+						</div>
+					</div>
+
+					<!-- BOTONES DE ACCIÓN -->
+					<div class="flex items-center justify-end gap-3 pt-4 border-t border-slate-100 dark:border-slate-800">
+						<button type="button" id="btn-vista-previa-rhe" class="rounded-xl bg-emerald-600 px-5 py-2.5 text-xs font-bold text-white shadow-md transition hover:bg-emerald-700">
+							<div class="flex items-center gap-2">
+								<Icon name="file-text" size={16} />
+								<span>Vista Previa</span>
+							</div>
+						</button>
+
+						<button type="submit" id="btn-submit-rhe" class="rounded-xl bg-[#0877a7] px-6 py-2.5 text-xs font-bold text-white shadow-md transition hover:bg-[#075782]">
+							<div class="flex items-center gap-2">
+								<Icon name="check" size={16} />
+								<span>Emitir Recibo</span>
+							</div>
+						</button>
+					</div>
+
+				</form>
+
+			</div>
+		</main>
+	</div>
+
+
+	<!-- MODAL PREVISUALIZACIÓN -->
+	<div id="modal-vista-previa-rhe" class="hidden fixed inset-0 z-50 flex items-center justify-center bg-slate-900/70 p-4 backdrop-blur-sm overflow-y-auto print:flex print:static print:bg-white print:p-0 print:w-full print:h-auto">
+		<div id="documento-impreso-rhe" class="w-full max-w-2xl rounded-2xl border border-slate-300 bg-white p-8 shadow-2xl space-y-4 my-8 text-slate-900 text-[11px] font-sans print:m-0 print:border-none print:shadow-none print:w-full print:p-0">
+			
+			<div class="flex justify-between items-start border-b border-slate-300 pb-4">
+				<div>
+					<h2 class="font-black text-sm uppercase text-slate-900" id="pv-rhe-emisor-nom">Cordova Ramos Javier</h2>
+					<p class="font-bold text-slate-700">RUC: <span id="pv-rhe-emisor-ruc">10616288475</span></p>
+					<p class="text-[10px] text-slate-500">RECIBO POR HONORARIOS ELECTRONICO</p>
+				</div>
+				<div class="border border-slate-400 p-3 text-center min-w-[200px] rounded bg-slate-50">
+					<p class="font-black text-xs">RECIBO POR HONORARIOS</p>
+					<p class="font-black text-sm text-rose-600 mt-0.5">E001-00000045</p>
+				</div>
+			</div>
+
+			<div class="border border-slate-300 p-3 rounded space-y-1">
+				<p><strong>Recibí de:</strong> <span id="pv-rhe-recibi-de">-</span></p>
+				<p><strong>Identificado con:</strong> <span id="pv-rhe-doc-tipo">RUC</span> N° <span id="pv-rhe-doc-num">-</span></p>
+				<p><strong>Fecha de Emisión:</strong> <span id="pv-rhe-fec-emision">2026-11-01</span></p>
+			</div>
+
+			<div class="border border-slate-300 p-3 rounded space-y-1 min-h-[80px]">
+				<p class="font-bold border-b border-slate-200 pb-1 mb-1">Por concepto de:</p>
+				<p id="pv-rhe-concepto" class="whitespace-pre-line text-slate-800 font-medium">-</p>
+			</div>
+
+			<div class="border border-slate-300 p-3 rounded space-y-1.5 bg-slate-50/50">
+				<div class="flex justify-between">
+					<span>Total Honorarios:</span>
+					<span class="font-bold"><span class="pv-moneda-simbolo">S/</span> <span id="pv-rhe-total">0.00</span></span>
+				</div>
+				<div class="flex justify-between text-rose-700">
+					<span>Retención (8%) IR:</span>
+					<span class="font-bold"><span class="pv-moneda-simbolo">S/</span> <span id="pv-rhe-retencion">0.00</span></span>
+				</div>
+				<div class="flex justify-between border-t border-slate-300 pt-1 text-xs font-black text-slate-900">
+					<span>Neto Recibido:</span>
+					<span><span class="pv-moneda-simbolo">S/</span> <span id="pv-rhe-neto">0.00</span></span>
+				</div>
+			</div>
+
+			<div class="flex justify-between items-end pt-2 print:hidden">
+				<div class="h-16 w-16 border border-slate-800 p-1 flex items-center justify-center bg-slate-100 text-[8px] text-center font-bold">
+					[ QR RHE SUNAT ]
+				</div>
+				<button type="button" id="btn-cerrar-pv-rhe" class="rounded-xl border border-slate-300 px-5 py-2 text-xs font-bold hover:bg-slate-50 transition">
+					Cerrar Vista Previa
+				</button>
+			</div>
+
+		</div>
+	</div>
+
+	<!-- MODAL ÉXITO -->
+	<div id="modal-exito-rhe" class="hidden fixed inset-0 z-50 flex items-center justify-center bg-slate-900/60 p-4 backdrop-blur-sm print:hidden">
+		<div class="w-full max-w-lg rounded-2xl border border-slate-200 bg-white p-6 shadow-2xl dark:border-slate-800 dark:bg-slate-900 space-y-5 text-slate-900 dark:text-slate-100">
+			<div class="flex items-center justify-between border-b border-slate-100 pb-3 dark:border-slate-800">
+				<h3 class="text-base font-bold text-slate-900 dark:text-white">Recibo por Honorarios: E001-00000045</h3>
+				<button type="button" id="btn-cerrar-exito-rhe" class="text-slate-400 hover:text-slate-600 font-bold">✕</button>
+			</div>
+
+			<div class="flex items-center gap-3 rounded-xl border border-emerald-200 bg-emerald-50 p-4 text-xs font-semibold text-emerald-800 dark:border-emerald-900 dark:bg-emerald-950/60 dark:text-emerald-200">
+				<span class="grid h-6 w-6 shrink-0 place-items-center rounded-full bg-emerald-500 text-white font-black">✓</span>
+				<span>El Recibo por Honorarios Electrónico E001-00000045 ha sido emitido correctamente.</span>
+			</div>
+
+			<div class="grid grid-cols-2 gap-3 pt-2">
+				<button type="button" id="btn-descarga-a4-rhe" class="flex flex-col items-center justify-center gap-2 rounded-2xl bg-[#0877a7] p-4 text-white shadow-md transition hover:bg-[#075782]">
+					<span class="grid h-9 w-9 place-items-center rounded-xl bg-white/20">
+						<Icon name="file-text" size={20} />
+					</span>
+					<span class="text-xs font-extrabold uppercase">Descargar / Imprimir PDF</span>
+				</button>
+
+				<button type="button" onclick="document.getElementById('btn-cerrar-exito-rhe').click()" class="flex flex-col items-center justify-center gap-2 rounded-2xl bg-slate-100 dark:bg-slate-800 p-4 text-slate-700 dark:text-slate-200 shadow-md transition hover:bg-slate-200 dark:hover:bg-slate-700">
+					<span class="grid h-9 w-9 place-items-center rounded-xl bg-slate-200 dark:bg-slate-700">
+						<Icon name="check" size={20} />
+					</span>
+					<span class="text-xs font-extrabold uppercase">Finalizar</span>
+				</button>
+			</div>
+		</div>
+	</div>
+
+	<!-- SCRIPT DE LÓGICA RHE -->
+	<script src="../../scripts/recibo-honorarios.js"></script>
+</Layout>

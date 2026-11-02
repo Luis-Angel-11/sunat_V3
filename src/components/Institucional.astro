@@ -1,0 +1,265 @@
+---
+import Icon from './Icon.astro';
+
+const institutionalCards = [
+	{
+		title: 'Información general',
+		description: 'Quiénes somos, cómo nos organizamos y qué normas seguimos.',
+		icon: 'info',
+	},
+	{
+		title: 'SUNAT rinde cuentas',
+		description: 'En qué se usa el dinero y cómo se administra la institución.',
+		icon: 'file-text',
+	},
+	{
+		title: 'Normas legales',
+		description: 'Leyes y reglas que aplicamos en impuestos y aduanas.',
+		icon: 'book-open',
+	},
+	{
+		title: 'Estadísticas y estudios',
+		description: 'Datos e investigaciones sobre impuestos y aduanas.',
+		icon: 'calculator',
+	},
+	{
+		title: 'Índices y tasas',
+		description:
+			'Consulta la UIT (valor usado para calcular impuestos y multas), intereses y otros valores de referencia.',
+		icon: 'credit-card',
+	},
+	{
+		title: 'Integridad',
+		description: 'Cómo prevenimos la corrupción y qué hacer si quieres denunciarla.',
+		icon: 'shield-check',
+	},
+] as const;
+
+const publications = [
+	{
+		title: 'Nuevo Centro de Servicios Virtual',
+		description: 'Haz trámites en línea desde un solo lugar.',
+		date: '13 de agosto de 2026',
+		image: '/img/noticias/centro-servicios.jpg',
+	},
+	{
+		title: 'Sorteo de Comprobantes de Pago - ¡Pide y Gana!',
+		description: 'Consulta si tu boleta salió premiada.',
+		date: '26 de octubre de 2026',
+		image: '/img/campanas/2026/c-pideboleta.jpg',
+	},
+	{
+		title: 'Expediente Electrónico de Reclamaciones',
+		description: 'Sigue el avance de tu reclamo por internet.',
+		date: '6 de octubre de 2026',
+		image: '/img/informes/expediente.jpg',
+	},
+];
+
+const links = [
+	{
+		title: 'Atención al ciudadano',
+		description: 'Canales para hacer consultas o pedir ayuda.',
+	},
+	{
+		title: 'Carta de Servicios',
+		description: 'Qué servicios ofrecemos y cómo atenderte.',
+	},
+	{
+		title: 'AlertaMiBoleta',
+		description: 'Avisos sobre tus boletas y comprobantes.',
+	},
+	{
+		title: 'Denuncias',
+		description: 'Presenta una denuncia de forma segura.',
+	},
+	{
+		title: 'Solicitud de Acceso a la Información Pública',
+		description: 'Pide información pública de SUNAT.',
+	},
+	{
+		title: 'Operaciones disponibles sin Clave SOL (Personas)',
+		description: 'Trámites que puedes hacer sin contraseña.',
+	},
+	{
+		title: 'Operaciones disponibles sin Clave SOL (Empresas)',
+		description: 'Trámites para empresas sin contraseña.',
+	},
+	{
+		title: 'Operatividad Aduanera',
+		description: 'Revisa el estado de las oficinas y trámites de aduanas.',
+	},
+	{
+		title: 'Charlas SUNAT',
+		description: 'Inscríbete en charlas y capacitaciones.',
+	},
+	{
+		title: 'Archivo Central',
+		description: 'Consulta documentos históricos de SUNAT.',
+	},
+	{
+		title: 'Asistente Virtual Sofía',
+		description: 'Resuelve tus dudas con ayuda automática.',
+	},
+	{
+		title: 'Repositorio Institucional',
+		description: 'Busca documentos, estudios y publicaciones.',
+	},
+];
+---
+
+<section
+	id="informacion-institucional"
+	class="scroll-mt-4 lg:scroll-mt-20 bg-slate-50 py-12 dark:bg-slate-900"
+	aria-labelledby="titulo-institucional"
+>
+	<div class="container-sunat">
+		<div class="max-w-3xl">
+			<p class="text-sm font-bold uppercase tracking-wider text-sunat-blue dark:text-sky-400">La institución</p>
+			<h2 id="titulo-institucional" class="mt-1 text-2xl font-bold text-slate-900 dark:text-white md:text-3xl">
+				Información institucional
+			</h2>
+			<p class="mt-2 text-slate-600 dark:text-slate-300">
+				Aquí encuentras quiénes somos, cómo nos organizamos y los documentos que usamos para
+				atenderte.
+			</p>
+		</div>
+
+		<ul class="mt-6 grid gap-4 md:grid-cols-2 lg:grid-cols-3">
+			{
+				institutionalCards.map((card) => (
+					<li>
+						<a
+							href={`https://www.gob.pe/busquedas?institucion%5B%5D=sunat&term=${encodeURIComponent(card.title)}`}
+							target="_blank"
+							rel="noopener noreferrer"
+							class="group flex h-full flex-col rounded-2xl border border-slate-200 bg-white p-5 shadow-sm transition hover:-translate-y-0.5 hover:border-sunat-blue/30 hover:shadow-md dark:border-slate-800 dark:bg-slate-950 dark:hover:border-sky-500/40"
+						>
+							<span class="grid h-11 w-11 place-items-center rounded-xl bg-sunat-blue/10 text-sunat-blue dark:bg-sky-500/15 dark:text-sky-300">
+								<Icon name={card.icon} size={21} />
+							</span>
+							<h3 class="mt-4 font-bold text-slate-900 group-hover:text-sunat-blue dark:text-slate-100 dark:group-hover:text-sky-300">
+								{card.title}
+							</h3>
+							<p class="mt-1 flex-1 text-sm leading-relaxed text-slate-600 dark:text-slate-400">{card.description}</p>
+							<span class="mt-4 inline-flex items-center gap-1.5 text-sm font-semibold text-sunat-blue dark:text-sky-400">
+								Leer más
+								<Icon name="arrow-right" size={15} />
+							</span>
+						</a>
+					</li>
+				))
+			}
+		</ul>
+	</div>
+</section>
+
+<section id="informes" class="scroll-mt-4 lg:scroll-mt-20 bg-white py-12 dark:bg-slate-950" aria-labelledby="titulo-informes">
+	<div class="container-sunat">
+		<div class="flex flex-col gap-4 sm:flex-row sm:items-end sm:justify-between">
+			<div>
+				<p class="text-sm font-bold uppercase tracking-wider text-sunat-magenta dark:text-rose-300">
+					Publicaciones
+				</p>
+				<h2 id="titulo-informes" class="mt-1 text-2xl font-bold text-slate-900 dark:text-white md:text-3xl">
+					Informes y publicaciones
+				</h2>
+				<p class="mt-2 text-slate-600 dark:text-slate-300">
+					Consulta estudios, reportes y documentos públicos de SUNAT.
+				</p>
+			</div>
+			<a
+				href="https://www.gob.pe/busquedas?contenido%5B%5D=informes&institucion%5B%5D=sunat"
+				target="_blank"
+				rel="noopener noreferrer"
+				class="link-sunat inline-flex items-center gap-2 text-sm"
+			>
+				Buscar informes y publicaciones
+				<Icon name="external-link" size={15} />
+			</a>
+		</div>
+
+		<ul class="mt-6 grid gap-5 md:grid-cols-3">
+			{
+				publications.map((publication) => (
+					<li>
+						<a
+							href="https://www.gob.pe/busquedas?contenido%5B%5D=informes&institucion%5B%5D=sunat"
+							target="_blank"
+							rel="noopener noreferrer"
+							class="group flex h-full flex-col overflow-hidden rounded-2xl border border-slate-200 bg-white shadow-sm transition hover:-translate-y-0.5 hover:shadow-lg dark:border-slate-800 dark:bg-slate-900 dark:hover:shadow-slate-950/60"
+						>
+							<div class="aspect-[16/9] overflow-hidden bg-slate-100 dark:bg-slate-800">
+								<img
+									src={publication.image}
+									alt=""
+									loading="lazy"
+									class="h-full w-full object-cover transition duration-300 group-hover:scale-[1.03]"
+								/>
+							</div>
+							<div class="flex flex-1 flex-col p-5">
+								<div class="flex items-center gap-2">
+									<span class="rounded-full bg-emerald-50 px-2.5 py-1 text-[11px] font-bold uppercase tracking-wide text-emerald-700 dark:bg-emerald-950/60 dark:text-emerald-300">
+										Nuevo
+									</span>
+									<time class="text-xs font-semibold text-slate-500 dark:text-slate-400">{publication.date}</time>
+								</div>
+								<h3 class="mt-2 font-bold leading-snug text-slate-900 group-hover:text-sunat-blue dark:text-slate-100 dark:group-hover:text-sky-300">
+									{publication.title}
+								</h3>
+								<p class="mt-2 flex-1 text-sm leading-relaxed text-slate-600 dark:text-slate-400">
+									{publication.description}
+								</p>
+								<span class="mt-4 inline-flex items-center gap-1.5 text-sm font-semibold text-sunat-blue dark:text-sky-400">
+									Leer más
+									<Icon name="arrow-right" size={15} />
+								</span>
+							</div>
+						</a>
+					</li>
+				))
+			}
+		</ul>
+	</div>
+</section>
+
+<section id="enlaces-de-interes" class="scroll-mt-4 lg:scroll-mt-20 bg-slate-50 py-12 dark:bg-slate-900" aria-labelledby="titulo-enlaces">
+	<div class="container-sunat">
+		<div class="max-w-3xl">
+			<p class="text-sm font-bold uppercase tracking-wider text-sunat-green dark:text-emerald-300">Accesos directos</p>
+			<h2 id="titulo-enlaces" class="mt-1 text-2xl font-bold text-slate-900 dark:text-white md:text-3xl">
+				Enlaces de interés
+			</h2>
+			<p class="mt-2 text-slate-600 dark:text-slate-300">
+				Accesos directos a otros servicios y documentos. Cada uno te dice para qué sirve.
+			</p>
+		</div>
+
+		<ul class="mt-6 grid gap-3 sm:grid-cols-2 lg:grid-cols-3">
+			{
+				links.map((link) => (
+					<li>
+						<a
+							href={`https://www.gob.pe/busquedas?institucion%5B%5D=sunat&term=${encodeURIComponent(link.title)}`}
+							target="_blank"
+							rel="noopener noreferrer"
+							class="group flex h-full items-start justify-between gap-3 rounded-xl border border-slate-200 bg-white px-4 py-3 text-sm font-semibold text-slate-700 transition hover:border-sunat-blue/40 hover:bg-sky-50 hover:text-sunat-blue dark:border-slate-800 dark:bg-slate-950 dark:text-slate-200 dark:hover:border-sky-500/40 dark:hover:bg-slate-800 dark:hover:text-sky-300"
+						>
+							<span>
+								<span class="block">{link.title}</span>
+								<span class="mt-1 block text-xs font-normal leading-relaxed text-slate-500 group-hover:text-sunat-blue/80 dark:text-slate-400 dark:group-hover:text-sky-300/80">
+									{link.description}
+								</span>
+							</span>
+							<Icon
+								name="external-link"
+								size={15}
+								class="mt-0.5 shrink-0 text-slate-400 transition group-hover:text-sunat-blue dark:text-slate-500 dark:group-hover:text-sky-300"
+							/>
+						</a>
+					</li>
+				))
+			}
+		</ul>
+	</div>
+</section>

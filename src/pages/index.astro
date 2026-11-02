@@ -1,0 +1,29 @@
+---
+import Header from '../components/Header.astro';
+import Hero from '../components/Hero.astro';
+import Tramites from '../components/Tramites.astro';
+import Campanas from '../components/Campanas.astro';
+import Canales from '../components/Canales.astro';
+import Noticias from '../components/Noticias.astro';
+import Institucional from '../components/Institucional.astro';
+import Footer from '../components/Footer.astro';
+// 1. AGREGA ESTA LÍNEA DE IMPORTACIÓN:
+import LoginModal from '../components/LoginModal.astro';
+import Layout from '../layouts/Layout.astro';
+---
+
+<Layout title="SUNAT - Plataforma Digital de Trámites y Servicios">
+	<Header />
+	<main id="contenido">
+		<Hero />
+		<Tramites />
+		<Campanas />
+		<Canales />
+		<Noticias />
+		<Institucional />
+	</main>
+	<Footer />
+
+	<!-- 2. AQUÍ YA SE PUEDE USAR SIN ERROR -->
+	<LoginModal />
+</Layout>

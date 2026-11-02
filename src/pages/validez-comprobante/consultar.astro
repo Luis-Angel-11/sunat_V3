@@ -1,0 +1,285 @@
+---
+import Layout from '../../layouts/Layout.astro';
+import SolHeader from '../../components/sol/SolHeader.astro';
+import SolSidebar from '../../components/sol/SolSidebar.astro';
+import Icon from '../../components/Icon.astro';
+---
+
+<Layout title="Validez del Comprobante de Pago Electrónico - SUNAT SOL">
+	<!-- 1. HEADER OFICIAL UNIFICADO -->
+	<SolHeader current="inicio" />
+
+	<!-- 2. CONTENEDOR FLEX PRINCIPAL (SIDEBAR + CONTENIDO) -->
+	<div class="flex min-h-[calc(100vh-104px)] bg-[#f8fafc] dark:bg-slate-950">
+		
+		<!-- SIDEBAR LATERAL (Activado en 'consultar') -->
+		<SolSidebar activeMenu="consultar" />
+
+		<!-- CONTENIDO PRINCIPAL ENCUADRADO -->
+		<main class="flex-1 p-6 lg:p-8 max-w-7xl print:hidden">
+			<div class="space-y-6">
+				
+				<!-- Migas de Pan -->
+				<nav class="flex text-xs font-semibold text-slate-500 dark:text-slate-400 print:hidden" aria-label="Breadcrumb">
+					<ol class="inline-flex items-center gap-1.5">
+						<li><a href="/prueba" class="hover:text-[#0877a7] dark:hover:text-sky-300">Inicio SOL</a></li>
+						<li><Icon name="chevron-right" size={12} /></li>
+						<li><a href="/sol/consultar" class="hover:text-[#0877a7] dark:hover:text-sky-300">Consultar</a></li>
+						<li><Icon name="chevron-right" size={12} /></li>
+						<li><span class="text-slate-800 dark:text-slate-200 font-bold">Validez del Comprobante (CPE)</span></li>
+					</ol>
+				</nav>
+
+				<!-- BANNER CONTEXTUAL DE AYUDA -->
+				<div class="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-3 rounded-2xl border border-sky-200 bg-sky-50/80 p-4 dark:border-sky-900/60 dark:bg-sky-950/40 print:hidden">
+					<div class="flex items-center gap-3">
+						<span class="grid h-9 w-9 shrink-0 place-items-center rounded-xl bg-[#003366] text-white dark:bg-sky-500 dark:text-slate-950">
+							<Icon name="info" size={20} />
+						</span>
+						<div>
+							<h2 class="text-xs font-bold text-slate-900 dark:text-white">
+								¿Dudas sobre la autenticidad o validez de un comprobante recibido?
+							</h2>
+							<p class="text-[11px] text-slate-600 dark:text-slate-300">
+								Verifica de inmediato si una Factura, Boleta, RHE, Guía o Nota Electrónica se encuentra oficialmente registrada e informada en la SUNAT.
+							</p>
+						</div>
+					</div>
+
+					<a href="/guias/emitir" class="inline-flex shrink-0 items-center justify-center gap-1.5 rounded-xl bg-[#0877a7] px-4 py-2 text-xs font-bold text-white shadow-sm transition hover:bg-[#075782] dark:bg-sky-600 dark:hover:bg-sky-500">
+						<span>Guía de Consulta</span>
+						<Icon name="arrow-right" size={14} />
+					</a>
+				</div>
+
+				<!-- FORMULARIO PRINCIPAL DE VALIDACIÓN DE CPE -->
+				<div class="rounded-2xl border border-slate-200 bg-white p-6 shadow-sm dark:border-slate-800 dark:bg-slate-900 space-y-6">
+					
+					<div class="border-b border-slate-100 pb-3 dark:border-slate-800">
+						<h3 class="text-sm font-extrabold text-slate-900 dark:text-white uppercase tracking-tight">
+							Consulta la Validez del Comprobante de Pago Electrónico (CPE)
+						</h3>
+						<p class="text-xs text-slate-500 dark:text-slate-400 mt-1">
+							Ingrese los datos tal como figuran impresos en el documento recibido.
+						</p>
+					</div>
+
+					<form id="form-validez-cpe" class="space-y-6" novalidate>
+						
+						<!-- SECCIÓN 1: DATOS DEL EMISOR Y TIPO DE COMPROBANTE -->
+						<div class="grid grid-cols-1 md:grid-cols-2 gap-4 text-xs">
+							
+							<!-- RUC Emisor -->
+							<div>
+								<label for="val-ruc-emisor" class="block font-bold mb-1 text-slate-700 dark:text-slate-300">
+									Número de RUC del Emisor <span class="text-rose-500">*</span>
+								</label>
+								<div class="relative">
+									<input 
+										type="text" 
+										id="val-ruc-emisor" 
+										maxlength="11" 
+										placeholder="Ej: 20517352059" 
+										class="h-9 w-full rounded-lg border border-slate-300 px-3 pr-12 text-xs dark:border-slate-700 dark:bg-slate-950 dark:text-white font-medium focus:border-[#0877a7] focus:ring-1 focus:ring-[#0877a7]" 
+									/>
+									<span id="cnt-ruc-emisor" class="absolute right-2 top-2.5 text-[10px] font-semibold text-slate-400">0/11</span>
+								</div>
+								<p id="err-val-ruc-emisor" class="text-[11px] font-semibold text-rose-600 dark:text-rose-400 mt-1 hidden"></p>
+							</div>
+
+							<!-- Tipo Comprobante -->
+							<div>
+								<label for="val-tipo-cpe" class="block font-bold mb-1 text-slate-700 dark:text-slate-300">
+									Tipo de Comprobante <span class="text-rose-500">*</span>
+								</label>
+								<select id="val-tipo-cpe" class="h-9 w-full rounded-lg border border-slate-300 px-3 text-xs dark:border-slate-700 dark:bg-slate-950 dark:text-white font-semibold">
+									<option value="FACTURA">FACTURA ELECTRÓNICA</option>
+									<option value="BOLETA">BOLETA DE VENTA ELECTRÓNICA</option>
+									<option value="RHE">RECIBO POR HONORARIOS ELECTRÓNICO (RHE)</option>
+									<option value="NC">NOTA DE CRÉDITO ELECTRÓNICA</option>
+									<option value="ND">NOTA DE DÉBITO ELECTRÓNICA</option>
+									<option value="GRE">GUÍA DE REMISIÓN ELECTRÓNICA (GRE)</option>
+								</select>
+							</div>
+
+						</div>
+
+						<!-- SECCIÓN 2: DATOS DEL RECEPTOR -->
+						<div class="grid grid-cols-1 md:grid-cols-2 gap-4 text-xs">
+							
+							<!-- Tipo Doc Receptor -->
+							<div>
+								<label for="val-tipo-doc-rec" class="block font-bold mb-1 text-slate-700 dark:text-slate-300">
+									Tipo de Doc. Identidad del Receptor
+								</label>
+								<select id="val-tipo-doc-rec" class="h-9 w-full rounded-lg border border-slate-300 px-3 text-xs dark:border-slate-700 dark:bg-slate-950 dark:text-white font-medium">
+									<option value="0">SIN DOCUMENTO (PÚBLICO GENERAL)</option>
+									<option value="6">RUC (REGISTRO ÚNICO DE CONTRIBUYENTES)</option>
+									<option value="1">DNI (DOCUMENTO NACIONAL DE IDENTIDAD)</option>
+									<option value="4">CARNET DE EXTRANJERÍA</option>
+									<option value="7">PASAPORTE</option>
+								</select>
+							</div>
+
+							<!-- Num Doc Receptor -->
+							<div>
+								<label for="val-num-doc-rec" class="block font-bold mb-1 text-slate-700 dark:text-slate-300">
+									Número Documento del Receptor
+								</label>
+								<div class="relative">
+									<input 
+										type="text" 
+										id="val-num-doc-rec" 
+										placeholder="Seleccione tipo de doc" 
+										disabled
+										class="h-9 w-full rounded-lg border border-slate-200 bg-slate-100 px-3 pr-12 text-xs dark:border-slate-800 dark:bg-slate-950 dark:text-slate-400 font-medium" 
+									/>
+									<span id="cnt-doc-receptor" class="absolute right-2 top-2.5 text-[10px] font-semibold text-slate-400 hidden">0/11</span>
+								</div>
+								<p id="err-val-num-doc-rec" class="text-[11px] font-semibold text-rose-600 dark:text-rose-400 mt-1 hidden"></p>
+							</div>
+
+						</div>
+
+						<!-- SECCIÓN 3: CORRELATIVO, FECHA E IMPORTE -->
+						<div class="grid grid-cols-1 sm:grid-cols-3 gap-4 text-xs">
+							
+							<!-- Serie y Número Comprobante -->
+							<div>
+								<label class="block font-bold mb-1 text-slate-700 dark:text-slate-300">
+									Número del Comprobante (Serie - Número) <span class="text-rose-500">*</span>
+								</label>
+								<div class="flex items-center gap-1.5">
+									<input 
+										type="text" 
+										id="val-serie" 
+										maxlength="4" 
+										placeholder="F001" 
+										class="h-9 w-24 uppercase text-center rounded-lg border border-slate-300 px-2 text-xs font-bold dark:border-slate-700 dark:bg-slate-950 dark:text-white" 
+									/>
+									<span class="font-bold text-slate-400">-</span>
+									<input 
+										type="text" 
+										id="val-numero" 
+										maxlength="8" 
+										placeholder="00000042" 
+										class="h-9 w-full rounded-lg border border-slate-300 px-3 text-xs font-medium dark:border-slate-700 dark:bg-slate-950 dark:text-white" 
+									/>
+								</div>
+								<p id="err-val-correlativo" class="text-[11px] font-semibold text-rose-600 dark:text-rose-400 mt-1 hidden"></p>
+							</div>
+
+							<!-- Fecha Emisión -->
+							<div>
+								<label for="val-fec-emision" class="block font-bold mb-1 text-slate-700 dark:text-slate-300">
+									Fecha de Emisión <span class="text-rose-500">*</span>
+								</label>
+								<input 
+									type="date" 
+									id="val-fec-emision" 
+									class="h-9 w-full rounded-lg border border-slate-300 px-3 text-xs font-semibold dark:border-slate-700 dark:bg-slate-950 dark:text-white" 
+								/>
+								<p id="err-val-fec-emision" class="text-[11px] font-semibold text-rose-600 dark:text-rose-400 mt-1 hidden"></p>
+							</div>
+
+							<!-- Importe Total -->
+							<div>
+								<label for="val-monto-total" class="block font-bold mb-1 text-slate-700 dark:text-slate-300">
+									Importe Total (S/) <span class="text-rose-500">*</span>
+								</label>
+								<input 
+									type="number" 
+									id="val-monto-total" 
+									step="0.01" 
+									placeholder="0.00" 
+									class="h-9 w-full rounded-lg border border-slate-300 px-3 text-xs font-bold dark:border-slate-700 dark:bg-slate-950 dark:text-white" 
+								/>
+								<p id="err-val-monto-total" class="text-[11px] font-semibold text-rose-600 dark:text-rose-400 mt-1 hidden"></p>
+							</div>
+
+						</div>
+
+						<!-- BOTONES DE ACCIÓN -->
+						<div class="flex items-center justify-end gap-3 pt-4 border-t border-slate-100 dark:border-slate-800">
+							<button 
+								type="button" 
+								id="btn-limpiar-validez" 
+								class="rounded-xl border border-slate-300 bg-white px-5 py-2.5 text-xs font-bold text-slate-700 transition hover:bg-slate-50 dark:border-slate-700 dark:bg-slate-950 dark:text-slate-300"
+							>
+								Limpiar Campos
+							</button>
+
+							<button 
+								type="submit" 
+								id="btn-buscar-validez" 
+								class="inline-flex items-center gap-2 rounded-xl bg-[#0877a7] px-6 py-2.5 text-xs font-bold text-white shadow-md transition hover:bg-[#075782]"
+							>
+								<Icon name="search" size={16} />
+								<span>Consultar Validez</span>
+							</button>
+						</div>
+
+					</form>
+				</div>
+
+			</div>
+		</main>
+	</div>
+
+	<!-- MODAL RESULTADO DE LA CONSULTA -->
+	<div id="modal-resultado-validez" class="hidden fixed inset-0 z-50 flex items-center justify-center bg-slate-900/60 p-4 backdrop-blur-sm print:hidden">
+		<div class="w-full max-w-lg rounded-2xl border border-slate-200 bg-white p-6 shadow-2xl dark:border-slate-800 dark:bg-slate-900 space-y-5 text-slate-900 dark:text-slate-100 relative">
+			
+			<!-- Cabecera Modal -->
+			<div class="flex items-center justify-between border-b border-slate-100 pb-3 dark:border-slate-800">
+				<h3 class="text-base font-bold text-slate-900 dark:text-white">Resultado de Consulta de Validez</h3>
+				<button type="button" id="btn-cerrar-modal-x" class="text-slate-400 hover:text-slate-600 font-bold">✕</button>
+			</div>
+
+			<!-- Alerta de Estado -->
+			<div id="modal-alerta-box" class="flex items-start gap-3 rounded-xl border p-4 text-xs font-semibold">
+				<span id="modal-badge-icon" class="grid h-7 w-7 shrink-0 place-items-center rounded-full text-white font-black text-xs">✓</span>
+				<div>
+					<h4 id="modal-estado-titulo" class="font-extrabold uppercase text-xs">COMPROBANTE VÁLIDO</h4>
+					<p id="modal-estado-mensaje" class="mt-0.5 text-[11px] leading-relaxed"></p>
+				</div>
+			</div>
+
+			<!-- Detalle Técnico del Comprobante -->
+			<div class="space-y-2 text-xs bg-slate-50 p-4 rounded-xl border border-slate-200 dark:bg-slate-950 dark:border-slate-800">
+				<div class="flex justify-between border-b border-slate-200 pb-1.5 dark:border-slate-800">
+					<span class="text-slate-500 dark:text-slate-400 font-medium">Comprobante:</span>
+					<span id="res-modal-cpe" class="font-extrabold text-slate-800 dark:text-slate-200">-</span>
+				</div>
+				<div class="flex justify-between border-b border-slate-200 pb-1.5 dark:border-slate-800">
+					<span class="text-slate-500 dark:text-slate-400 font-medium">RUC Emisor:</span>
+					<span id="res-modal-emisor" class="font-bold text-slate-800 dark:text-slate-200">-</span>
+				</div>
+				<div class="flex justify-between border-b border-slate-200 pb-1.5 dark:border-slate-800">
+					<span class="text-slate-500 dark:text-slate-400 font-medium">Fecha Emisión:</span>
+					<span id="res-modal-fecha" class="font-bold text-slate-800 dark:text-slate-200">-</span>
+				</div>
+				<div class="flex justify-between">
+					<span class="text-slate-500 dark:text-slate-400 font-medium">Importe Total:</span>
+					<span id="res-modal-monto" class="font-black text-[#0877a7] dark:text-sky-400">-</span>
+				</div>
+			</div>
+
+			<!-- Acciones de Navegación -->
+			<div class="grid grid-cols-2 gap-3 pt-2 border-t border-slate-100 dark:border-slate-800">
+				<button type="button" id="btn-otra-consulta" class="flex items-center justify-center gap-2 rounded-xl border border-slate-300 bg-white p-3 text-xs font-bold text-slate-700 hover:bg-slate-50 dark:border-slate-700 dark:bg-slate-950 dark:text-slate-300 transition">
+					<Icon name="search" size={16} />
+					<span>Otra Consulta</span>
+				</button>
+
+				<a href="/prueba" class="flex items-center justify-center gap-2 rounded-xl bg-[#0877a7] p-3 text-xs font-bold text-white shadow-md transition hover:bg-[#075782]">
+					<Icon name="home" size={16} />
+					<span>Regresar al Inicio</span>
+				</a>
+			</div>
+		</div>
+	</div>
+
+	<!-- VINCULACIÓN AL SCRIPT EXTERNO -->
+	<script src="../../scripts/validez-comprobante.js"></script>
+</Layout>

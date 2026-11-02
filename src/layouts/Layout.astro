@@ -1,0 +1,137 @@
+---
+import '../styles/global.css';
+import ThemeToggle from '../components/ThemeToggle.astro';
+
+interface Props {
+	title?: string;
+	description?: string;
+}
+
+const {
+	title = 'SUNAT - Superintendencia Nacional de Aduanas y de Administración Tributaria',
+	description = 'Administramos los tributos del Gobierno Nacional Peruano. Consulta trámites, servicios, campañas y canales de atención de la SUNAT.',
+} = Astro.props;
+---
+
+<!doctype html>
+<html lang="es" class="scroll-smooth" data-texto="normal">
+	<head>
+		<meta charset="utf-8" />
+		<meta name="viewport" content="width=device-width, initial-scale=1" />
+		<meta name="description" content={description} />
+		<meta name="theme-color" content="#d91009" />
+		<meta name="color-scheme" content="light dark" />
+		<script is:inline>
+			(() => {
+				try {
+					const storedTheme = localStorage.getItem('sunat-theme');
+					const dark = storedTheme
+						? storedTheme === 'dark'
+						: window.matchMedia('(prefers-color-scheme: dark)').matches;
+					document.documentElement.classList.toggle('dark', dark);
+					document.documentElement.dataset.theme = dark ? 'dark' : 'light';
+
+					const storedTexto = localStorage.getItem('sunat-texto');
+					if (storedTexto) {
+						document.documentElement.dataset.texto = storedTexto;
+					}
+				} catch {
+				}
+			})();
+		</script>
+		<link rel="icon" type="image/svg+xml" href="/favicon.svg" />
+		<link rel="icon" href="/favicon.ico" />
+		<meta name="generator" content={Astro.generator} />
+		<title>{title}</title>
+		<style is:global>
+			/* Tamaños de texto globales interactivos */
+			html[data-texto="normal"] {
+				font-size: 100%; /* 16px */
+			}
+			html[data-texto="grande"] {
+				font-size: 112.5%; /* 18px */
+			}
+			html[data-texto="extra"] {
+				font-size: 125%; /* 20px */
+			}
+		</style>
+	</head>
+	<body>
+		<a class="skip-link" href="#contenido">Saltar al contenido principal</a>
+		<slot />
+		<div data-theme-fallback hidden class="fixed right-4 top-20 z-50">
+			<ThemeToggle variant="surface" />
+		</div>
+		<script is:inline>
+			(() => {
+				const root = document.documentElement;
+				const storageKey = 'sunat-theme';
+				const media = window.matchMedia('(prefers-color-scheme: dark)');
+				let transitionTimer;
+
+				const readStoredTheme = () => {
+					try {
+						return localStorage.getItem(storageKey);
+					} catch {
+						return null;
+					}
+				};
+
+				const syncThemeControls = () => {
+					const dark = root.classList.contains('dark');
+					document.querySelectorAll('[data-theme-toggle]').forEach((button) => {
+						const label = dark ? 'Activar modo claro' : 'Activar modo oscuro';
+						button.setAttribute('aria-label', label);
+						button.setAttribute('title', label);
+						const text = button.querySelector('[data-theme-label]');
+						if (text) text.textContent = dark ? 'Modo claro' : 'Modo oscuro';
+					});
+					const themeColor = document.querySelector('meta[name="theme-color"]');
+					if (themeColor) themeColor.setAttribute('content', dark ? '#020617' : '#d91009');
+				};
+
+				const setTheme = (theme, { persist = false, animate = false } = {}) => {
+					if (animate) {
+						root.classList.add('theme-transition');
+						clearTimeout(transitionTimer);
+						transitionTimer = setTimeout(() => root.classList.remove('theme-transition'), 350);
+					}
+					root.classList.toggle('dark', theme === 'dark');
+					root.dataset.theme = theme;
+					if (persist) {
+						try {
+							localStorage.setItem(storageKey, theme);
+						} catch {
+						}
+					}
+					syncThemeControls();
+				};
+
+				const fallback = document.querySelector('[data-theme-fallback]');
+				if (fallback) {
+					const hasPageToggle = [...document.querySelectorAll('[data-theme-toggle]')].some(
+						(button) => !fallback.contains(button),
+					);
+					fallback.hidden = hasPageToggle;
+				}
+
+				syncThemeControls();
+
+				document.addEventListener('click', (event) => {
+					if (!(event.target instanceof Element)) return;
+					const button = event.target.closest('[data-theme-toggle]');
+					if (!button) return;
+					setTheme(root.classList.contains('dark') ? 'light' : 'dark', {
+						persist: true,
+						animate: true,
+					});
+				});
+
+				media.addEventListener('change', (event) => {
+					if (readStoredTheme()) return;
+					setTheme(event.matches ? 'dark' : 'light', { animate: true });
+				});
+			})();
+		</script>
+	</body>
+</html>

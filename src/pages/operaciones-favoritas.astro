@@ -1,0 +1,146 @@
+---
+import Icon from '../components/Icon.astro';
+import SolLayout from '../layouts/SolLayout.astro';
+---
+
+<SolLayout
+	title="Operaciones favoritas"
+	description="Accede rápido a las operaciones que guardaste en tu cuenta."
+	current="favoritas"
+>
+	<div class="container-sunat py-6">
+		<nav aria-label="Ruta de navegación" class="text-sm">
+			<ol class="flex flex-wrap items-center gap-1.5 text-slate-500 dark:text-slate-400">
+				<li><a href="/sol" class="link-sunat">Inicio</a></li>
+				<li aria-hidden="true"><Icon name="chevron-right" size={14} /></li>
+				<li aria-current="page" class="font-semibold text-slate-800 dark:text-slate-200">Operaciones favoritas</li>
+			</ol>
+		</nav>
+
+		<header class="mt-4">
+			<h1 class="text-2xl font-black tracking-tight text-slate-900 dark:text-white sm:text-3xl">Operaciones favoritas</h1>
+			<p id="favoritas-resumen" class="mt-1 text-sm text-slate-600 dark:text-slate-400">
+				Las operaciones que guardes aparecerán aquí para que las encuentres más rápido.
+			</p>
+		</header>
+
+		<p id="favoritas-estado" class="sr-only" role="status" aria-live="polite"></p>
+
+		<div id="favoritas-lista" class="mt-5 grid gap-3 md:grid-cols-2"></div>
+
+		<section id="favoritas-vacio" hidden class="sol-panel mt-5 py-10 text-center">
+			<span class="mx-auto grid h-14 w-14 place-items-center rounded-full bg-sunat-blue/10 text-sunat-blue dark:bg-sky-500/15 dark:text-sky-300">
+				<Icon name="star" size={26} />
+			</span>
+			<h2 class="mt-4 text-lg font-bold text-slate-900 dark:text-white">Todavía no guardaste operaciones</h2>
+			<p class="mx-auto mt-1 max-w-md text-sm text-slate-600 dark:text-slate-300">
+				Cuando estés en una operación, presiona <strong>Guardar</strong> y aparecerá aquí.
+			</p>
+			<a id="favoritas-vacio-enlace" href="/sol" class="sol-btn-primary mt-5">
+				<Icon name="home" size={17} />
+				Ver mis operaciones
+			</a>
+		</section>
+	</div>
+
+	<script>
+		import { icons, type IconName } from '../data/icons';
+		import { leerOperaciones, quitarOperacion, type OperacionFavorita } from '../lib/operaciones-favoritas';
+
+		const lista = document.querySelector<HTMLElement>('#favoritas-lista');
+		const vacio = document.querySelector<HTMLElement>('#favoritas-vacio');
+		const resumen = document.querySelector<HTMLElement>('#favoritas-resumen');
+		const estado = document.querySelector<HTMLElement>('#favoritas-estado');
+		const enlaceVacio = document.querySelector<HTMLElement>('#favoritas-vacio-enlace');
+
+		const escapar = (texto: string) =>
+			texto.replace(/[&<>"']/g, (caracter) => {
+				const mapa: Record<string, string> = {
+					'&': '&amp;',
+					'<': '&lt;',
+					'>': '&gt;',
+					'"': '&quot;',
+					"'": '&#39;',
+				};
+				return mapa[caracter] ?? caracter;
+			});
+
+		const icono = (nombre: string, size = 18) => {
+			const contenido = icons[nombre as IconName] ?? icons.star;
+			return `<svg xmlns="http://www.w3.org/2000/svg" width="${size}" height="${size}" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" focusable="false">${contenido}</svg>`;
+		};
+
+		const fechaGuardado = (iso: string) => {
+			const fecha = new Date(iso);
+			if (Number.isNaN(fecha.getTime())) return '';
+			return `Guardada el ${fecha.toLocaleDateString('es-PE', { day: 'numeric', month: 'long', year: 'numeric' })}`;
+		};
+
+		const tarjeta = (operacion: OperacionFavorita) => `
+			<article class="sol-panel flex min-w-0 flex-col gap-4">
+				<div class="flex items-start gap-3">
+					<span class="grid h-11 w-11 shrink-0 place-items-center rounded-xl bg-sunat-blue/10 text-sunat-blue dark:bg-sky-500/15 dark:text-sky-300">
+						${icono(operacion.icon || 'star', 21)}
+					</span>
+					<div class="min-w-0 flex-1">
+						<h2 class="font-bold leading-snug text-slate-900 dark:text-white">${escapar(operacion.titulo)}</h2>
+						<p class="mt-1 text-sm leading-relaxed text-slate-600 dark:text-slate-300">${escapar(operacion.descripcion || '')}</p>
+						${operacion.guardado ? `<p class="mt-2 text-xs text-slate-500 dark:text-slate-400">${escapar(fechaGuardado(operacion.guardado))}</p>` : ''}
+					</div>
+					<button
+						type="button"
+						data-quitar="${escapar(operacion.id)}"
+						aria-label="Quitar ${escapar(operacion.titulo)} de operaciones favoritas"
+						title="Quitar de favoritas"
+						class="grid h-9 w-9 shrink-0 place-items-center rounded-lg text-slate-400 transition hover:bg-red-50 hover:text-red-600 dark:hover:bg-red-950/50 dark:hover:text-red-300"
+					>
+						${icono('trash', 17)}
+					</button>
+				</div>
+				<a href="${escapar(operacion.href)}" class="sol-btn-secondary self-start">
+					Abrir operación
+					${icono('arrow-right', 16)}
+				</a>
+			</article>
+		`;
+
+		const pintar = () => {
+			if (!lista || !vacio) return;
+			const operaciones = leerOperaciones();
+			lista.innerHTML = operaciones.map(tarjeta).join('');
+			lista.hidden = operaciones.length === 0;
+			vacio.hidden = operaciones.length > 0;
+			if (resumen) {
+				resumen.textContent =
+					operaciones.length === 0
+						? 'Las operaciones que guardes aparecerán aquí para que las encuentres más rápido.'
+						: operaciones.length === 1
+							? 'Tienes 1 operación guardada.'
+							: `Tienes ${operaciones.length} operaciones guardadas.`;
+			}
+		};
+
+		pintar();
+
+		lista?.addEventListener('click', (event) => {
+			const boton = event.target instanceof Element ? event.target.closest<HTMLElement>('[data-quitar]') : null;
+			if (!boton) return;
+			const id = boton.dataset.quitar;
+			if (!id) return;
+			const operacion = leerOperaciones().find((item) => item.id === id);
+			quitarOperacion(id);
+			pintar();
+			if (estado) {
+				estado.textContent = operacion
+					? `Quitamos “${operacion.titulo}” de operaciones favoritas.`
+					: 'Operación quitada de favoritas.';
+			}
+			const siguiente = lista?.querySelector<HTMLElement>('[data-quitar]');
+			(siguiente ?? enlaceVacio)?.focus();
+		});
+
+		window.addEventListener('storage', (event) => {
+			if (event.key === 'sunat-operaciones-favoritas') pintar();
+		});
+	</script>
+</SolLayout>

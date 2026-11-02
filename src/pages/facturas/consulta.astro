@@ -1,0 +1,258 @@
+---
+import Layout from '../../layouts/Layout.astro';
+import SolHeader from '../../components/sol/SolHeader.astro';
+import SolSidebar from '../../components/sol/SolSidebar.astro';
+import Icon from '../../components/Icon.astro';
+---
+
+<Layout title="Consulta de Comprobantes Electrónicos - SUNAT SOL">
+	<!-- 1. NUEVO HEADER DE SUNAT -->
+	<SolHeader current="inicio" />
+
+	<!-- 2. CONTENEDOR FLEX PRINCIPAL (SIDEBAR + CONTENIDO) -->
+	<div class="flex min-h-[calc(100vh-104px)] bg-[#f8fafc] dark:bg-slate-950">
+		
+		<!-- SIDEBAR LATERAL (Marcado activado en 'consultar') -->
+		<SolSidebar activeMenu="consultar" />
+
+		<!-- CONTENIDO PRINCIPAL ENCUADRADO -->
+		<main class="flex-1 p-6 lg:p-8 max-w-7xl print:hidden">
+			<div class="space-y-6">
+				
+				<!-- Migas de Pan -->
+				<nav class="flex text-xs font-semibold text-slate-500 dark:text-slate-400 print:hidden" aria-label="Breadcrumb">
+					<ol class="inline-flex items-center gap-1.5">
+						<li><a href="/prueba" class="hover:text-[#0877a7] dark:hover:text-sky-300">Inicio SOL</a></li>
+						
+						<li><Icon name="chevron-right" size={12} /></li>
+						<li><span class="text-slate-800 dark:text-slate-200 font-bold">Consulta de Facturas</span></li>
+					</ol>
+				</nav>
+
+				<!-- BANNER CONTEXTUAL DE AYUDA (ESTILO FACTURAS UNIFICADO) -->
+				<div class="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-3 rounded-2xl border border-sky-200 bg-sky-50/80 p-4 dark:border-sky-900/60 dark:bg-sky-950/40 print:hidden">
+					<div class="flex items-center gap-3">
+						<span class="grid h-9 w-9 shrink-0 place-items-center rounded-xl bg-[#003366] text-white dark:bg-sky-500 dark:text-slate-950">
+							<Icon name="info" size={20} />
+						</span>
+						<div>
+							<h2 class="text-xs font-bold text-slate-900 dark:text-white">
+								¿Tienes dudas sobre el estado de tus Facturas, Boletas o Notas de Crédito?
+							</h2>
+							<p class="text-[11px] text-slate-600 dark:text-slate-300">
+								Consulta el estado CDR enviado a SUNAT, descarga archivos XML/PDF o visualiza el detalle de tus ventas.
+							</p>
+						</div>
+					</div>
+
+					<a href="/guias/emitir" class="inline-flex shrink-0 items-center justify-center gap-1.5 rounded-xl bg-[#0877a7] px-4 py-2 text-xs font-bold text-white shadow-sm transition hover:bg-[#075782] dark:bg-sky-600 dark:hover:bg-sky-500">
+						<span>Ver Guía de Consulta</span>
+						<Icon name="arrow-right" size={14} />
+					</a>
+				</div>
+
+				<!-- PANEL DE FILTROS Y BÚSQUEDA CON VALIDACIÓN -->
+				<div class="rounded-2xl border border-slate-200 bg-white p-6 shadow-sm dark:border-slate-800 dark:bg-slate-900 space-y-4">
+					<h3 class="text-xs font-bold text-slate-800 dark:text-slate-200 uppercase tracking-wider border-b border-slate-100 dark:border-slate-800 pb-2">
+						Filtros de Búsqueda
+					</h3>
+
+					<form id="form-consulta" class="space-y-4" novalidate>
+						<div class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-4 gap-4 text-xs">
+							
+							<!-- Tipo Comprobante -->
+							<div>
+								<label for="filtro-tipo" class="block font-bold mb-1 text-slate-700 dark:text-slate-300">Tipo comprobante</label>
+								<select id="filtro-tipo" class="h-9 w-full rounded-lg border border-slate-300 px-3 text-xs dark:border-slate-700 dark:bg-slate-950 dark:text-white font-medium">
+									<option value="TODOS">TODOS LOS COMPROBANTES</option>
+									<option value="FACTURA">FACTURA ELECTRÓNICA</option>
+									<option value="BOLETA">BOLETA DE VENTA ELECTRÓNICA</option>
+									<option value="NC">NOTA DE CRÉDITO</option>
+									<option value="ND">NOTA DE DÉBITO</option>
+								</select>
+							</div>
+
+							<!-- Serie -->
+							<div>
+								<label for="filtro-serie" class="block font-bold mb-1 text-slate-700 dark:text-slate-300">Serie</label>
+								<select id="filtro-serie" class="h-9 w-full rounded-lg border border-slate-300 px-3 text-xs dark:border-slate-700 dark:bg-slate-950 dark:text-white font-medium">
+									<option value="TODOS">TODAS LAS SERIES</option>
+									<option value="F001">F001</option>
+									<option value="F002">F002</option>
+									<option value="B001">B001</option>
+									<option value="B002">B002</option>
+									<option value="FC01">FC01</option>
+									<option value="FD01">FD01</option>
+								</select>
+							</div>
+
+							<!-- Número Correlativo -->
+							<div>
+								<label for="filtro-numero" class="block font-bold mb-1 text-slate-700 dark:text-slate-300">Número Correlativo</label>
+								<input type="text" id="filtro-numero" placeholder="Ej: 7231 o 00000042" class="h-9 w-full rounded-lg border border-slate-300 px-3 text-xs dark:border-slate-700 dark:bg-slate-950 dark:text-white" />
+							</div>
+
+							<!-- Estado SUNAT -->
+							<div>
+								<label for="filtro-estado" class="block font-bold mb-1 text-slate-700 dark:text-slate-300">Estado SUNAT</label>
+								<select id="filtro-estado" class="h-9 w-full rounded-lg border border-slate-300 px-3 text-xs dark:border-slate-700 dark:bg-slate-950 dark:text-white font-medium">
+									<option value="TODOS">TODOS LOS ESTADOS</option>
+									<option value="ACEPTADO">ACEPTADO</option>
+									<option value="RECHAZADO">RECHAZADO</option>
+									<option value="ANULADO">ANULADO</option>
+								</select>
+							</div>
+
+							<!-- Fecha Inicio -->
+							<div>
+								<label for="filtro-fec-inicio" class="block font-bold mb-1 text-slate-700 dark:text-slate-300">Fecha Inicio</label>
+								<input type="date" id="filtro-fec-inicio" class="h-9 w-full rounded-lg border border-slate-300 px-3 text-xs dark:border-slate-700 dark:bg-slate-950 dark:text-white font-semibold" />
+							</div>
+
+							<!-- Fecha Término -->
+							<div>
+								<label for="filtro-fec-fin" class="block font-bold mb-1 text-slate-700 dark:text-slate-300">Fecha Término</label>
+								<input type="date" id="filtro-fec-fin" class="h-9 w-full rounded-lg border border-slate-300 px-3 text-xs dark:border-slate-700 dark:bg-slate-950 dark:text-white font-semibold" />
+							</div>
+
+							<!-- Cliente -->
+							<div class="sm:col-span-2">
+								<label for="filtro-cliente" class="block font-bold mb-1 text-slate-700 dark:text-slate-300">
+									Cliente (RUC / DNI o Razón Social)
+								</label>
+								<input type="text" id="filtro-cliente" placeholder="Escriba RUC, DNI o Nombre del cliente" class="h-9 w-full rounded-lg border border-slate-300 px-3 text-xs dark:border-slate-700 dark:bg-slate-950 dark:text-white" />
+								<p id="feedback-cliente-consulta" class="text-xs font-semibold hidden mt-1"></p>
+							</div>
+
+						</div>
+
+						<p id="feedback-consulta" class="text-xs font-semibold hidden"></p>
+
+						<!-- BOTONES DE BÚSQUEDA Y LIMPIEZA -->
+						<div class="flex items-center gap-2 pt-2">
+							<button type="submit" id="btn-buscar-consulta" class="inline-flex items-center gap-2 rounded-xl bg-[#0877a7] px-6 py-2.5 text-xs font-bold text-white shadow-md transition hover:bg-[#075782]">
+								<Icon name="search" size={16} />
+								<span>Buscar Comprobantes</span>
+							</button>
+
+							<button type="button" id="btn-limpiar-consulta" class="inline-flex items-center gap-2 rounded-xl border border-slate-300 bg-white px-5 py-2.5 text-xs font-bold text-slate-700 transition hover:bg-slate-50 dark:border-slate-700 dark:bg-slate-950 dark:text-slate-300">
+								<span>Limpiar Filtros</span>
+							</button>
+						</div>
+					</form>
+				</div>
+
+				<!-- TABLA DE RESULTADOS DE CONSULTA -->
+				<div class="rounded-2xl border border-slate-200 bg-white p-6 shadow-sm dark:border-slate-800 dark:bg-slate-900 space-y-4">
+					<div class="flex items-center justify-between">
+						<h3 class="text-xs font-bold text-slate-800 dark:text-slate-200 uppercase tracking-wider">
+							Resultados de la Búsqueda
+						</h3>
+						<span id="txt-total-registros" class="text-xs font-semibold text-slate-500 dark:text-slate-400">
+							Mostrando 0 comprobantes
+						</span>
+					</div>
+
+					<div class="overflow-x-auto rounded-xl border border-slate-200 dark:border-slate-800">
+						<table class="w-full text-left text-xs">
+							<thead class="bg-slate-50 text-slate-700 dark:bg-slate-800 dark:text-slate-300 font-bold">
+								<tr>
+									<th class="p-3">Emisión</th>
+									<th class="p-3">Cliente / RUC</th>
+									<th class="p-3">Número y Tipo</th>
+									<th class="p-3 text-center">Estado</th>
+									<th class="p-3 text-right">T. Gravado</th>
+									<th class="p-3 text-right">T. IGV</th>
+									<th class="p-3 text-right">Total</th>
+									<th class="p-3 text-center">Descargas</th>
+									<th class="p-3 text-center">Acciones</th>
+								</tr>
+							</thead>
+							<tbody id="tabla-resultados-consulta" class="divide-y divide-slate-100 dark:divide-slate-800">
+								<!-- Filas dinámicas generadas mediante JavaScript -->
+							</tbody>
+						</table>
+					</div>
+				</div>
+
+			</div>
+		</main>
+	</div>
+
+	<!-- MODAL VISTA PREVIA IMPRESA Y DETALLE -->
+	<div id="modal-vista-previa-consulta" class="hidden fixed inset-0 z-50 flex items-center justify-center bg-slate-900/70 p-4 backdrop-blur-sm overflow-y-auto print:flex print:static print:bg-white print:p-0 print:w-full print:h-auto">
+		<div id="documento-impreso-consulta" class="w-full max-w-2xl rounded-2xl border border-slate-200 bg-white p-8 shadow-2xl space-y-6 my-8 text-slate-900 text-xs font-mono print:m-0 print:border-none print:shadow-none print:w-full print:p-0">
+			
+			<div class="flex justify-between items-start border-b border-slate-200 pb-4">
+				<div class="flex gap-3 items-start">
+					<div class="h-10 w-10 bg-rose-600 text-white font-black flex items-center justify-center rounded">PHR</div>
+					<div>
+						<h2 class="font-extrabold text-sm">PHR GROUP E.I.R.L.</h2>
+						<p>RUC 20615611809</p>
+						<p class="text-[10px]">AV. UNIVERSITARIA NRO. 8411 DPTO. 1536 INT. 01</p>
+					</div>
+				</div>
+				<div class="border-2 border-dashed border-slate-400 p-3 text-center">
+					<p class="font-bold text-sm">R.U.C. 20615611809</p>
+					<p class="font-bold text-xs" id="pvc-tipo-doc">FACTURA ELECTRÓNICA</p>
+					<p class="font-bold text-sm text-rose-600" id="pvc-num-doc">F001-00007231</p>
+				</div>
+			</div>
+
+			<div class="grid grid-cols-2 gap-2 text-[11px] border-b border-slate-200 pb-3">
+				<div>
+					<p><strong>FECHA EMISIÓN:</strong> <span id="pvc-fec">31-10-2026</span></p>
+					<p><strong>CLIENTE:</strong> <span id="pvc-cliente-nom">AGROINDUSTRIAS RIEGOMAR E.I.R.L.</span></p>
+					<p><strong>RUC / DNI:</strong> <span id="pvc-cliente-ruc">20612681563</span></p>
+				</div>
+				<div>
+					<p><strong>ESTADO SUNAT:</strong> <span id="pvc-estado" class="font-bold text-emerald-600">ACEPTADO</span></p>
+					<p><strong>CONDICIÓN PAGO:</strong> Contado</p>
+				</div>
+			</div>
+
+			<table class="w-full text-left text-[11px] border-b border-slate-200 pb-2">
+				<thead>
+					<tr class="border-b border-slate-300 font-bold">
+						<th class="py-1">CANT.</th>
+						<th class="py-1">DESCRIPCIÓN</th>
+						<th class="py-1 text-right">P.UNIT</th>
+						<th class="py-1 text-right">TOTAL</th>
+					</tr>
+				</thead>
+				<tbody id="pvc-tabla-body">
+					<!-- Ítems del comprobante -->
+				</tbody>
+			</table>
+
+			<div class="flex justify-between items-end pt-2">
+				<div>
+					<p class="font-bold" id="pvc-letras">SON: MIL OCHOCIENTOS DIEZ CON 00/100 SOLES</p>
+					<div class="mt-4 flex gap-4 items-center">
+						<div class="h-16 w-16 border border-slate-800 p-1 flex items-center justify-center bg-slate-100 font-sans text-[8px] text-center font-bold">
+							[ QR SUNAT ]
+						</div>
+					</div>
+				</div>
+
+				<div class="text-right space-y-1 text-[11px]">
+					<p>OP. GRAVADA: S/ <span id="pvc-subtotal">1533.90</span></p>
+					<p>IGV (18%): S/ <span id="pvc-igv">276.10</span></p>
+					<p class="font-extrabold text-sm">TOTAL: S/ <span id="pvc-total">1810.00</span></p>
+				</div>
+			</div>
+
+			<div class="flex justify-end gap-2 pt-4 border-t border-slate-200 print:hidden">
+				<button type="button" onclick="window.print()" class="rounded-xl bg-[#0877a7] px-5 py-2 text-xs font-bold text-white shadow hover:bg-[#075782] transition">
+					🖨️ Imprimir / Guardar PDF
+				</button>
+				<button type="button" id="btn-cerrar-pvc" class="rounded-xl border border-slate-300 px-5 py-2 text-xs font-bold font-sans hover:bg-slate-50 transition">
+					Cerrar Detalle
+				</button>
+			</div>
+		</div>
+	</div>
+
+	<!-- SCRIPT EXTERNO DE CONSULTA -->
+	<script src="../../scripts/consulta-facturas.js"></script>
+</Layout>

@@ -1,0 +1,448 @@
+---
+import Layout from '../../layouts/Layout.astro';
+import SolHeader from '../../components/sol/SolHeader.astro';
+import SolSidebar from '../../components/sol/SolSidebar.astro';
+import Icon from '../../components/Icon.astro';
+---
+
+<Layout title="Declaración IGV - Renta Mensual (Formulario Virtual 621) - SUNAT SOL">
+	<div class="print:hidden">
+		<SolHeader current="inicio" />
+	</div>
+
+	<div class="flex min-h-[calc(100vh-104px)] bg-[#f8fafc] dark:bg-slate-950 print:bg-white print:min-h-0 print:block">
+		<div class="print:hidden">
+			<SolSidebar activeMenu="declarar" />
+		</div>
+
+		<main class="flex-1 p-6 lg:p-8 max-w-7xl print:p-4 print:max-w-none print:w-full">
+			<div class="space-y-6 print:hidden">
+				<!-- Migas de Pan -->
+				<nav class="flex text-xs font-semibold text-slate-500 dark:text-slate-400" aria-label="Breadcrumb">
+					<ol class="inline-flex items-center gap-1.5">
+						<li><a href="/prueba" class="hover:text-[#0877a7] dark:hover:text-sky-300">Inicio SOL</a></li>
+						<li><Icon name="chevron-right" size={12} /></li>
+						<li><a href="/sol/declaraciones" class="hover:text-[#0877a7] dark:hover:text-sky-300">Declaraciones</a></li>
+						<li><Icon name="chevron-right" size={12} /></li>
+						<li><span class="text-slate-800 dark:text-slate-200 font-bold">FV 621 IGV - Renta Mensual</span></li>
+					</ol>
+				</nav>
+
+				<!-- BANNER INFORMATIVO -->
+				<div class="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-3 rounded-2xl border border-sky-200 bg-sky-50/80 p-4 dark:border-sky-900/60 dark:bg-sky-950/40">
+					<div class="flex items-center gap-3">
+						<span class="grid h-9 w-9 shrink-0 place-items-center rounded-xl bg-[#003366] text-white dark:bg-sky-500 dark:text-slate-950">
+							<Icon name="file-text" size={20} />
+						</span>
+						<div>
+							<h2 class="text-xs font-bold text-slate-900 dark:text-white">
+								Formulario Virtual N° 0621 - IGV Renta Mensual
+							</h2>
+							<p class="text-[11px] text-slate-600 dark:text-slate-300">
+								Declaración jurada mensual de tributos para contribuyentes del Régimen General, MYPE Tributario y Especial.
+							</p>
+						</div>
+					</div>
+				</div>
+
+				<!-- STEPPER -->
+				<div class="rounded-2xl border border-slate-200 bg-white p-6 shadow-sm dark:border-slate-800 dark:bg-slate-900">
+					<div class="flex items-center justify-between">
+						<div class="flex items-center gap-3">
+							<div id="step-indicator-1" class="flex h-8 w-8 items-center justify-center rounded-full bg-[#0877a7] text-white font-bold text-xs ring-4 ring-sky-100 dark:ring-sky-900/40">1</div>
+							<div class="hidden sm:block">
+								<p class="text-xs font-bold text-slate-900 dark:text-white">Información General</p>
+								<p class="text-[10px] text-slate-500">Período y Régimen</p>
+							</div>
+						</div>
+						<div id="step-line-1" class="h-1 flex-1 bg-slate-200 dark:bg-slate-800 mx-4"></div>
+						<div class="flex items-center gap-3">
+							<div id="step-indicator-2" class="flex h-8 w-8 items-center justify-center rounded-full bg-slate-200 text-slate-600 font-bold text-xs dark:bg-slate-800 dark:text-slate-400">2</div>
+							<div class="hidden sm:block">
+								<p class="text-xs font-bold text-slate-900 dark:text-white">Ventas y Compras (IGV)</p>
+								<p class="text-[10px] text-slate-500">Bases e Impuesto Resultante</p>
+							</div>
+						</div>
+						<div id="step-line-2" class="h-1 flex-1 bg-slate-200 dark:bg-slate-800 mx-4"></div>
+						<div class="flex items-center gap-3">
+							<div id="step-indicator-3" class="flex h-8 w-8 items-center justify-center rounded-full bg-slate-200 text-slate-600 font-bold text-xs dark:bg-slate-800 dark:text-slate-400">3</div>
+							<div class="hidden sm:block">
+								<p class="text-xs font-bold text-slate-900 dark:text-white">Impuesto a la Renta</p>
+								<p class="text-[10px] text-slate-500">Ingresos Netos y Coeficiente</p>
+							</div>
+						</div>
+						<div id="step-line-3" class="h-1 flex-1 bg-slate-200 dark:bg-slate-800 mx-4"></div>
+						<div class="flex items-center gap-3">
+							<div id="step-indicator-4" class="flex h-8 w-8 items-center justify-center rounded-full bg-slate-200 text-slate-600 font-bold text-xs dark:bg-slate-800 dark:text-slate-400">4</div>
+							<div class="hidden sm:block">
+								<p class="text-xs font-bold text-slate-900 dark:text-white">Determinación de Deuda</p>
+								<p class="text-[10px] text-slate-500">Saldos, Créditos y Pago</p>
+							</div>
+						</div>
+					</div>
+				</div>
+
+				<!-- FORMULARIO -->
+				<form id="form-pdt621" class="rounded-2xl border border-slate-200 bg-white p-6 shadow-sm dark:border-slate-800 dark:bg-slate-900 space-y-6" novalidate>
+					<!-- PASO 1 -->
+					<div id="step-content-1" class="space-y-5">
+						<h3 class="text-sm font-extrabold text-slate-900 dark:text-white uppercase border-b border-slate-100 pb-3 dark:border-slate-800">
+							Paso 1: Datos de la Identificación y Período Tributario
+						</h3>
+						<div class="grid grid-cols-1 md:grid-cols-2 gap-4 text-xs">
+							<div>
+								<label class="block font-bold mb-1 text-slate-700 dark:text-slate-300">Número de RUC</label>
+								<input type="text" id="pdt-ruc" value="10616288475" readonly class="h-9 w-full rounded-lg border border-slate-200 bg-slate-100 px-3 text-xs font-bold text-slate-700 dark:border-slate-800 dark:bg-slate-950 dark:text-slate-300" />
+							</div>
+							<div>
+								<label class="block font-bold mb-1 text-slate-700 dark:text-slate-300">Razón Social</label>
+								<input type="text" id="pdt-razon" value="Cordova Ramos Javier" readonly class="h-9 w-full rounded-lg border border-slate-200 bg-slate-100 px-3 text-xs font-bold text-slate-700 dark:border-slate-800 dark:bg-slate-950 dark:text-slate-300" />
+							</div>
+						</div>
+						<div class="grid grid-cols-1 md:grid-cols-3 gap-4 text-xs">
+							<div>
+								<label class="block font-bold mb-1 text-slate-700 dark:text-slate-300">Período Tributario (AAAA-MM) <span class="text-rose-500">*</span></label>
+								<input type="month" id="pdt-periodo" value="2026-09" class="h-9 w-full rounded-lg border border-slate-300 px-3 text-xs font-bold dark:border-slate-700 dark:bg-slate-950 dark:text-white" />
+							</div>
+							<div>
+								<label class="block font-bold mb-1 text-slate-700 dark:text-slate-300">Tipo de Declaración</label>
+								<input type="text" value="Original" readonly class="h-9 w-full rounded-lg border border-slate-200 bg-slate-100 px-3 text-xs font-bold text-slate-700 dark:border-slate-800 dark:bg-slate-950 dark:text-slate-300" />
+							</div>
+							<div>
+								<label class="block font-bold mb-1 text-slate-700 dark:text-slate-300">Régimen Tributario Renta <span class="text-rose-500">*</span></label>
+								<select id="pdt-regimen" class="h-9 w-full rounded-lg border border-slate-300 px-3 text-xs font-bold dark:border-slate-700 dark:bg-slate-950 dark:text-white">
+									<option value="MYPE">Régimen MYPE Tributario (1.0%)</option>
+									<option value="GENERAL">Régimen General (1.5%)</option>
+									<option value="ESPECIAL">Régimen Especial - RER (1.5%)</option>
+								</select>
+							</div>
+						</div>
+					</div>
+
+					<!-- PASO 2 -->
+					<div id="step-content-2" class="space-y-5 hidden">
+						<h3 class="text-sm font-extrabold text-slate-900 dark:text-white uppercase border-b border-slate-100 pb-3 dark:border-slate-800">
+							Paso 2: Determinación del Impuesto General a las Ventas (IGV)
+						</h3>
+						<div class="space-y-2">
+							<h4 class="text-xs font-bold text-[#0877a7] uppercase tracking-wider">A. Ventas e Ingresos Gravados (IGV Débito Fiscal)</h4>
+							<div class="overflow-x-auto rounded-xl border border-slate-200 dark:border-slate-800">
+								<table class="w-full text-xs text-left">
+									<thead class="bg-slate-50 text-slate-700 dark:bg-slate-800 dark:text-slate-300 font-bold">
+										<tr>
+											<th class="p-2.5">Concepto</th>
+											<th class="p-2.5 w-24 text-center">Casilla Base</th>
+											<th class="p-2.5 w-40">Base Imponible (S/)</th>
+											<th class="p-2.5 w-24 text-center">Casilla IGV</th>
+											<th class="p-2.5 w-40">Impuesto / Tributo (S/)</th>
+										</tr>
+									</thead>
+									<tbody class="divide-y divide-slate-100 dark:divide-slate-800">
+										<tr>
+											<td class="p-2.5 font-medium">Ventas Netas Gravadas (18%)</td>
+											<td class="p-2.5 text-center font-bold text-slate-500">100</td>
+											<td class="p-2.5">
+												<input type="number" id="cas-100" min="0" step="0.01" placeholder="0.00" class="h-8 w-full rounded-lg border border-slate-300 px-2.5 text-xs font-bold text-right dark:border-slate-700 dark:bg-slate-950 dark:text-white" />
+											</td>
+											<td class="p-2.5 text-center font-bold text-slate-500">101</td>
+											<td class="p-2.5">
+												<input type="number" id="cas-101" readonly value="0.00" class="h-8 w-full rounded-lg border border-slate-200 bg-slate-100 px-2.5 text-xs font-bold text-right dark:border-slate-800 dark:bg-slate-950 dark:text-emerald-400" />
+											</td>
+										</tr>
+										<tr>
+											<td class="p-2.5 font-medium">Descuentos concedidos y/o devoluciones</td>
+											<td class="p-2.5 text-center font-bold text-slate-500">102</td>
+											<td class="p-2.5">
+												<input type="number" id="cas-102" min="0" step="0.01" placeholder="0.00" class="h-8 w-full rounded-lg border border-slate-300 px-2.5 text-xs font-bold text-right dark:border-slate-700 dark:bg-slate-950 dark:text-white" />
+											</td>
+											<td class="p-2.5 text-center font-bold text-slate-500">103</td>
+											<td class="p-2.5">
+												<input type="number" id="cas-103" readonly value="0.00" class="h-8 w-full rounded-lg border border-slate-200 bg-slate-100 px-2.5 text-xs font-bold text-right dark:border-slate-800 dark:bg-slate-950" />
+											</td>
+										</tr>
+									</tbody>
+								</table>
+							</div>
+						</div>
+
+						<div class="space-y-2 pt-2">
+							<h4 class="text-xs font-bold text-[#0877a7] uppercase tracking-wider">B. Compras Destinadas a Ventas Gravadas (IGV Crédito Fiscal)</h4>
+							<div class="overflow-x-auto rounded-xl border border-slate-200 dark:border-slate-800">
+								<table class="w-full text-xs text-left">
+									<thead class="bg-slate-50 text-slate-700 dark:bg-slate-800 dark:text-slate-300 font-bold">
+										<tr>
+											<th class="p-2.5">Concepto</th>
+											<th class="p-2.5 w-24 text-center">Casilla Base</th>
+											<th class="p-2.5 w-40">Base Imponible (S/)</th>
+											<th class="p-2.5 w-24 text-center">Casilla IGV</th>
+											<th class="p-2.5 w-40">Crédito Fiscal (S/)</th>
+										</tr>
+									</thead>
+									<tbody class="divide-y divide-slate-100 dark:divide-slate-800">
+										<tr>
+											<td class="p-2.5 font-medium">Compras Netas (Nacionales)</td>
+											<td class="p-2.5 text-center font-bold text-slate-500">107</td>
+											<td class="p-2.5">
+												<input type="number" id="cas-107" min="0" step="0.01" placeholder="0.00" class="h-8 w-full rounded-lg border border-slate-300 px-2.5 text-xs font-bold text-right dark:border-slate-700 dark:bg-slate-950 dark:text-white" />
+											</td>
+											<td class="p-2.5 text-center font-bold text-slate-500">108</td>
+											<td class="p-2.5">
+												<input type="number" id="cas-108" readonly value="0.00" class="h-8 w-full rounded-lg border border-slate-200 bg-slate-100 px-2.5 text-xs font-bold text-right dark:border-slate-800 dark:bg-slate-950 dark:text-emerald-400" />
+											</td>
+										</tr>
+										<tr class="bg-slate-50/80 font-extrabold dark:bg-slate-800/50">
+											<td class="p-2.5 uppercase">Total Impuesto IGV Resultante</td>
+											<td class="p-2.5 text-center text-slate-500">140</td>
+											<td class="p-2.5"></td>
+											<td class="p-2.5 text-center text-slate-500">-</td>
+											<td class="p-2.5">
+												<input type="number" id="cas-140" readonly value="0.00" class="h-8 w-full rounded-lg border border-slate-300 bg-slate-200 px-2.5 text-xs font-black text-right text-[#0877a7] dark:border-slate-700 dark:bg-slate-900 dark:text-sky-400" />
+											</td>
+										</tr>
+									</tbody>
+								</table>
+							</div>
+						</div>
+					</div>
+
+					<!-- PASO 3 -->
+					<div id="step-content-3" class="space-y-5 hidden">
+						<h3 class="text-sm font-extrabold text-slate-900 dark:text-white uppercase border-b border-slate-100 pb-3 dark:border-slate-800">
+							Paso 3: Pago a Cuenta del Impuesto a la Renta
+						</h3>
+						<div class="overflow-x-auto rounded-xl border border-slate-200 dark:border-slate-800">
+							<table class="w-full text-xs text-left">
+								<thead class="bg-slate-50 text-slate-700 dark:bg-slate-800 dark:text-slate-300 font-bold">
+									<tr>
+										<th class="p-2.5">Concepto Renta</th>
+										<th class="p-2.5 w-24 text-center">Casilla Base</th>
+										<th class="p-2.5 w-40">Ingresos Netos (S/)</th>
+										<th class="p-2.5 w-32 text-center">Tasa / Coeficiente</th>
+										<th class="p-2.5 w-40">Impuesto Calculado (S/)</th>
+									</tr>
+								</thead>
+								<tbody class="divide-y divide-slate-100 dark:divide-slate-800">
+									<tr>
+										<td class="p-2.5 font-medium">Ingresos Netos del Período</td>
+										<td class="p-2.5 text-center font-bold text-slate-500">301</td>
+										<td class="p-2.5">
+											<input type="number" id="cas-301" min="0" step="0.01" placeholder="0.00" class="h-8 w-full rounded-lg border border-slate-300 px-2.5 text-xs font-bold text-right dark:border-slate-700 dark:bg-slate-950 dark:text-white" />
+										</td>
+										<td class="p-2.5 text-center font-bold text-slate-700 dark:text-slate-300">
+											<span id="label-tasa-renta">1.0% (0.0100)</span>
+										</td>
+										<td class="p-2.5">
+											<input type="number" id="cas-312" readonly value="0.00" class="h-8 w-full rounded-lg border border-slate-200 bg-slate-100 px-2.5 text-xs font-bold text-right dark:border-slate-800 dark:bg-slate-950 dark:text-emerald-400" />
+										</td>
+									</tr>
+								</tbody>
+							</table>
+						</div>
+					</div>
+
+					<!-- PASO 4 -->
+					<div id="step-content-4" class="space-y-5 hidden">
+						<h3 class="text-sm font-extrabold text-slate-900 dark:text-white uppercase border-b border-slate-100 pb-3 dark:border-slate-800">
+							Paso 4: Determinación de la Deuda Tributaria
+						</h3>
+						<div class="overflow-x-auto rounded-xl border border-slate-200 dark:border-slate-800">
+							<table class="w-full text-xs text-left">
+								<thead class="bg-slate-50 text-slate-700 dark:bg-slate-800 dark:text-slate-300 font-bold">
+									<tr>
+										<th class="p-2.5">Concepto de Determinación</th>
+										<th class="p-2.5 w-36 text-center">IGV (S/)</th>
+										<th class="p-2.5 w-36 text-center">RENTA (S/)</th>
+									</tr>
+								</thead>
+								<tbody class="divide-y divide-slate-100 dark:divide-slate-800">
+									<tr>
+										<td class="p-2.5 font-medium">Impuesto Resultante / Pago a Cuenta</td>
+										<td class="p-2.5"><input type="number" id="det-igv-140" readonly value="0.00" class="h-8 w-full text-right font-bold bg-slate-100 rounded px-2 dark:bg-slate-950" /></td>
+										<td class="p-2.5"><input type="number" id="det-renta-302" readonly value="0.00" class="h-8 w-full text-right font-bold bg-slate-100 rounded px-2 dark:bg-slate-950" /></td>
+									</tr>
+									<tr>
+										<td class="p-2.5 font-medium">Saldo a Favor Período Anterior</td>
+										<td class="p-2.5"><input type="number" id="cas-145" min="0" step="0.01" value="0.00" class="h-8 w-full text-right font-bold border border-slate-300 rounded px-2 dark:border-slate-700 dark:bg-slate-950" /></td>
+										<td class="p-2.5"><input type="number" id="cas-303" min="0" step="0.01" value="0.00" class="h-8 w-full text-right font-bold border border-slate-300 rounded px-2 dark:border-slate-700 dark:bg-slate-950" /></td>
+									</tr>
+									<tr>
+										<td class="p-2.5 font-medium">Percepciones / Retenciones no Aplicadas</td>
+										<td class="p-2.5"><input type="number" id="cas-164" min="0" step="0.01" value="0.00" class="h-8 w-full text-right font-bold border border-slate-300 rounded px-2 dark:border-slate-700 dark:bg-slate-950" /></td>
+										<td class="p-2.5"><input type="number" id="cas-326" min="0" step="0.01" value="0.00" class="h-8 w-full text-right font-bold border border-slate-300 rounded px-2 dark:border-slate-700 dark:bg-slate-950" /></td>
+									</tr>
+									<tr>
+										<td class="p-2.5 font-medium">Interés Moratorio</td>
+										<td class="p-2.5"><input type="number" id="cas-187" min="0" step="0.01" value="0.00" class="h-8 w-full text-right font-bold border border-slate-300 rounded px-2 dark:border-slate-700 dark:bg-slate-950" /></td>
+										<td class="p-2.5"><input type="number" id="cas-319" min="0" step="0.01" value="0.00" class="h-8 w-full text-right font-bold border border-slate-300 rounded px-2 dark:border-slate-700 dark:bg-slate-950" /></td>
+									</tr>
+									<tr class="bg-sky-50/80 font-black dark:bg-sky-950/40">
+										<td class="p-2.5 uppercase text-[#0877a7] dark:text-sky-300">Total Importe a Pagar</td>
+										<td class="p-2.5"><input type="number" id="cas-188" readonly value="0.00" class="h-8 w-full text-right font-black bg-white border-2 border-[#0877a7] rounded px-2 text-[#0877a7] dark:bg-slate-900 dark:text-sky-400" /></td>
+										<td class="p-2.5"><input type="number" id="cas-324" readonly value="0.00" class="h-8 w-full text-right font-black bg-white border-2 border-[#0877a7] rounded px-2 text-[#0877a7] dark:bg-slate-900 dark:text-sky-400" /></td>
+									</tr>
+								</tbody>
+							</table>
+						</div>
+					</div>
+
+					<!-- BOTONES -->
+					<div class="flex items-center justify-between pt-4 border-t border-slate-100 dark:border-slate-800">
+						<button type="button" id="btn-prev-pdt" class="hidden rounded-xl border border-slate-300 bg-white px-5 py-2.5 text-xs font-bold text-slate-700 hover:bg-slate-50 dark:border-slate-700 dark:bg-slate-950 dark:text-slate-300">
+							<div class="flex items-center gap-2">
+								<Icon name="arrow-left" size={16} />
+								<span>Paso Anterior</span>
+							</div>
+						</button>
+
+						<div class="ml-auto flex items-center gap-2">
+							<button type="button" id="btn-next-pdt" class="rounded-xl bg-[#0877a7] px-6 py-2.5 text-xs font-bold text-white shadow-md hover:bg-[#075782]">
+								<div class="flex items-center gap-2">
+									<span>Siguiente Paso</span>
+									<Icon name="arrow-right" size={16} />
+								</div>
+							</button>
+
+							<button type="submit" id="btn-submit-pdt" class="hidden rounded-xl bg-emerald-600 px-6 py-2.5 text-xs font-bold text-white shadow-md hover:bg-emerald-700">
+								<div class="flex items-center gap-2">
+									<Icon name="check" size={16} />
+									<span>Presentar y Pagar Declaración</span>
+								</div>
+							</button>
+						</div>
+					</div>
+				</form>
+			</div>
+
+			<!-- MODAL CONSTANCIA OFICIAL CON MARGEN SUPERIOR PARA IMPRESIÓN -->
+			<div id="modal-constancia-pdt" class="hidden fixed inset-0 z-50 flex items-center justify-center bg-slate-900/60 p-4 backdrop-blur-sm print:static print:bg-transparent print:p-0 print:block">
+				<div class="w-full max-w-4xl max-h-[90vh] overflow-y-auto rounded-2xl border border-slate-200 bg-white p-6 shadow-2xl dark:border-slate-800 dark:bg-slate-900 space-y-5 text-slate-900 dark:text-slate-100 print:max-w-full print:max-h-none print:shadow-none print:border-none print:bg-white print:text-black print:overflow-visible print:mt-0 print:pt-0">
+					
+					<!-- CABECERA OFICIAL TIPO SUNAT -->
+					<div class="border-2 border-slate-800 dark:border-slate-700 print:border-black p-4 space-y-4">
+						<div class="flex flex-col sm:flex-row items-center justify-between border-b-2 border-slate-800 dark:border-slate-700 print:border-black pb-4 gap-4">
+							<div class="text-center sm:text-left">
+								<h1 class="text-xl font-black tracking-wider text-slate-900 dark:text-white print:text-black">SUNAT</h1>
+								<p class="text-xs font-bold uppercase tracking-wide text-slate-600 dark:text-slate-400 print:text-black">Declaración Pago - Formulario Virtual 0621</p>
+							</div>
+							<div class="text-center bg-slate-100 dark:bg-slate-800 print:bg-transparent p-2 border border-slate-300 print:border-black rounded">
+								<p class="text-[10px] font-bold uppercase text-slate-500 print:text-black">IGV RENTA MENSUAL</p>
+								<p class="text-xs text-slate-600 print:text-black">Copia para el Contribuyente (Pág. 1)</p>
+							</div>
+						</div>
+
+						<!-- DATOS GENERALES DE LA CABECERA -->
+						<div class="grid grid-cols-1 md:grid-cols-2 gap-x-6 gap-y-2 text-xs">
+							<div class="flex justify-between border-b border-slate-200 dark:border-slate-800 print:border-gray-300 py-1">
+								<span class="font-bold text-slate-600 dark:text-slate-400 print:text-black">RUC:</span>
+								<span id="const-ruc" class="font-extrabold">10616288475</span>
+							</div>
+							<div class="flex justify-between border-b border-slate-200 dark:border-slate-800 print:border-gray-300 py-1">
+								<span class="font-bold text-slate-600 dark:text-slate-400 print:text-black">Período Tributario:</span>
+								<span id="const-periodo" class="font-extrabold">2026-09</span>
+							</div>
+							<div class="flex justify-between border-b border-slate-200 dark:border-slate-800 print:border-gray-300 py-1 md:col-span-2">
+								<span class="font-bold text-slate-600 dark:text-slate-400 print:text-black">Razón Social:</span>
+								<span class="font-extrabold">Cordova Ramos Javier</span>
+							</div>
+							<div class="flex justify-between border-b border-slate-200 dark:border-slate-800 print:border-gray-300 py-1">
+								<span class="font-bold text-slate-600 dark:text-slate-400 print:text-black">Número de Orden:</span>
+								<span id="const-orden" class="font-black text-[#0877a7] print:text-black">1210567953</span>
+							</div>
+							<div class="flex justify-between border-b border-slate-200 dark:border-slate-800 print:border-gray-300 py-1">
+								<span class="font-bold text-slate-600 dark:text-slate-400 print:text-black">Fecha de Presentación:</span>
+								<span class="font-extrabold">13/10/2026</span>
+							</div>
+							<div class="flex justify-between border-b border-slate-200 dark:border-slate-800 print:border-gray-300 py-1">
+								<span class="font-bold text-slate-600 dark:text-slate-400 print:text-black">Tipo de Declaración:</span>
+								<span class="font-extrabold">Original</span>
+							</div>
+							<div class="flex justify-between border-b border-slate-200 dark:border-slate-800 print:border-gray-300 py-1">
+								<span class="font-bold text-slate-600 dark:text-slate-400 print:text-black">Tipo de Moneda:</span>
+								<span class="font-extrabold">Soles</span>
+							</div>
+						</div>
+					</div>
+
+					<!-- TABLA RESUMEN DE CASILLAS Y TRIBUTOS PRESENTADOS -->
+					<div class="space-y-3">
+						<h4 class="text-xs font-bold uppercase tracking-wider text-[#0877a7] dark:text-sky-400 print:text-black">Resumen de Determinación</h4>
+						<div class="overflow-x-auto rounded-xl border border-slate-300 dark:border-slate-700 print:border-black">
+							<table class="w-full text-xs text-left">
+								<thead class="bg-slate-100 text-slate-800 dark:bg-slate-800 dark:text-slate-200 print:bg-gray-200 print:text-black font-bold border-b border-slate-300 print:border-black">
+									<tr>
+										<th class="p-2.5 border-r border-slate-300 print:border-black">Concepto / Casilla Principal</th>
+										<th class="p-2.5 w-32 text-center border-r border-slate-300 print:border-black">Casilla</th>
+										<th class="p-2.5 w-40 text-right">Importe / Tributo (S/)</th>
+									</tr>
+								</thead>
+								<tbody class="divide-y divide-slate-200 dark:divide-slate-800 print:divide-black">
+									<tr>
+										<td class="p-2.5 border-r border-slate-200 print:border-black font-medium">Ventas Netas Gravadas</td>
+										<td class="p-2.5 text-center border-r border-slate-200 print:border-black font-bold">100 / 101</td>
+										<td id="const-vta-igv" class="p-2.5 text-right font-bold">S/ 0.00</td>
+									</tr>
+									<tr>
+										<td class="p-2.5 border-r border-slate-200 print:border-black font-medium">Compras Netas Destinadas a Ventas Gravadas</td>
+										<td class="p-2.5 text-center border-r border-slate-200 print:border-black font-bold">107 / 108</td>
+										<td id="const-com-igv" class="p-2.5 text-right font-bold">S/ 0.00</td>
+									</tr>
+									<tr class="bg-slate-50 dark:bg-slate-900/50 print:bg-gray-50 font-bold">
+										<td class="p-2.5 border-r border-slate-200 print:border-black">IGV Resultante o Saldo a Favor</td>
+										<td class="p-2.5 text-center border-r border-slate-200 print:border-black">140</td>
+										<td id="const-res-igv" class="p-2.5 text-right">S/ 0.00</td>
+									</tr>
+									<tr>
+										<td class="p-2.5 border-r border-slate-200 print:border-black font-medium">Ingresos Netos Impuesto a la Renta</td>
+										<td class="p-2.5 text-center border-r border-slate-200 print:border-black font-bold">301 / 312</td>
+										<td id="const-res-renta" class="p-2.5 text-right font-bold">S/ 0.00</td>
+									</tr>
+									<tr class="bg-sky-50 dark:bg-sky-950/40 print:bg-gray-100 font-black">
+										<td class="p-2.5 border-r border-slate-300 print:border-black uppercase text-[#0877a7] print:text-black">Total Deuda Tributaria a Pagar</td>
+										<td class="p-2.5 text-center border-r border-slate-300 print:border-black">-</td>
+										<td id="const-total-pagar" class="p-2.5 text-right text-emerald-600 print:text-black">S/ 0.00</td>
+									</tr>
+								</tbody>
+							</table>
+						</div>
+					</div>
+
+					<!-- BOTONES DE ACCIÓN -->
+					<div class="grid grid-cols-1 sm:grid-cols-2 gap-3 pt-2 print:hidden">
+						<button type="button" id="btn-imprimir-constancia" class="flex items-center justify-center gap-2 rounded-xl border border-slate-300 bg-white p-3 text-xs font-bold text-slate-700 hover:bg-slate-50 dark:border-slate-700 dark:bg-slate-950 dark:text-slate-300 transition shadow-sm">
+							<Icon name="printer" size={16} />
+							<span>Imprimir / Guardar PDF</span>
+						</button>
+
+						<a href="/prueba" class="flex items-center justify-center gap-2 rounded-xl bg-[#0877a7] p-3 text-xs font-bold text-white shadow-md transition hover:bg-[#075782]">
+							<Icon name="home" size={16} />
+							<span>Volver al Inicio SOL</span>
+						</a>
+					</div>
+				</div>
+			</div>
+		</main>
+	</div>
+
+	<script src="../../scripts/igv-renta-621.js"></script>
+</Layout>
+
+<style is:global>
+	@media print {
+		body {
+			background-color: white !important;
+			color: black !important;
+		}
+		header, aside, nav, .print\:hidden {
+			display: none !important;
+		}
+		#modal-constancia-pdt {
+			position: absolute !important;
+			top: 0 !important;
+			left: 0 !important;
+			width: 100% !important;
+			background: white !important;
+			padding: 0 !important;
+			margin: 0 !important;
+		}
+	}
+</style>
