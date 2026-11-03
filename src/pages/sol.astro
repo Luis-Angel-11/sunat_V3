@@ -1,7 +1,7 @@
 ---
 import Icon from '../components/Icon.astro';
 import Tramite from '../components/sol/Tramite.astro';
-import SolLayout from '../layouts/Layout.astro';
+import Layout from "../layouts/Layout.astro";
 import { accesosDirectos, categorias, perfiles } from '../data/sol';
 import type { IconName } from '../data/icons';
 
@@ -38,7 +38,7 @@ const mensajes = [
 ];
 ---
 
-<SolLayout title="Menú SOL" description="Tus trámites y servicios de SUNAT con Clave SOL." current="inicio">
+<Layout title="Menú SOL" description="Tus trámites y servicios de SUNAT con Clave SOL." current="inicio">
 	<!-- Bienvenida -->
 	<section class="sol-hero relative overflow-hidden text-white" aria-labelledby="titulo-bienvenida">
 		<div class="container-sunat relative grid gap-5 py-8 md:py-10 md:pb-12">
@@ -598,4 +598,4 @@ const mensajes = [
 			abrirSiHash();
 		})();
 	</script>
-</SolLayout>
+</Layout>
