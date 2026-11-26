@@ -419,11 +419,11 @@ import Icon from '../../components/Icon.astro';
 				</table>
 			</div>
 
-			<div class="flex justify-between items-end pt-2 print:hidden">
+			<div class="flex justify-between items-end pt-2">
 				<div class="h-20 w-20 border border-slate-800 p-1 flex items-center justify-center bg-slate-100 font-sans text-[8px] text-center font-bold">
 					[ QR GRE SUNAT ]
 				</div>
-				<button type="button" id="btn-cerrar-pv-gre" class="rounded-xl border border-slate-300 px-5 py-2 text-xs font-bold font-sans hover:bg-slate-50 transition">
+				<button type="button" id="btn-cerrar-pv-gre" class="print:hidden rounded-xl border border-slate-300 px-5 py-2 text-xs font-bold font-sans hover:bg-slate-50 transition">
 					Cerrar Vista Previa
 				</button>
 			</div>
@@ -476,4 +476,5 @@ import Icon from '../../components/Icon.astro';
 
 	<!-- SCRIPT EXTERNO CON LÓGICA Y AUDIO -->
 	<script src="../../scripts/guia-remision.js"></script>
+	
 </Layout>

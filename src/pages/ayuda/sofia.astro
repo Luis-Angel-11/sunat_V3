@@ -1,0 +1,184 @@
+---
+import Layout from '../../layouts/Layout.astro';
+import SolHeader from '../../components/sol/SolHeader.astro';
+import SolSidebar from '../../components/sol/SolSidebar.astro';
+import Icon from '../../components/Icon.astro';
+
+const consultasRapidas = [
+	{
+		id: 'vencimientos',
+		texto: '¿Cuándo vence mi declaración según mi RUC?',
+		icon: 'calendar',
+	},
+	{
+		id: 'factura',
+		texto: '¿Cómo emito una Factura Electrónica?',
+		icon: 'receipt',
+	},
+	{
+		id: 'pagar',
+		texto: '¿Cómo pago mis tributos pendientes o genero un NPS?',
+		icon: 'credit-card',
+	},
+	{
+		id: 'fraccionamiento',
+		texto: '¿Qué requisitos necesito para fraccionar mi deuda?',
+		icon: 'landmark',
+	},
+	{
+		id: 'clave',
+		texto: '¿Cómo actualizo mi Clave SOL o creo usuarios?',
+		icon: 'key',
+	},
+	{
+		id: 'asesor',
+		texto: 'Contactar con un orientador o central telefónica',
+		icon: 'phone',
+	},
+];
+---
+
+<Layout title="Asistente Virtual Sofía - SUNAT SOL" description="Resuelve tus dudas tributarias y aduaneras las 24 horas con Sofía, el asistente virtual de SUNAT.">
+	<SolHeader current="inicio" />
+
+	<div class="flex min-h-[calc(100vh-104px)] bg-[#f8fafc] dark:bg-slate-950">
+		<SolSidebar activeMenu="ayuda" />
+
+		<main class="flex-1 p-6 lg:p-8 max-w-7xl">
+			<div class="space-y-6">
+				<!-- Migas de Pan -->
+				<nav class="flex text-xs font-semibold text-slate-500 dark:text-slate-400" aria-label="Ruta de navegación">
+					<ol class="inline-flex items-center gap-1.5">
+						<li><a href="/prueba" class="hover:text-[#0877a7] dark:hover:text-sky-300">Inicio SOL</a></li>
+						<li><Icon name="chevron-right" size={12} /></li>
+						<li><span>Ayuda</span></li>
+						<li><Icon name="chevron-right" size={12} /></li>
+						<li><span class="font-bold text-slate-800 dark:text-slate-200">Asistente Virtual Sofía</span></li>
+					</ol>
+				</nav>
+
+				<div class="grid grid-cols-1 gap-6 lg:grid-cols-3">
+					<!-- Columna Izquierda: Perfil de Sofía y Temas Frecuentes -->
+					<div class="space-y-5">
+						<div class="overflow-hidden rounded-3xl border border-slate-200 bg-white shadow-sm dark:border-slate-800 dark:bg-slate-900">
+							<div class="bg-gradient-to-r from-[#003366] to-[#0877a7] p-5 text-white">
+								<div class="flex items-center gap-3.5">
+									<div class="grid h-14 w-14 shrink-0 place-items-center rounded-2xl bg-white/15 text-white ring-2 ring-white/30 backdrop-blur-sm">
+										<Icon name="message" size={28} />
+									</div>
+									<div>
+										<div class="flex items-center gap-2">
+											<h1 class="text-lg font-black tracking-tight">Sofía · SUNAT</h1>
+											<span class="inline-flex items-center gap-1 rounded-full bg-emerald-400/20 px-2 py-0.5 text-[10px] font-bold text-emerald-200">
+												<span class="h-1.5 w-1.5 rounded-full bg-emerald-400"></span>
+												En línea
+											</span>
+										</div>
+										<p class="text-xs text-white/80">Asistente Virtual de Orientación Tributaria</p>
+									</div>
+								</div>
+							</div>
+
+							<div class="p-5 space-y-3">
+								<p class="text-xs font-extrabold uppercase tracking-wider text-slate-500">
+									Consultas Frecuentes
+								</p>
+								<div class="space-y-2">
+									{consultasRapidas.map((item) => (
+										<button
+											type="button"
+											class="btn-consulta-rapida flex w-full items-center gap-2.5 rounded-xl border border-slate-200 bg-slate-50/70 px-3.5 py-2.5 text-left text-xs font-bold text-slate-700 transition hover:border-[#0877a7] hover:bg-sky-50/60 hover:text-[#003366] dark:border-slate-800 dark:bg-slate-800/60 dark:text-slate-200 dark:hover:border-sky-500"
+											data-topic={item.id}
+											data-pregunta={item.texto}
+										>
+											<span class="text-[#0877a7] dark:text-sky-400 shrink-0">
+												<Icon name={item.icon as any} size={16} />
+											</span>
+											<span>{item.texto}</span>
+										</button>
+									))}
+								</div>
+							</div>
+						</div>
+
+						<!-- Canales Alternos -->
+						<div class="rounded-2xl border border-slate-200 bg-white p-5 shadow-sm dark:border-slate-800 dark:bg-slate-900 space-y-2 text-xs">
+							<span class="font-extrabold text-slate-900 dark:text-white block">Central de Consultas SUNAT</span>
+							<p class="text-slate-600 dark:text-slate-400">
+								Lunes a viernes de 8:30 a.m. a 6:00 p.m.
+							</p>
+							<div class="pt-1 font-bold text-[#0877a7] dark:text-sky-400">
+								Desde celulares: *4000 · Fijo: 0-801-12-100
+							</div>
+						</div>
+					</div>
+
+					<!-- Columna Derecha (2 cols): Ventana de Chat -->
+					<div class="lg:col-span-2 flex flex-col justify-between overflow-hidden rounded-3xl border border-slate-200 bg-white shadow-sm dark:border-slate-800 dark:bg-slate-900 h-[620px]">
+						<!-- Barra Superior del Chat -->
+						<div class="flex items-center justify-between border-b border-slate-200 bg-slate-50/80 px-6 py-4 dark:border-slate-800 dark:bg-slate-800/50">
+							<div class="flex items-center gap-2.5">
+								<span class="grid h-8 w-8 place-items-center rounded-xl bg-[#003366] text-white">
+									<Icon name="help-circle" size={18} />
+								</span>
+								<div>
+									<h2 class="text-sm font-extrabold text-slate-900 dark:text-white">Conversación con Sofía</h2>
+									<span class="block text-[11px] text-slate-500">Contribuyente: CORDOVA RAMOS JAVIER (RUC 10616288475)</span>
+								</div>
+							</div>
+
+							<button
+								type="button"
+								id="btn-limpiar-chat"
+								class="inline-flex items-center gap-1.5 rounded-xl border border-slate-300 bg-white px-3 py-1.5 text-xs font-bold text-slate-600 transition hover:bg-slate-100 dark:border-slate-700 dark:bg-slate-800 dark:text-slate-300"
+							>
+								<Icon name="trash" size={14} />
+								Limpiar chat
+							</button>
+						</div>
+
+						<!-- Área de Mensajes -->
+						<div id="chat-mensajes" class="flex-1 space-y-4 overflow-y-auto p-6 bg-[#f8fafc]/50 dark:bg-slate-950/40">
+							<!-- Mensaje de bienvenida inicial -->
+							<div class="flex items-start gap-3">
+								<div class="grid h-9 w-9 shrink-0 place-items-center rounded-2xl bg-[#003366] text-xs font-black text-white">
+									SF
+								</div>
+								<div class="max-w-lg space-y-2 rounded-2xl rounded-tl-none border border-slate-200 bg-white p-4 text-sm text-slate-700 shadow-sm dark:border-slate-800 dark:bg-slate-900 dark:text-slate-200">
+									<p>
+										¡Hola, <strong>Javier</strong>! Soy <strong>Sofía</strong>, tu asistente virtual de la SUNAT.
+									</p>
+									<p class="text-xs leading-relaxed text-slate-600 dark:text-slate-400">
+										Puedo ayudarte con fechas de vencimiento según tu RUC (<strong>10616288475</strong>), emisión de comprobantes electrónicos, declaración IGV-Renta 621, fraccionamiento o pagos pendientes. Selecciona una opción o escribe tu consulta abajo.
+									</p>
+								</div>
+							</div>
+						</div>
+
+						<!-- Formulario de Envío -->
+						<form id="form-chat-sofia" class="border-t border-slate-200 bg-white p-4 dark:border-slate-800 dark:bg-slate-900">
+							<div class="flex items-center gap-3">
+								<input
+									type="text"
+									id="input-mensaje-sofia"
+									placeholder="Escribe tu consulta tributaria aquí (ej. vencimiento RUC, factura, NPS)..."
+									autocomplete="off"
+									class="flex-1 rounded-xl border border-slate-300 bg-slate-50 px-4 py-3 text-sm text-slate-800 focus:border-[#0877a7] focus:bg-white focus:outline-none dark:border-slate-700 dark:bg-slate-800 dark:text-white"
+								/>
+								<button
+									type="submit"
+									class="inline-flex items-center gap-2 rounded-xl bg-[#003366] px-5 py-3 text-sm font-extrabold text-white shadow-sm transition hover:bg-[#002244]"
+								>
+									<span>Enviar</span>
+									<Icon name="arrow-right" size={16} />
+								</button>
+							</div>
+						</form>
+					</div>
+				</div>
+			</div>
+		</main>
+	</div>
+
+	<script src="../../scripts/sofia.js"></script>
+</Layout>

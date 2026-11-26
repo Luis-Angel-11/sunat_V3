@@ -1,0 +1,233 @@
+---
+import Layout from '../../layouts/Layout.astro';
+import SolHeader from '../../components/sol/SolHeader.astro';
+import SolSidebar from '../../components/sol/SolSidebar.astro';
+import Icon from '../../components/Icon.astro';
+
+const historialPagos = [
+	{
+		orden: '984512034',
+		fecha: '15/10/2026 14:22',
+		periodo: '09/2026',
+		formulario: '1662',
+		tributo: '1011 - IGV OPERACIONES INTERNAS',
+		medio: 'Cargo en Cuenta (BCP)',
+		monto: 940.00,
+		estado: 'Pagado',
+	},
+	{
+		orden: '984109845',
+		fecha: '15/10/2026 14:25',
+		periodo: '09/2026',
+		formulario: '1662',
+		tributo: '3031 - RENTA RÉGIMEN MYPE TRIBUTARIO',
+		medio: 'Cargo en Cuenta (BCP)',
+		monto: 285.00,
+		estado: 'Pagado',
+	},
+	{
+		orden: '979845120',
+		fecha: '16/09/2026 09:48',
+		periodo: '08/2026',
+		formulario: '1662',
+		tributo: '1011 - IGV OPERACIONES INTERNAS',
+		medio: 'Tarjeta Visa / Mastercard',
+		monto: 1120.50,
+		estado: 'Pagado',
+	},
+	{
+		orden: '979845331',
+		fecha: '16/09/2026 09:50',
+		periodo: '08/2026',
+		formulario: '1662',
+		tributo: '5210 - ESSALUD SEGURO REGULAR',
+		medio: 'Número de Pago SUNAT (NPS)',
+		monto: 185.00,
+		estado: 'Pagado',
+	},
+	{
+		orden: '972300412',
+		fecha: '14/08/2026 18:10',
+		periodo: '07/2026',
+		formulario: '1662',
+		tributo: '1011 - IGV OPERACIONES INTERNAS',
+		medio: 'Cargo en Cuenta (BBVA)',
+		monto: 790.00,
+		estado: 'Pagado',
+	},
+];
+---
+
+<Layout title="Historial de Pagos - SUNAT SOL" description="Consulta y descarga las constancias de tus pagos tributarios realizados.">
+	<SolHeader current="inicio" />
+
+	<div class="flex min-h-[calc(100vh-104px)] bg-[#f8fafc] dark:bg-slate-950">
+		<SolSidebar activeMenu="declarar" />
+
+		<main class="flex-1 p-6 lg:p-8 max-w-7xl">
+			<div class="space-y-6">
+				<!-- Migas de Pan -->
+				<nav class="flex text-xs font-semibold text-slate-500 dark:text-slate-400" aria-label="Ruta de navegación">
+					<ol class="inline-flex items-center gap-1.5">
+						<li><a href="/prueba" class="hover:text-[#0877a7] dark:hover:text-sky-300">Inicio SOL</a></li>
+						<li><Icon name="chevron-right" size={12} /></li>
+						<li><span>Declarar y Pagar</span></li>
+						<li><Icon name="chevron-right" size={12} /></li>
+						<li><span class="font-bold text-slate-800 dark:text-slate-200">Historial de Pagos</span></li>
+					</ol>
+				</nav>
+
+				<!-- Encabezado -->
+				<div class="flex flex-col justify-between gap-4 sm:flex-row sm:items-center">
+					<div>
+						<h1 class="text-2xl font-black tracking-tight text-slate-900 dark:text-white">
+							Historial de Pagos Electrónicos
+						</h1>
+						<p class="mt-1 text-sm text-slate-600 dark:text-slate-400">
+							Consulta tus Boletas de Pago (Formulario Virtual 1662) y descarga tus constancias oficiales en PDF.
+						</p>
+					</div>
+					<a
+						href="/declara/pago-tributos"
+						class="inline-flex items-center gap-2 rounded-xl bg-[#003366] px-4 py-2.5 text-sm font-extrabold text-white shadow-sm transition hover:bg-[#002244]"
+					>
+						Ir a Pago de Tributos
+					</a>
+				</div>
+
+				<!-- Filtros de Búsqueda -->
+				<div class="rounded-2xl border border-slate-200 bg-white p-5 shadow-sm dark:border-slate-800 dark:bg-slate-900">
+					<div class="grid grid-cols-1 gap-4 sm:grid-cols-4">
+						<div>
+							<label for="filtro-orden" class="block text-xs font-bold text-slate-700 dark:text-slate-300 mb-1">
+								N° de Orden o Tributo
+							</label>
+							<input
+								type="text"
+								id="filtro-orden"
+								placeholder="Ej. 984512034 o IGV..."
+								class="w-full rounded-xl border border-slate-300 bg-white px-3 py-2 text-sm text-slate-800 focus:border-[#0877a7] focus:outline-none dark:border-slate-700 dark:bg-slate-800 dark:text-white"
+							/>
+						</div>
+
+						<div>
+							<label for="filtro-periodo" class="block text-xs font-bold text-slate-700 dark:text-slate-300 mb-1">
+								Periodo Tributario
+							</label>
+							<select
+								id="filtro-periodo"
+								class="w-full rounded-xl border border-slate-300 bg-white px-3 py-2 text-sm text-slate-800 focus:border-[#0877a7] focus:outline-none dark:border-slate-700 dark:bg-slate-800 dark:text-white"
+							>
+								<option value="">Todos los periodos</option>
+								<option value="09/2026">09/2026</option>
+								<option value="08/2026">08/2026</option>
+								<option value="07/2026">07/2026</option>
+							</select>
+						</div>
+
+						<div>
+							<label for="filtro-medio" class="block text-xs font-bold text-slate-700 dark:text-slate-300 mb-1">
+								Medio de Pago
+							</label>
+							<select
+								id="filtro-medio"
+								class="w-full rounded-xl border border-slate-300 bg-white px-3 py-2 text-sm text-slate-800 focus:border-[#0877a7] focus:outline-none dark:border-slate-700 dark:bg-slate-800 dark:text-white"
+							>
+								<option value="">Todos los medios</option>
+								<option value="Cargo en Cuenta">Cargo en Cuenta</option>
+								<option value="Tarjeta">Tarjeta Visa / Mastercard</option>
+								<option value="NPS">Número de Pago SUNAT (NPS)</option>
+							</select>
+						</div>
+
+						<div class="flex items-end">
+							<button
+								type="button"
+								id="btn-limpiar-filtros"
+								class="w-full rounded-xl border border-slate-300 bg-slate-50 px-4 py-2 text-sm font-bold text-slate-700 transition hover:bg-slate-100 dark:border-slate-700 dark:bg-slate-800 dark:text-slate-300"
+							>
+								Limpiar Filtros
+							</button>
+						</div>
+					</div>
+				</div>
+
+				<!-- Tabla de Resultados -->
+				<div class="overflow-hidden rounded-2xl border border-slate-200 bg-white shadow-sm dark:border-slate-800 dark:bg-slate-900">
+					<div class="border-b border-slate-200 bg-slate-50/70 px-5 py-4 dark:border-slate-800 dark:bg-slate-800/50 flex items-center justify-between">
+						<h2 class="text-sm font-extrabold text-slate-800 dark:text-white">Constancias Registradas</h2>
+						<span id="contador-registros" class="text-xs font-bold text-slate-500">Mostrando 5 registros</span>
+					</div>
+
+					<div class="overflow-x-auto">
+						<table class="w-full text-left text-sm">
+							<thead class="border-b border-slate-200 bg-slate-50 text-xs font-bold uppercase text-slate-500 dark:border-slate-800 dark:bg-slate-900/50 dark:text-slate-400">
+								<tr>
+									<th class="px-4 py-3.5">N° Orden</th>
+									<th class="px-4 py-3.5">Fecha y Hora</th>
+									<th class="px-4 py-3.5">Periodo</th>
+									<th class="px-4 py-3.5">Tributo</th>
+									<th class="px-4 py-3.5">Medio de Pago</th>
+									<th class="px-4 py-3.5 text-right">Importe</th>
+									<th class="px-4 py-3.5 text-center">Constancia</th>
+								</tr>
+							</thead>
+							<tbody id="tabla-historial-body" class="divide-y divide-slate-200 dark:divide-slate-800">
+								{historialPagos.map((pago) => (
+									<tr
+										class="fila-pago transition hover:bg-slate-50/80 dark:hover:bg-slate-800/40"
+										data-orden={pago.orden}
+										data-periodo={pago.periodo}
+										data-tributo={pago.tributo.toLowerCase()}
+										data-medio={pago.medio}
+									>
+										<td class="px-4 py-4 font-mono font-bold text-[#003366] dark:text-sky-400">
+											{pago.orden}
+										</td>
+										<td class="px-4 py-4 text-xs font-medium text-slate-600 dark:text-slate-400">
+											{pago.fecha}
+										</td>
+										<td class="px-4 py-4 font-bold text-slate-800 dark:text-slate-200">
+											{pago.periodo}
+										</td>
+										<td class="px-4 py-4">
+											<div class="font-bold text-slate-900 dark:text-white">{pago.tributo}</div>
+											<div class="text-xs text-slate-500">Form. Virtual {pago.formulario}</div>
+										</td>
+										<td class="px-4 py-4 text-xs font-semibold text-slate-700 dark:text-slate-300">
+											{pago.medio}
+										</td>
+										<td class="px-4 py-4 text-right font-extrabold text-slate-900 dark:text-white">
+											S/ {pago.monto.toFixed(2)}
+										</td>
+										<td class="px-4 py-4 text-center">
+											<button
+												type="button"
+												class="btn-descargar-constancia inline-flex items-center gap-1.5 rounded-lg bg-sky-50 px-3 py-1.5 text-xs font-bold text-[#0877a7] transition hover:bg-sky-100 dark:bg-sky-950 dark:text-sky-300"
+												data-orden={pago.orden}
+												data-fecha={pago.fecha}
+												data-periodo={pago.periodo}
+												data-tributo={pago.tributo}
+												data-medio={pago.medio}
+												data-monto={pago.monto.toFixed(2)}
+											>
+												<svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
+													<path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"></path>
+													<polyline points="7 10 12 15 17 10"></polyline>
+													<line x1="12" y1="15" x2="12" y2="3"></line>
+												</svg>
+												PDF
+											</button>
+										</td>
+									</tr>
+								))}
+							</tbody>
+						</table>
+					</div>
+				</div>
+			</div>
+		</main>
+	</div>
+
+	<script src="../../scripts/historial-pagos.js"></script>
+</Layout>

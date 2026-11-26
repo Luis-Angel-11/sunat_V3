@@ -1,0 +1,322 @@
+---
+import Layout from '../../layouts/Layout.astro';
+import SolHeader from '../../components/sol/SolHeader.astro';
+import SolSidebar from '../../components/sol/SolSidebar.astro';
+import Icon from '../../components/Icon.astro';
+
+const tributosPendientes = [
+	{
+		id: 'TRIB-01',
+		periodo: '10/2026',
+		codigo: '1011',
+		descripcion: 'IGV - OPERACIONES INTERNAS',
+		formulario: '0621',
+		vencimiento: '18/11/2026',
+		estado: 'Vencido',
+		importe: 850.00,
+		interes: 12.50,
+	},
+	{
+		id: 'TRIB-02',
+		periodo: '10/2026',
+		codigo: '3031',
+		descripcion: 'RENTA - RÉGIMEN MYPE TRIBUTARIO',
+		formulario: '0621',
+		vencimiento: '18/11/2026',
+		estado: 'Vencido',
+		importe: 320.00,
+		interes: 4.80,
+	},
+	{
+		id: 'TRIB-03',
+		periodo: '11/2026',
+		codigo: '1011',
+		descripcion: 'IGV - OPERACIONES INTERNAS',
+		formulario: '0621',
+		vencimiento: '17/12/2026',
+		estado: 'Por vencer',
+		importe: 1140.00,
+		interes: 0.00,
+	},
+	{
+		id: 'TRIB-04',
+		periodo: '11/2026',
+		codigo: '5210',
+		descripcion: 'ESSALUD - SEGURO REGULAR',
+		formulario: '0601',
+		vencimiento: '17/12/2026',
+		estado: 'Por vencer',
+		importe: 185.00,
+		interes: 0.00,
+	},
+];
+---
+
+<Layout title="Pago de Tributos Pendientes - SUNAT SOL" description="Consulta y paga tus valores y tributos pendientes en línea.">
+	<SolHeader current="inicio" />
+
+	<div class="flex min-h-[calc(100vh-104px)] bg-[#f8fafc] dark:bg-slate-950">
+		<SolSidebar activeMenu="declarar" />
+
+		<main class="flex-1 p-6 lg:p-8 max-w-7xl">
+			<div class="space-y-6">
+				<nav class="flex text-xs font-semibold text-slate-500 dark:text-slate-400" aria-label="Ruta de navegación">
+					<ol class="inline-flex items-center gap-1.5">
+						<li><a href="/prueba" class="hover:text-[#0877a7] dark:hover:text-sky-300">Inicio SOL</a></li>
+						<li><Icon name="chevron-right" size={12} /></li>
+						<li><span>Declarar y Pagar</span></li>
+						<li><Icon name="chevron-right" size={12} /></li>
+						<li><span class="font-bold text-slate-800 dark:text-slate-200">Pago de Tributos Pendientes</span></li>
+					</ol>
+				</nav>
+
+				<div class="flex flex-col justify-between gap-4 sm:flex-row sm:items-center">
+					<div>
+						<h1 class="text-2xl font-black tracking-tight text-slate-900 dark:text-white">
+							Pago de Tributos Pendientes
+						</h1>
+						<p class="mt-1 text-sm text-slate-600 dark:text-slate-400">
+							Selecciona los tributos declarados pendientes de cancelación y elige tu modalidad de pago (Formulario Virtual 1662).
+						</p>
+					</div>
+					<a
+						href="/declara/historial-pagos"
+						class="inline-flex items-center gap-2 rounded-xl border border-slate-300 bg-white px-4 py-2.5 text-sm font-bold text-slate-700 shadow-sm transition hover:bg-slate-50 dark:border-slate-700 dark:bg-slate-900 dark:text-slate-200"
+					>
+						<Icon name="clock" size={16} />
+						Ver Historial de Pagos
+					</a>
+				</div>
+
+				<div class="grid grid-cols-1 gap-4 sm:grid-cols-3">
+					<div class="rounded-2xl border border-slate-200 bg-white p-5 shadow-sm dark:border-slate-800 dark:bg-slate-900">
+						<span class="text-xs font-bold uppercase tracking-wider text-slate-500">Deuda Total Pendiente</span>
+						<p class="mt-2 text-2xl font-black text-slate-900 dark:text-white">S/ 2,512.30</p>
+						<span class="mt-1 inline-block text-xs font-medium text-slate-500">4 tributos registrados</span>
+					</div>
+
+					<div class="rounded-2xl border border-red-200 bg-red-50/50 p-5 shadow-sm dark:border-red-900/50 dark:bg-red-950/20">
+						<span class="text-xs font-bold uppercase tracking-wider text-red-700 dark:text-red-400">Tributos Vencidos</span>
+						<p class="mt-2 text-2xl font-black text-red-700 dark:text-red-400">S/ 1,187.30</p>
+						<span class="mt-1 inline-block text-xs font-medium text-red-600/80 dark:text-red-400/80">Incluye S/ 17.30 de interés moratorio</span>
+					</div>
+
+					<div class="rounded-2xl border border-sky-200 bg-sky-50/50 p-5 shadow-sm dark:border-sky-900/50 dark:bg-sky-950/20">
+						<span class="text-xs font-bold uppercase tracking-wider text-[#0877a7] dark:text-sky-400">Próximo Vencimiento</span>
+						<p class="mt-2 text-2xl font-black text-[#003366] dark:text-sky-300">17 Dic 2026</p>
+						<span class="mt-1 inline-block text-xs font-medium text-slate-600 dark:text-slate-400">Último dígito RUC: 5</span>
+					</div>
+				</div>
+
+				<div class="grid grid-cols-1 gap-6 lg:grid-cols-3">
+					<div class="lg:col-span-2 overflow-hidden rounded-2xl border border-slate-200 bg-white shadow-sm dark:border-slate-800 dark:bg-slate-900">
+						<div class="border-b border-slate-200 bg-slate-50/70 px-5 py-4 dark:border-slate-800 dark:bg-slate-800/50 flex items-center justify-between">
+							<h2 class="text-sm font-extrabold text-slate-800 dark:text-white">Detalle de Tributos por Pagar</h2>
+							<label class="inline-flex cursor-pointer items-center gap-2 text-xs font-bold text-[#0877a7]">
+								<input type="checkbox" id="select-all" class="h-4 w-4 rounded border-slate-300 text-[#003366] focus:ring-[#0877a7]" />
+								Seleccionar todos
+							</label>
+						</div>
+
+						<div class="overflow-x-auto">
+							<table class="w-full text-left text-sm">
+								<thead class="border-b border-slate-200 bg-slate-50 text-xs font-bold uppercase text-slate-500 dark:border-slate-800 dark:bg-slate-900/50 dark:text-slate-400">
+									<tr>
+										<th class="px-4 py-3.5 w-10"></th>
+										<th class="px-4 py-3.5">Periodo / Tributo</th>
+										<th class="px-4 py-3.5">Vencimiento</th>
+										<th class="px-4 py-3.5 text-right">Importe</th>
+										<th class="px-4 py-3.5 text-right">Interés</th>
+										<th class="px-4 py-3.5 text-right">Total</th>
+									</tr>
+								</thead>
+								<tbody class="divide-y divide-slate-200 dark:divide-slate-800">
+									{tributosPendientes.map((item) => {
+										const totalItem = item.importe + item.interes;
+										return (
+											<tr class="transition hover:bg-slate-50/80 dark:hover:bg-slate-800/40">
+												<td class="px-4 py-4">
+													<input
+														type="checkbox"
+														class="tributo-checkbox h-4 w-4 rounded border-slate-300 text-[#003366] focus:ring-[#0877a7]"
+														data-id={item.id}
+														data-periodo={item.periodo}
+														data-codigo={item.codigo}
+														data-descripcion={item.descripcion}
+														data-total={totalItem.toFixed(2)}
+													/>
+												</td>
+												<td class="px-4 py-4">
+													<div class="font-bold text-slate-900 dark:text-white">
+														{item.codigo} - {item.descripcion}
+													</div>
+													<div class="text-xs text-slate-500">
+														Periodo: <span class="font-semibold text-slate-700 dark:text-slate-300">{item.periodo}</span> · Form. {item.formulario}
+													</div>
+												</td>
+												<td class="px-4 py-4">
+													<div class="text-xs font-semibold text-slate-700 dark:text-slate-300">{item.vencimiento}</div>
+													{item.estado === 'Vencido' ? (
+														<span class="mt-1 inline-flex items-center rounded-full bg-red-100 px-2 py-0.5 text-[11px] font-bold text-red-700 dark:bg-red-950 dark:text-red-400">
+															Vencido
+														</span>
+													) : (
+														<span class="mt-1 inline-flex items-center rounded-full bg-amber-100 px-2 py-0.5 text-[11px] font-bold text-amber-800 dark:bg-amber-950 dark:text-amber-300">
+															Por vencer
+														</span>
+													)}
+												</td>
+												<td class="px-4 py-4 text-right font-medium text-slate-700 dark:text-slate-300">
+													S/ {item.importe.toFixed(2)}
+												</td>
+												<td class="px-4 py-4 text-right font-medium text-slate-500">
+													S/ {item.interes.toFixed(2)}
+												</td>
+												<td class="px-4 py-4 text-right font-extrabold text-slate-900 dark:text-white">
+													S/ {totalItem.toFixed(2)}
+												</td>
+											</tr>
+										);
+									})}
+								</tbody>
+							</table>
+						</div>
+					</div>
+
+					<div class="rounded-2xl border border-slate-200 bg-white p-6 shadow-sm dark:border-slate-800 dark:bg-slate-900 h-fit space-y-5">
+						<h2 class="text-base font-black text-slate-900 dark:text-white border-b border-slate-100 pb-3 dark:border-slate-800">
+							Resumen de Pago
+						</h2>
+
+						<div class="space-y-2 text-sm">
+							<div class="flex justify-between text-slate-600 dark:text-slate-400">
+								<span>Tributos seleccionados:</span>
+								<span id="count-selected" class="font-bold text-slate-900 dark:text-white">0</span>
+							</div>
+							<div class="flex justify-between text-slate-600 dark:text-slate-400">
+								<span>Moneda:</span>
+								<span class="font-bold text-slate-900 dark:text-white">Soles (PEN)</span>
+							</div>
+							<div class="pt-3 border-t border-slate-200 dark:border-slate-800 flex items-baseline justify-between">
+								<span class="text-sm font-bold text-slate-800 dark:text-slate-200">Total a Pagar:</span>
+								<span id="total-amount" class="text-2xl font-black text-[#003366] dark:text-sky-400">S/ 0.00</span>
+							</div>
+						</div>
+
+						<div class="space-y-3 pt-2">
+							<label class="block text-xs font-extrabold uppercase tracking-wider text-slate-500">
+								Seleccione Medio de Pago
+							</label>
+
+							<label class="flex cursor-pointer items-start gap-3 rounded-xl border border-slate-200 p-3 transition hover:border-[#0877a7] dark:border-slate-700">
+								<input type="radio" name="metodo_pago" value="Cargo en Cuenta Bancaria" checked class="mt-1 text-[#003366] focus:ring-[#0877a7]" />
+								<div class="text-xs">
+									<span class="block font-bold text-slate-900 dark:text-white">Cargo en Cuenta Bancaria</span>
+									<span class="text-slate-500">BCP, BBVA, Interbank, Scotiabank, BN</span>
+								</div>
+							</label>
+
+							<label class="flex cursor-pointer items-start gap-3 rounded-xl border border-slate-200 p-3 transition hover:border-[#0877a7] dark:border-slate-700">
+								<input type="radio" name="metodo_pago" value="Tarjeta de Crédito / Débito" class="mt-1 text-[#003366] focus:ring-[#0877a7]" />
+								<div class="text-xs">
+									<span class="block font-bold text-slate-900 dark:text-white">Tarjeta de Crédito / Débito</span>
+									<span class="text-slate-500">Visa, Mastercard, American Express</span>
+								</div>
+							</label>
+
+							<label class="flex cursor-pointer items-start gap-3 rounded-xl border border-slate-200 p-3 transition hover:border-[#0877a7] dark:border-slate-700">
+								<input type="radio" name="metodo_pago" value="Número de Pago SUNAT (NPS)" class="mt-1 text-[#003366] focus:ring-[#0877a7]" />
+								<div class="text-xs">
+									<span class="block font-bold text-slate-900 dark:text-white">Generar NPS</span>
+									<span class="text-slate-500">Para pagar en agentes o banca móvil</span>
+								</div>
+							</label>
+						</div>
+
+						<div id="banco-selector">
+							<label for="entidad-bancaria" class="block text-xs font-bold text-slate-700 dark:text-slate-300 mb-1.5">
+								Entidad Financiera afiliada
+							</label>
+							<select
+								id="entidad-bancaria"
+								class="w-full rounded-xl border border-slate-300 bg-white px-3 py-2.5 text-sm font-medium text-slate-800 focus:border-[#0877a7] focus:outline-none dark:border-slate-700 dark:bg-slate-800 dark:text-white"
+							>
+								<option value="Banco de Crédito del Perú (BCP)">Banco de Crédito del Perú (BCP)</option>
+								<option value="BBVA Perú">BBVA Perú</option>
+								<option value="Interbank">Interbank</option>
+								<option value="Scotiabank Perú">Scotiabank Perú</option>
+								<option value="Banco de la Nación">Banco de la Nación</option>
+							</select>
+						</div>
+
+						<button
+							type="button"
+							id="btn-pagar"
+							disabled
+							class="w-full rounded-xl bg-[#003366] px-4 py-3 text-sm font-extrabold text-white shadow-sm transition hover:bg-[#002244] disabled:cursor-not-allowed disabled:bg-slate-300 dark:disabled:bg-slate-800 dark:disabled:text-slate-500"
+						>
+							Presentar y Pagar
+						</button>
+					</div>
+				</div>
+			</div>
+		</main>
+	</div>
+
+	<div id="modal-constancia" class="fixed inset-0 z-50 hidden items-center justify-center bg-slate-900/60 p-4 backdrop-blur-sm">
+		<div class="w-full max-w-lg rounded-3xl border border-slate-200 bg-white p-6 shadow-2xl dark:border-slate-800 dark:bg-slate-900">
+			<div class="flex items-center gap-3 border-b border-slate-200 pb-4 dark:border-slate-800">
+				<div class="grid h-12 w-12 place-items-center rounded-2xl bg-emerald-100 text-emerald-700 dark:bg-emerald-950 dark:text-emerald-400">
+					<Icon name="check" size={26} />
+				</div>
+				<div>
+					<h3 class="text-lg font-black text-slate-900 dark:text-white">¡Pago Realizado con Éxito!</h3>
+					<p class="text-xs font-medium text-slate-500">Formulario Virtual N° 1662 - Boleta de Pago</p>
+				</div>
+			</div>
+
+			<div class="my-5 space-y-3 rounded-2xl bg-slate-50 p-4 text-xs dark:bg-slate-800/60">
+				<div class="flex justify-between">
+					<span class="text-slate-500">Número de Orden:</span>
+					<span id="constancia-orden" class="font-mono font-bold text-slate-900 dark:text-white">984512034</span>
+				</div>
+				<div class="flex justify-between">
+					<span class="text-slate-500">RUC Contribuyente:</span>
+					<span class="font-bold text-slate-900 dark:text-white">10616288475 - CORDOVA RAMOS JAVIER</span>
+				</div>
+				<div class="flex justify-between">
+					<span class="text-slate-500">Medio de Pago:</span>
+					<span id="constancia-medio" class="font-bold text-slate-900 dark:text-white">-</span>
+				</div>
+				<div class="border-t border-slate-200 pt-2 dark:border-slate-700">
+					<span class="block font-bold text-slate-700 dark:text-slate-300 mb-1">Tributos Cancelados:</span>
+					<ul id="constancia-lista" class="space-y-1 text-slate-600 dark:text-slate-400"></ul>
+				</div>
+				<div class="flex justify-between border-t border-slate-200 pt-2 text-sm dark:border-slate-700">
+					<span class="font-extrabold text-slate-800 dark:text-white">Importe Pagado:</span>
+					<span id="constancia-total" class="font-black text-emerald-700 dark:text-emerald-400">S/ 0.00</span>
+				</div>
+			</div>
+
+			<div class="flex flex-col gap-2 sm:flex-row sm:justify-end">
+				<button
+					type="button"
+					id="btn-cerrar-modal"
+					class="rounded-xl border border-slate-300 px-4 py-2.5 text-sm font-bold text-slate-700 hover:bg-slate-50 dark:border-slate-700 dark:text-slate-300"
+				>
+					Cerrar
+				</button>
+				<button
+					type="button"
+					id="btn-descargar-pdf"
+					class="inline-flex items-center justify-center gap-2 rounded-xl bg-[#0877a7] px-4 py-2.5 text-sm font-extrabold text-white hover:bg-[#065f86]"
+				>
+					<Icon name="download" size={16} />
+					Descargar Constancia PDF
+				</button>
+			</div>
+		</div>
+	</div>
+
+	<script src="../../scripts/pago-tributos.js"></script>
+</Layout>

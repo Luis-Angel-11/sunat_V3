@@ -1,0 +1,144 @@
+---
+import Layout from '../../layouts/Layout.astro';
+import SolHeader from '../../components/sol/SolHeader.astro';
+import SolSidebar from '../../components/sol/SolSidebar.astro';
+import Icon from '../../components/Icon.astro';
+
+const cronograma2026 = [
+	{ periodo: 'Ene 2026', d0: '16 Feb', d1: '17 Feb', d23: '18 Feb', d45: '19 Feb', d67: '20 Feb', d89: '23 Feb', buenos: '24 Feb' },
+	{ periodo: 'Feb 2026', d0: '16 Mar', d1: '17 Mar', d23: '18 Mar', d45: '19 Mar', d67: '20 Mar', d89: '23 Mar', buenos: '24 Mar' },
+	{ periodo: 'Mar 2026', d0: '16 Abr', d1: '17 Abr', d23: '20 Abr', d45: '21 Abr', d67: '22 Abr', d89: '23 Abr', buenos: '24 Abr' },
+	{ periodo: 'Abr 2026', d0: '15 May', d1: '18 May', d23: '19 May', d45: '20 May', d67: '21 May', d89: '22 May', buenos: '25 May' },
+	{ periodo: 'May 2026', d0: '15 Jun', d1: '16 Jun', d23: '17 Jun', d45: '18 Jun', d67: '19 Jun', d89: '22 Jun', buenos: '23 Jun' },
+	{ periodo: 'Jun 2026', d0: '15 Jul', d1: '16 Jul', d23: '17 Jul', d45: '20 Jul', d67: '21 Jul', d89: '22 Jul', buenos: '24 Jul' },
+	{ periodo: 'Jul 2026', d0: '17 Ago', d1: '18 Ago', d23: '19 Ago', d45: '20 Ago', d67: '21 Ago', d89: '24 Ago', buenos: '25 Ago' },
+	{ periodo: 'Ago 2026', d0: '15 Set', d1: '16 Set', d23: '17 Set', d45: '18 Set', d67: '21 Set', d89: '22 Set', buenos: '23 Set' },
+	{ periodo: 'Set 2026', d0: '15 Oct', d1: '16 Oct', d23: '19 Oct', d45: '20 Oct', d67: '21 Oct', d89: '22 Oct', buenos: '23 Oct' },
+	{ periodo: 'Oct 2026', d0: '16 Nov', d1: '17 Nov', d23: '18 Nov', d45: '19 Nov', d67: '20 Nov', d89: '23 Nov', buenos: '24 Nov' },
+	{ periodo: 'Nov 2026', d0: '15 Dic', d1: '16 Dic', d23: '17 Dic', d45: '18 Dic', d67: '21 Dic', d89: '22 Dic', buenos: '23 Dic' },
+	{ periodo: 'Dic 2026', d0: '18 Ene', d1: '19 Ene', d23: '20 Ene', d45: '21 Ene', d67: '22 Ene', d89: '25 Ene', buenos: '26 Ene' },
+];
+---
+
+<Layout title="Cronograma de Vencimientos - SUNAT SOL" description="Consulta las fechas máximas de declaración y pago mensual según el último dígito de tu RUC.">
+	<SolHeader current="inicio" />
+
+	<div class="flex min-h-[calc(100vh-104px)] bg-[#f8fafc] dark:bg-slate-950">
+		<SolSidebar activeMenu="ayuda" />
+
+		<main class="flex-1 p-6 lg:p-8 max-w-7xl">
+			<div class="space-y-6">
+				<!-- Migas de Pan -->
+				<nav class="flex text-xs font-semibold text-slate-500 dark:text-slate-400" aria-label="Ruta de navegación">
+					<ol class="inline-flex items-center gap-1.5">
+						<li><a href="/prueba" class="hover:text-[#0877a7] dark:hover:text-sky-300">Inicio SOL</a></li>
+						<li><Icon name="chevron-right" size={12} /></li>
+						<li><span>Ayuda</span></li>
+						<li><Icon name="chevron-right" size={12} /></li>
+						<li><span class="font-bold text-slate-800 dark:text-slate-200">Cronograma de Vencimientos</span></li>
+					</ol>
+				</nav>
+
+				<!-- Encabezado y Descarga PDF -->
+				<div class="flex flex-col justify-between gap-4 sm:flex-row sm:items-center">
+					<div>
+						<h1 class="text-2xl font-black tracking-tight text-slate-900 dark:text-white">
+							Cronograma de Obligaciones Mensuales 2026
+						</h1>
+						<p class="mt-1 text-sm text-slate-600 dark:text-slate-400">
+							Fechas máximas para declarar y pagar tus impuestos mensuales (IGV, Renta, PLAME) según el último dígito de tu RUC.
+						</p>
+					</div>
+					<button
+						type="button"
+						id="btn-descargar-cronograma"
+						class="inline-flex items-center gap-2 rounded-xl bg-[#003366] px-4 py-2.5 text-sm font-extrabold text-white shadow-sm transition hover:bg-[#002244]"
+					>
+						<Icon name="download" size={16} />
+						Descargar Cronograma PDF
+					</button>
+				</div>
+
+				<!-- Buscador Interactivo por Dígito o RUC -->
+				<div class="grid grid-cols-1 gap-4 rounded-2xl border border-slate-200 bg-white p-5 shadow-sm dark:border-slate-800 dark:bg-slate-900 lg:grid-cols-3">
+					<div class="lg:col-span-2 flex flex-col justify-center space-y-2">
+						<label for="select-digito-ruc" class="text-xs font-extrabold uppercase tracking-wider text-slate-500">
+							Resaltar columna por Último Dígito de RUC
+						</label>
+						<div class="flex flex-wrap items-center gap-3">
+							<select
+								id="select-digito-ruc"
+								class="rounded-xl border border-slate-300 bg-white px-4 py-2.5 text-sm font-bold text-slate-800 focus:border-[#0877a7] focus:outline-none dark:border-slate-700 dark:bg-slate-800 dark:text-white"
+							>
+								<option value="all">Mostrar todos los dígitos</option>
+								<option value="d0">Dígito 0</option>
+								<option value="d1">Dígito 1</option>
+								<option value="d23">Dígitos 2 y 3</option>
+								<option value="d45" selected>Dígitos 4 y 5 (Tu RUC: ...5)</option>
+								<option value="d67">Dígitos 6 y 7</option>
+								<option value="d89">Dígitos 8 y 9</option>
+								<option value="buenos">Buenos Contribuyentes y UESP</option>
+							</select>
+							<span class="text-xs font-medium text-slate-500">
+								Tu RUC registrado (<strong>10616288475</strong>) termina en <strong>5</strong>.
+							</span>
+						</div>
+					</div>
+
+					<div class="rounded-xl border border-sky-200 bg-sky-50/70 p-4 dark:border-sky-900/50 dark:bg-sky-950/30">
+						<div class="flex items-center gap-2 text-xs font-extrabold uppercase text-[#0877a7] dark:text-sky-400">
+							<Icon name="calendar" size={16} />
+							Próximo Vencimiento (Dígito 5)
+						</div>
+						<p id="proximo-vencimiento-texto" class="mt-1.5 text-lg font-black text-[#003366] dark:text-white">
+							18 de Diciembre 2026
+						</p>
+						<span class="text-xs text-slate-600 dark:text-slate-400">Correspondiente al periodo Nov 2026</span>
+					</div>
+				</div>
+
+				<!-- Tabla del Cronograma -->
+				<div class="overflow-hidden rounded-2xl border border-slate-200 bg-white shadow-sm dark:border-slate-800 dark:bg-slate-900">
+					<div class="overflow-x-auto">
+						<table id="tabla-cronograma" class="w-full text-center text-sm">
+							<thead class="border-b border-slate-200 bg-[#003366] text-xs font-bold uppercase text-white dark:bg-slate-800">
+								<tr>
+									<th class="px-4 py-3.5 text-left">Periodo Tributario</th>
+									<th data-col="d0" class="px-3 py-3.5">0</th>
+									<th data-col="d1" class="px-3 py-3.5">1</th>
+									<th data-col="d23" class="px-3 py-3.5">2 y 3</th>
+									<th data-col="d45" class="px-3 py-3.5 bg-[#0877a7]">4 y 5</th>
+									<th data-col="d67" class="px-3 py-3.5">6 y 7</th>
+									<th data-col="d89" class="px-3 py-3.5">8 y 9</th>
+									<th data-col="buenos" class="px-3 py-3.5">Buenos Contrib.</th>
+								</tr>
+							</thead>
+							<tbody class="divide-y divide-slate-200 dark:divide-slate-800">
+								{cronograma2026.map((fila) => (
+									<tr class="hover:bg-slate-50 dark:hover:bg-slate-800/40">
+										<td class="px-4 py-3 text-left font-extrabold text-slate-900 dark:text-white">
+											{fila.periodo}
+										</td>
+										<td data-col="d0" class="px-3 py-3 text-slate-700 dark:text-slate-300">{fila.d0}</td>
+										<td data-col="d1" class="px-3 py-3 text-slate-700 dark:text-slate-300">{fila.d1}</td>
+										<td data-col="d23" class="px-3 py-3 text-slate-700 dark:text-slate-300">{fila.d23}</td>
+										<td data-col="d45" class="px-3 py-3 font-extrabold text-[#003366] bg-sky-50/80 dark:bg-sky-950/40 dark:text-sky-300">
+											{fila.d45}
+										</td>
+										<td data-col="d67" class="px-3 py-3 text-slate-700 dark:text-slate-300">{fila.d67}</td>
+										<td data-col="d89" class="px-3 py-3 text-slate-700 dark:text-slate-300">{fila.d89}</td>
+										<td data-col="buenos" class="px-3 py-3 font-semibold text-emerald-700 dark:text-emerald-400">
+											{fila.buenos}
+										</td>
+									</tr>
+								))}
+							</tbody>
+						</table>
+					</div>
+				</div>
+			</div>
+		</main>
+	</div>
+
+	<script src="../../scripts/cronograma-vencimientos.js"></script>
+</Layout>

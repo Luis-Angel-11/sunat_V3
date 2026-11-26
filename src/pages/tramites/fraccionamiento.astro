@@ -1,0 +1,242 @@
+---
+import Layout from '../../layouts/Layout.astro';
+import SolHeader from '../../components/sol/SolHeader.astro';
+import SolSidebar from '../../components/sol/SolSidebar.astro';
+import Icon from '../../components/Icon.astro';
+
+const deudasFraccionables = [
+	{
+		id: 'DEUDA-01',
+		periodo: '08/2026',
+		tributo: '1011 - IGV OPERACIONES INTERNAS',
+		valor: 'OP N° 023-001-0458921',
+		monto: 1850.00,
+	},
+	{
+		id: 'DEUDA-02',
+		periodo: '09/2026',
+		tributo: '3031 - RENTA RÉGIMEN MYPE TRIBUTARIO',
+		valor: 'OP N° 023-001-0461029',
+		monto: 1240.00,
+	},
+	{
+		id: 'DEUDA-03',
+		periodo: '10/2026',
+		tributo: '1011 - IGV OPERACIONES INTERNAS',
+		valor: 'AUTOLIQUIDADA FORM. 0621',
+		monto: 850.00,
+	},
+];
+---
+
+<Layout title="Solicitud de Fraccionamiento - SUNAT SOL" description="Solicita el aplazamiento y/o fraccionamiento de tu deuda tributaria (Art. 36° del Código Tributario).">
+	<SolHeader current="inicio" />
+
+	<div class="flex min-h-[calc(100vh-104px)] bg-[#f8fafc] dark:bg-slate-950">
+		<SolSidebar activeMenu="tramites" />
+
+		<main class="flex-1 p-6 lg:p-8 max-w-7xl">
+			<div class="space-y-6">
+				<!-- Migas de Pan -->
+				<nav class="flex text-xs font-semibold text-slate-500 dark:text-slate-400" aria-label="Ruta de navegación">
+					<ol class="inline-flex items-center gap-1.5">
+						<li><a href="/prueba" class="hover:text-[#0877a7] dark:hover:text-sky-300">Inicio SOL</a></li>
+						<li><Icon name="chevron-right" size={12} /></li>
+						<li><span>Trámites y Reclamos</span></li>
+						<li><Icon name="chevron-right" size={12} /></li>
+						<li><span class="font-bold text-slate-800 dark:text-slate-200">Solicitud de Fraccionamiento</span></li>
+					</ol>
+				</nav>
+
+				<!-- Encabezado -->
+				<div>
+					<h1 class="text-2xl font-black tracking-tight text-slate-900 dark:text-white">
+						Solicitud de Fraccionamiento Tributario (Form. Virtual 687)
+					</h1>
+					<p class="mt-1 text-sm text-slate-600 dark:text-slate-400">
+						Acógete al fraccionamiento del Artículo 36° del Código Tributario para dividir tus deudas exigibles en cuotas mensuales fijas.
+					</p>
+				</div>
+
+				<!-- Aviso Informativo -->
+				<div class="flex items-start gap-3 rounded-2xl border border-sky-200 bg-sky-50/70 p-4 text-xs text-slate-700 dark:border-sky-900/50 dark:bg-sky-950/30 dark:text-slate-300">
+					<div class="mt-0.5 text-[#0877a7] dark:text-sky-400">
+						<Icon name="info" size={18} />
+					</div>
+					<div>
+						<span class="font-bold text-slate-900 dark:text-white">Requisitos verificados automáticamente:</span> Tu RUC se encuentra en estado <strong>Activo</strong>, condición <strong>Habido</strong> y cuentas con clave SOL vigente. La cuota mínima mensual no puede ser menor al 5% de la UIT (S/ 267.50).
+					</div>
+				</div>
+
+				<div class="grid grid-cols-1 gap-6 lg:grid-cols-3">
+					<!-- Selección de Deuda y Parámetros (2 columnas) -->
+					<div class="lg:col-span-2 space-y-6">
+						<!-- Paso 1: Selección de Deuda -->
+						<div class="overflow-hidden rounded-2xl border border-slate-200 bg-white shadow-sm dark:border-slate-800 dark:bg-slate-900">
+							<div class="border-b border-slate-200 bg-slate-50/70 px-5 py-4 dark:border-slate-800 dark:bg-slate-800/50">
+								<h2 class="text-sm font-extrabold text-slate-800 dark:text-white">1. Selecciona las deudas a acoger</h2>
+							</div>
+							<div class="overflow-x-auto">
+								<table class="w-full text-left text-sm">
+									<thead class="border-b border-slate-200 bg-slate-50 text-xs font-bold uppercase text-slate-500 dark:border-slate-800 dark:bg-slate-900/50 dark:text-slate-400">
+										<tr>
+											<th class="px-4 py-3 w-10"></th>
+											<th class="px-4 py-3">Periodo</th>
+											<th class="px-4 py-3">Tributo / Documento</th>
+											<th class="px-4 py-3 text-right">Deuda Actualizada</th>
+										</tr>
+									</thead>
+									<tbody class="divide-y divide-slate-200 dark:divide-slate-800">
+										{deudasFraccionables.map((d) => (
+											<tr class="hover:bg-slate-50/80 dark:hover:bg-slate-800/40">
+												<td class="px-4 py-3.5">
+													<input
+														type="checkbox"
+														class="deuda-check h-4 w-4 rounded border-slate-300 text-[#003366] focus:ring-[#0877a7]"
+														data-monto={d.monto}
+														data-tributo={d.tributo}
+														data-periodo={d.periodo}
+													/>
+												</td>
+												<td class="px-4 py-3.5 font-bold text-slate-800 dark:text-slate-200">{d.periodo}</td>
+												<td class="px-4 py-3.5">
+													<div class="font-bold text-slate-900 dark:text-white">{d.tributo}</div>
+													<div class="text-xs text-slate-500">{d.valor}</div>
+												</td>
+												<td class="px-4 py-3.5 text-right font-extrabold text-slate-900 dark:text-white">
+													S/ {d.monto.toFixed(2)}
+												</td>
+											</tr>
+										))}
+									</tbody>
+								</table>
+							</div>
+						</div>
+
+						<!-- Paso 2: Condiciones de Plazo y Cuota Inicial -->
+						<div class="rounded-2xl border border-slate-200 bg-white p-6 shadow-sm dark:border-slate-800 dark:bg-slate-900 space-y-4">
+							<h2 class="text-sm font-extrabold text-slate-800 dark:text-white border-b border-slate-100 pb-3 dark:border-slate-800">
+								2. Condiciones del Fraccionamiento
+							</h2>
+
+							<div class="grid grid-cols-1 gap-4 sm:grid-cols-2">
+								<div>
+									<label for="select-cuotas" class="block text-xs font-bold text-slate-700 dark:text-slate-300 mb-1.5">
+										Número de Cuotas Mensuales (2 a 36)
+									</label>
+									<select
+										id="select-cuotas"
+										class="w-full rounded-xl border border-slate-300 bg-white px-3 py-2.5 text-sm font-semibold text-slate-800 focus:border-[#0877a7] focus:outline-none dark:border-slate-700 dark:bg-slate-800 dark:text-white"
+									>
+										<option value="3">3 cuotas mensuales</option>
+										<option value="6" selected>6 cuotas mensuales</option>
+										<option value="12">12 cuotas mensuales</option>
+										<option value="18">18 cuotas mensuales</option>
+										<option value="24">24 cuotas mensuales</option>
+									</select>
+								</div>
+
+								<div>
+									<label for="porcentaje-inicial" class="block text-xs font-bold text-slate-700 dark:text-slate-300 mb-1.5">
+										Cuota de Acogimiento (Inicial %)
+									</label>
+									<select
+										id="porcentaje-inicial"
+										class="w-full rounded-xl border border-slate-300 bg-white px-3 py-2.5 text-sm font-semibold text-slate-800 focus:border-[#0877a7] focus:outline-none dark:border-slate-700 dark:bg-slate-800 dark:text-white"
+									>
+										<option value="0.10" selected>10% (Mínimo requerido)</option>
+										<option value="0.15">15%</option>
+										<option value="0.20">20%</option>
+										<option value="0.30">30%</option>
+									</select>
+								</div>
+							</div>
+						</div>
+					</div>
+
+					<!-- Simulador y Envío (1 columna) -->
+					<div class="rounded-2xl border border-slate-200 bg-white p-6 shadow-sm dark:border-slate-800 dark:bg-slate-900 h-fit space-y-5">
+						<div class="flex items-center gap-2 border-b border-slate-100 pb-3 dark:border-slate-800">
+							<Icon name="calculator" size={18} />
+							<h2 class="text-base font-black text-slate-900 dark:text-white">Simulación de Cuotas</h2>
+						</div>
+
+						<div class="space-y-2.5 text-sm">
+							<div class="flex justify-between text-slate-600 dark:text-slate-400">
+								<span>Deuda Acogida:</span>
+								<span id="frac-deuda-total" class="font-bold text-slate-900 dark:text-white">S/ 0.00</span>
+							</div>
+							<div class="flex justify-between text-slate-600 dark:text-slate-400">
+								<span>Cuota de Acogimiento:</span>
+								<span id="frac-cuota-inicial" class="font-bold text-[#0877a7] dark:text-sky-400">S/ 0.00</span>
+							</div>
+							<div class="flex justify-between text-slate-600 dark:text-slate-400">
+								<span>Saldo a Fraccionar:</span>
+								<span id="frac-saldo" class="font-bold text-slate-900 dark:text-white">S/ 0.00</span>
+							</div>
+							<div class="flex justify-between text-slate-600 dark:text-slate-400">
+								<span>Tasa de Interés (TIM 80%):</span>
+								<span class="font-semibold text-slate-700 dark:text-slate-300">0.72% mensual</span>
+							</div>
+							<div class="pt-3 border-t border-slate-200 dark:border-slate-800 flex items-baseline justify-between">
+								<span class="text-sm font-bold text-slate-800 dark:text-slate-200">Cuota Mensual Aprox.:</span>
+								<span id="frac-cuota-mensual" class="text-2xl font-black text-[#003366] dark:text-sky-400">S/ 0.00</span>
+							</div>
+						</div>
+
+						<button
+							type="button"
+							id="btn-enviar-fraccionamiento"
+							disabled
+							class="w-full rounded-xl bg-[#003366] px-4 py-3 text-sm font-extrabold text-white shadow-sm transition hover:bg-[#002244] disabled:cursor-not-allowed disabled:bg-slate-300 dark:disabled:bg-slate-800 dark:disabled:text-slate-500"
+						>
+							Generar Solicitud (Form. 687)
+						</button>
+					</div>
+				</div>
+			</div>
+		</main>
+	</div>
+
+	<!-- Modal de Confirmación -->
+	<div id="modal-fraccionamiento" class="fixed inset-0 z-50 hidden items-center justify-center bg-slate-900/60 p-4 backdrop-blur-sm">
+		<div class="w-full max-w-md rounded-3xl border border-slate-200 bg-white p-6 shadow-2xl dark:border-slate-800 dark:bg-slate-900 space-y-4">
+			<div class="flex items-center gap-3">
+				<div class="grid h-11 w-11 place-items-center rounded-2xl bg-emerald-100 text-emerald-700 dark:bg-emerald-950 dark:text-emerald-400">
+					<Icon name="shield-check" size={24} />
+				</div>
+				<div>
+					<h3 class="text-lg font-black text-slate-900 dark:text-white">Solicitud Registrada</h3>
+					<p class="text-xs text-slate-500">Formulario Virtual N° 687</p>
+				</div>
+			</div>
+
+			<div class="rounded-2xl bg-slate-50 p-4 text-xs space-y-2 dark:bg-slate-800/60">
+				<div class="flex justify-between">
+					<span class="text-slate-500">N° de Solicitud:</span>
+					<span id="frac-num-solicitud" class="font-mono font-bold text-slate-900 dark:text-white">-</span>
+				</div>
+				<div class="flex justify-between">
+					<span class="text-slate-500">Plazo Aprobado:</span>
+					<span id="frac-resumen-plazo" class="font-bold text-slate-900 dark:text-white">-</span>
+				</div>
+				<div class="flex justify-between">
+					<span class="text-slate-500">Cuota Mensual:</span>
+					<span id="frac-resumen-cuota" class="font-bold text-emerald-700 dark:text-emerald-400">-</span>
+				</div>
+			</div>
+
+			<div class="flex justify-end gap-2 pt-2">
+				<button type="button" id="btn-cerrar-frac" class="rounded-xl border border-slate-300 px-4 py-2 text-sm font-bold text-slate-700 dark:border-slate-700 dark:text-slate-300">
+					Cerrar
+				</button>
+				<button type="button" id="btn-pdf-frac" class="inline-flex items-center gap-1.5 rounded-xl bg-[#0877a7] px-4 py-2 text-sm font-extrabold text-white">
+					<Icon name="download" size={16} />
+					Constancia PDF
+				</button>
+			</div>
+		</div>
+	</div>
+
+	<script src="../../scripts/fraccionamiento.js"></script>
+</Layout>

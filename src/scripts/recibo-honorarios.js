@@ -330,13 +330,70 @@ document.addEventListener('DOMContentLoaded', function() {
     }
 
     if (btnDescargaA4) {
-        btnDescargaA4.addEventListener('click', function() {
-            cargarVistaPrevia();
-            modalPV.classList.remove('hidden');
-            setTimeout(function() {
-                window.print();
-                modalPV.classList.add('hidden');
-            }, 150);
-        });
-    }
+	btnDescargaA4.addEventListener('click', function () {
+		cargarVistaPrevia();
+
+		// Busca #documento-impreso-rhe o toma el primer contenedor hijo del modal de vista previa
+		const docElem =
+			document.getElementById('documento-impreso-rhe') ||
+			(modalPV ? modalPV.firstElementChild : null);
+		if (!docElem) return;
+
+		const clon = docElem.cloneNode(true);
+		const btnCerrar = clon.querySelector('#btn-cerrar-pv-rhe');
+		if (btnCerrar) btnCerrar.remove();
+
+		const estilos = Array.from(document.querySelectorAll('link[rel="stylesheet"], style'))
+			.map((el) => el.outerHTML)
+			.join('\n');
+
+		const ventanaImpresion = window.open('', '_blank', 'width=900,height=700');
+		if (!ventanaImpresion) {
+			alert('Por favor permite las ventanas emergentes para descargar el documento.');
+			return;
+		}
+
+		ventanaImpresion.document.write(`
+			<!DOCTYPE html>
+			<html lang="es">
+			<head>
+				<meta charset="UTF-8" />
+				<title>Recibo por Honorarios Electrónico - E001-00000015</title>
+				${estilos}
+				<style>
+					@page { margin: 8mm; }
+					* {
+						-webkit-print-color-adjust: exact !important;
+						print-color-adjust: exact !important;
+					}
+					body {
+						background: #ffffff !important;
+						margin: 0 !important;
+						padding: 0 !important;
+					}
+					body > div {
+						max-width: 210mm !important;
+						width: 100% !important;
+						margin: 0 auto !important;
+						box-shadow: none !important;
+						border: none !important;
+						padding: 12px !important;
+					}
+				</style>
+			</head>
+			<body>
+				${clon.outerHTML}
+			</body>
+			</html>
+		`);
+
+		ventanaImpresion.document.close();
+		ventanaImpresion.focus();
+
+		setTimeout(() => {
+			ventanaImpresion.print();
+			ventanaImpresion.close();
+		}, 300);
+	});
+}
 });

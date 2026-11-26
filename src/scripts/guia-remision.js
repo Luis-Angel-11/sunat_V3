@@ -690,26 +690,71 @@ document.addEventListener('DOMContentLoaded', function() {
     }
 
     function imprimirFormato(formato) {
-        cargarVistaPrevia();
-        if (modalPV) modalPV.classList.remove('hidden');
+	cargarVistaPrevia();
 
-        var docElem = document.getElementById('documento-impreso-gre');
-        if (docElem) {
-            if (formato === '80MM') {
-                docElem.style.maxWidth = '80mm';
-            } else if (formato === 'A5') {
-                docElem.style.maxWidth = '148mm';
-            } else {
-                docElem.style.maxWidth = '210mm';
-            }
-        }
+	const docElem = document.getElementById('documento-impreso-gre');
+	if (!docElem) return;
 
-        setTimeout(function() {
-            window.print();
-            if (docElem) docElem.style.maxWidth = '';
-            if (modalPV) modalPV.classList.add('hidden');
-        }, 150);
-    }
+	// Clonamos la vista previa exacta y quitamos el botón "Cerrar Vista Previa"
+	const clon = docElem.cloneNode(true);
+	const btnCerrar = clon.querySelector('#btn-cerrar-pv-gre');
+	if (btnCerrar) btnCerrar.remove();
+
+	const ancho = formato === '80MM' ? '80mm' : formato === 'A5' ? '148mm' : '210mm';
+
+	// Copiamos los estilos (Tailwind) actuales de la página para que se vea idéntico
+	const estilos = Array.from(document.querySelectorAll('link[rel="stylesheet"], style'))
+		.map((el) => el.outerHTML)
+		.join('\n');
+
+	const ventanaImpresion = window.open('', '_blank', 'width=900,height=700');
+	if (!ventanaImpresion) {
+		alert('Por favor permite las ventanas emergentes para descargar el documento.');
+		return;
+	}
+
+	ventanaImpresion.document.write(`
+		<!DOCTYPE html>
+		<html lang="es">
+		<head>
+			<meta charset="UTF-8" />
+			<title>Guía de Remisión Electrónica - T001-00000012</title>
+			${estilos}
+			<style>
+				@page { margin: 8mm; }
+				* {
+					-webkit-print-color-adjust: exact !important;
+					print-color-adjust: exact !important;
+				}
+				body {
+					background: #ffffff !important;
+					margin: 0 !important;
+					padding: 0 !important;
+				}
+				#documento-impreso-gre {
+					max-width: ${ancho} !important;
+					width: 100% !important;
+					margin: 0 auto !important;
+					box-shadow: none !important;
+					border: none !important;
+					padding: 12px !important;
+				}
+			</style>
+		</head>
+		<body>
+			${clon.outerHTML}
+		</body>
+		</html>
+	`);
+
+	ventanaImpresion.document.close();
+	ventanaImpresion.focus();
+
+	setTimeout(() => {
+		ventanaImpresion.print();
+		ventanaImpresion.close();
+	}, 300);
+}
 
     if (btnDescargaA4) btnDescargaA4.addEventListener('click', function() { imprimirFormato('A4'); });
     if (btnDescarga80mm) btnDescarga80mm.addEventListener('click', function() { imprimirFormato('80MM'); });
