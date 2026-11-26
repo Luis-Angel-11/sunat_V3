@@ -1,78 +1,17 @@
+import { markdownSeguro } from '../lib/markdown';
+
 const chatContenedor = document.getElementById('chat-mensajes');
 const formChat = document.getElementById('form-chat-sofia');
 const inputMensaje = document.getElementById('input-mensaje-sofia');
+const btnEnviar = formChat?.querySelector('button[type="submit"]');
 const botonesRapidos = document.querySelectorAll('.btn-consulta-rapida');
 const btnLimpiarChat = document.getElementById('btn-limpiar-chat');
 
-const baseConocimiento = {
-	vencimientos: {
-		texto:
-			'Tu RUC <strong>10616288475</strong> termina en el dígito <strong>5</strong>. Para el periodo tributario <strong>Noviembre 2026</strong>, tu fecha máxima de declaración y pago es el <strong>18 de diciembre de 2026</strong>.',
-		enlaceTexto: 'Ver Cronograma Completo 2026',
-		enlaceUrl: '/ayuda/cronograma-vencimientos',
-	},
-	factura: {
-		texto:
-			'Para emitir una <strong>Factura Electrónica</strong> ingresa a <em>Emitir > Factura Electrónica</em>, digita el RUC de tu cliente, selecciona la moneda y agrega los ítems. El IGV (18%) se calcula automáticamente.',
-		enlaceTexto: 'Ir a Guía de Factura Electrónica',
-		enlaceUrl: '/ayuda/factura',
-	},
-	pagar: {
-		texto:
-			'Puedes cancelar tus tributos pendientes mediante <strong>Cargo en Cuenta Bancaria</strong>, <strong>Tarjeta de Débito/Crédito</strong> o generando un <strong>Número de Pago SUNAT (NPS)</strong> a través del Formulario Virtual 1662.',
-		enlaceTexto: 'Ir a Pago de Tributos Pendientes',
-		enlaceUrl: '/declara/pago-tributos',
-	},
-	fraccionamiento: {
-		texto:
-			'Puedes acoger tus deudas exigibles al fraccionamiento del <strong>Art. 36° del Código Tributario (Form. 687)</strong> en hasta 36 cuotas mensuales. Se requiere una cuota de acogimiento mínima del 10% y tu cuota mensual no puede ser menor al 5% de la UIT.',
-		enlaceTexto: 'Simular y Solicitar Fraccionamiento',
-		enlaceUrl: '/tramites/fraccionamiento',
-	},
-	clave: {
-		texto:
-			'Desde el módulo de <strong>Mi Perfil / Clave SOL</strong> puedes actualizar tu contraseña (8 a 12 caracteres alfanuméricos) y administrar usuarios secundarios para tu contador.',
-		enlaceTexto: 'Ir a Gestión de Clave SOL',
-		enlaceUrl: '/clave-sol',
-	},
-	asesor: {
-		texto:
-			'Si necesitas atención personalizada, puedes comunicarte con nuestra Central de Consultas al <strong>*4000</strong> desde celulares o al <strong>0-801-12-100</strong> de lunes a viernes de 8:30 a.m. a 6:00 p.m.',
-		enlaceTexto: 'Registrar consulta o reclamo formal',
-		enlaceUrl: '/libro-reclamaciones/registrar',
-	},
-};
+/** @type {{ rol: 'usuario' | 'asistente'; texto: string }[]} */
+const historial = [];
+let ocupado = false;
 
-function detectarTema(textoUsuario) {
-	const t = textoUsuario.toLowerCase();
-	if (t.includes('venc') || t.includes('cronograma') || t.includes('fecha') || t.includes('digito') || t.includes('ruc')) {
-		return baseConocimiento.vencimientos;
-	}
-	if (t.includes('factura') || t.includes('emitir') || t.includes('comprobante') || t.includes('guia')) {
-		return baseConocimiento.factura;
-	}
-	if (t.includes('pagar') || t.includes('pago') || t.includes('nps') || t.includes('tributo') || t.includes('boleta')) {
-		return baseConocimiento.pagar;
-	}
-	if (t.includes('fraccion') || t.includes('cuota') || t.includes('deuda') || t.includes('687')) {
-		return baseConocimiento.fraccionamiento;
-	}
-	if (t.includes('clave') || t.includes('contraseña') || t.includes('sol') || t.includes('usuario')) {
-		return baseConocimiento.clave;
-	}
-	if (t.includes('asesor') || t.includes('telefono') || t.includes('ayuda') || t.includes('reclamo')) {
-		return baseConocimiento.asesor;
-	}
-
-	return {
-		texto:
-			'Entiendo tu consulta sobre <em>"' +
-			textoUsuario +
-			'"</em>. Puedes revisar nuestros manuales paso a paso en el Centro de Guías Explicativas o elegir una de las consultas frecuentes del panel izquierdo.',
-		enlaceTexto: 'Explorar Centro de Guías Explicativas',
-		enlaceUrl: '/ayuda/guias',
-	};
-}
+const escapar = (t) => t.replace(/[&<>"']/g, (c) => `&#${c.charCodeAt(0)};`);
 
 function agregarMensajeUsuario(texto) {
 	if (!chatContenedor) return;
@@ -80,7 +19,7 @@ function agregarMensajeUsuario(texto) {
 	div.className = 'flex items-start justify-end gap-3';
 	div.innerHTML = `
 		<div class="max-w-lg rounded-2xl rounded-tr-none bg-[#003366] px-4 py-3 text-sm text-white shadow-sm">
-			${texto}
+			${escapar(texto)}
 		</div>
 		<div class="grid h-9 w-9 shrink-0 place-items-center rounded-2xl bg-slate-200 text-xs font-black text-slate-700 dark:bg-slate-800 dark:text-slate-200">
 			JC
@@ -90,59 +29,121 @@ function agregarMensajeUsuario(texto) {
 	chatContenedor.scrollTop = chatContenedor.scrollHeight;
 }
 
-function agregarRespuestaSofia(respuesta) {
-	if (!chatContenedor) return;
-
-	const typingDiv = document.createElement('div');
-	typingDiv.className = 'flex items-start gap-3';
-	typingDiv.innerHTML = `
-		<div class="grid h-9 w-9 shrink-0 place-items-center rounded-2xl bg-[#003366] text-xs font-black text-white">SF</div>
-		<div class="rounded-2xl rounded-tl-none border border-slate-200 bg-white px-4 py-3 text-xs font-semibold text-slate-400 dark:border-slate-800 dark:bg-slate-900">
-			Sofía está escribiendo...
+function crearBurbujaSofia() {
+	const msgDiv = document.createElement('div');
+	msgDiv.className = 'flex items-start gap-3';
+	msgDiv.innerHTML = `
+		<div class="grid h-9 w-9 shrink-0 place-items-center rounded-2xl bg-[#003366] text-xs font-black text-white">
+			SF
+		</div>
+		<div class="sofia-md max-w-lg space-y-2 rounded-2xl rounded-tl-none border border-slate-200 bg-white p-4 text-sm leading-relaxed text-slate-700 shadow-sm dark:border-slate-800 dark:bg-slate-900 dark:text-slate-200">
+			<span class="text-xs font-semibold text-slate-400">Pensando...</span>
 		</div>
 	`;
-	chatContenedor.appendChild(typingDiv);
-	chatContenedor.scrollTop = chatContenedor.scrollHeight;
+	chatContenedor?.appendChild(msgDiv);
+	if (chatContenedor) chatContenedor.scrollTop = chatContenedor.scrollHeight;
+	return msgDiv.querySelector('.sofia-md');
+}
 
-	setTimeout(() => {
-		typingDiv.remove();
-		const msgDiv = document.createElement('div');
-		msgDiv.className = 'flex items-start gap-3';
-		msgDiv.innerHTML = `
-			<div class="grid h-9 w-9 shrink-0 place-items-center rounded-2xl bg-[#003366] text-xs font-black text-white">
-				SF
-			</div>
-			<div class="max-w-lg space-y-3 rounded-2xl rounded-tl-none border border-slate-200 bg-white p-4 text-sm text-slate-700 shadow-sm dark:border-slate-800 dark:bg-slate-900 dark:text-slate-200">
-				<p class="leading-relaxed">${respuesta.texto}</p>
-				<a href="${respuesta.enlaceUrl}" class="inline-flex items-center gap-1.5 rounded-xl bg-sky-50 px-3 py-1.5 text-xs font-extrabold text-[#0877a7] transition hover:bg-sky-100 dark:bg-sky-950 dark:text-sky-300">
-					${respuesta.enlaceTexto} →
-				</a>
-			</div>
-		`;
-		chatContenedor.appendChild(msgDiv);
-		chatContenedor.scrollTop = chatContenedor.scrollHeight;
-	}, 450);
+async function preguntarASofia(pregunta) {
+	const textoLimpio = pregunta.trim();
+	if (ocupado || !textoLimpio || !chatContenedor) return;
+
+	ocupado = true;
+	if (btnEnviar) btnEnviar.disabled = true;
+
+	historial.push({ rol: 'usuario', texto: textoLimpio });
+	agregarMensajeUsuario(textoLimpio);
+
+	const cuerpoBurbuja = crearBurbujaSofia();
+	let texto = '';
+	/** @type {{ url: string; titulo: string }[]} */
+	let fuentes = [];
+	let error = '';
+
+	try {
+		const res = await fetch('/api/chat-sunat', {
+			method: 'POST',
+			headers: { 'Content-Type': 'application/json' },
+			body: JSON.stringify({ historial }),
+		});
+
+		if (!res.ok || !res.body) {
+			error = (await res.json().catch(() => null))?.error || 'No pudimos conectar con el asistente.';
+		} else {
+			const lector = res.body.pipeThrough(new TextDecoderStream()).getReader();
+			let resto = '';
+
+			for (;;) {
+				const { value, done } = await lector.read();
+				if (done) break;
+				resto += value;
+				const lineas = resto.split('\n');
+				resto = lineas.pop() ?? '';
+
+				for (const linea of lineas) {
+					if (!linea.trim()) continue;
+					const ev = JSON.parse(linea);
+
+					if (ev.t === 'buscando' && !texto && cuerpoBurbuja) {
+						cuerpoBurbuja.innerHTML =
+							'<span class="text-xs font-semibold text-[#0877a7] dark:text-sky-400">Buscando en sunat.gob.pe...</span>';
+					}
+					if (ev.t === 'texto' && cuerpoBurbuja) {
+						texto += ev.v;
+						cuerpoBurbuja.innerHTML = markdownSeguro(texto);
+					}
+					if (ev.t === 'fuentes') fuentes = ev.v;
+					if (ev.t === 'error') error = ev.v;
+				}
+				chatContenedor.scrollTop = chatContenedor.scrollHeight;
+			}
+		}
+	} catch {
+		error = 'No pudimos conectar con el asistente. Revisa tu conexión.';
+	}
+
+	if (cuerpoBurbuja) {
+		if (error && !texto) {
+			cuerpoBurbuja.innerHTML = `<p><strong>Ups.</strong> ${escapar(error)}</p>`;
+			historial.pop();
+		} else {
+			historial.push({ rol: 'asistente', texto });
+			if (fuentes.length) {
+				const enlaces = fuentes
+					.map(
+						(f) =>
+							`<li><a href="${escapar(f.url)}" target="_blank" rel="noopener noreferrer">${escapar(f.titulo || f.url)}</a></li>`
+					)
+					.join('');
+				cuerpoBurbuja.insertAdjacentHTML(
+					'beforeend',
+					`<div class="mt-3 border-t border-slate-200 pt-2 text-xs dark:border-slate-700">
+						<strong class="block mb-1 text-slate-600 dark:text-slate-300">Fuentes oficiales:</strong>
+						<ul class="list-disc pl-4 space-y-0.5">${enlaces}</ul>
+					</div>`
+				);
+			}
+		}
+	}
+
+	chatContenedor.scrollTop = chatContenedor.scrollHeight;
+	ocupado = false;
+	if (btnEnviar) btnEnviar.disabled = false;
+	inputMensaje?.focus();
 }
 
 formChat?.addEventListener('submit', (e) => {
 	e.preventDefault();
-	const texto = inputMensaje?.value.trim();
-	if (!texto) return;
-
-	agregarMensajeUsuario(texto);
+	const texto = inputMensaje?.value || '';
 	if (inputMensaje) inputMensaje.value = '';
-
-	const respuesta = detectarTema(texto);
-	agregarRespuestaSofia(respuesta);
+	preguntarASofia(texto);
 });
 
 botonesRapidos.forEach((btn) => {
 	btn.addEventListener('click', () => {
-		const topic = btn.dataset.topic || '';
 		const pregunta = btn.dataset.pregunta || '';
-		agregarMensajeUsuario(pregunta);
-		const respuesta = baseConocimiento[topic] || detectarTema(pregunta);
-		agregarRespuestaSofia(respuesta);
+		preguntarASofia(pregunta);
 	});
 });
 
@@ -151,4 +152,5 @@ btnLimpiarChat?.addEventListener('click', () => {
 	const primerMensaje = chatContenedor.firstElementChild;
 	chatContenedor.innerHTML = '';
 	if (primerMensaje) chatContenedor.appendChild(primerMensaje);
+	historial.length = 0;
 });

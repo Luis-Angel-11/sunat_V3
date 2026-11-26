@@ -181,4 +181,24 @@ const consultasRapidas = [
 	</div>
 
 	<script src="../../scripts/sofia.js"></script>
+	<style is:global>
+	@reference '../../styles/global.css';
+
+	.sofia-md a {
+		@apply font-bold text-[#0877a7] underline hover:text-[#003366] dark:text-sky-400 dark:hover:text-sky-300;
+	}
+	.sofia-md ul,
+	.sofia-md ol {
+		@apply my-1.5 space-y-1 pl-5;
+	}
+	.sofia-md ul {
+		list-style: disc;
+	}
+	.sofia-md ol {
+		list-style: decimal;
+	}
+	.sofia-md p + p {
+		@apply mt-2;
+	}
+</style>
 </Layout>

@@ -6,15 +6,129 @@ document.addEventListener('DOMContentLoaded', () => {
 
     // CATÁLOGO COMPLETO Y AMPLIADO DE TRÁMITES PRIVADOS SOL
     const tramitesSol = [
-        { id: 'comprobantes', titulo: 'Consultar Comprobantes de Pago', url: '/sol/comprobantes/consultar', desc: 'Facturas, boletas, notas de crédito y débito', tag: 'Consulta' },
-        { id: 'gre', titulo: 'Emitir Guía de Remisión Electrónica (GRE)', url: '/sol/gre/emitir', desc: 'GRE Remitente y Transportista para traslado de bienes', tag: 'GRE' },
-        { id: 'rhe', titulo: 'Emitir Recibo por Honorarios Electrónico (RHE)', url: '/sol/rhe/emitir', desc: 'Cuarta Categoría - Trabajadores Independientes', tag: 'RHE' },
-        { id: 'consultar-rhe', titulo: 'Consultar Recibos por Honorarios', url: '/sol/rhe/consultar', desc: 'Historial de RHE emitidos y recibidos', tag: 'RHE' },
-        { id: 'factura', titulo: 'Emitir Factura Electrónica', url: '/sol/factura/emitir', desc: 'Sistema de Emisión Electrónica SOL', tag: 'Facturas' },
-        { id: 'declarar', titulo: 'Declaración Mensual IGV - Renta (Formulario 621)', url: '/sol/declarar/621', desc: 'Presentación de IGV y pago a cuenta de Renta', tag: 'Declaración' },
-        { id: 'devolucion', titulo: 'Solicitar Devolución de Impuestos', url: '/sol/devolucion/solicitar', desc: 'Solicitud de devolución por saldo a favor', tag: 'Devolución' },
-        { id: 'deuda', titulo: 'Pagar Deuda / Fraccionamiento Art. 36', url: '/sol/deuda/pagar', desc: 'Consulta de valores y pago en cuotas', tag: 'Deuda' },
-        { id: 'ruc', titulo: 'Verificar Ficha RUC y Domicilio Fiscal', url: '/sol/ruc/ficha', desc: 'Datos del contribuyente y condición de Habido', tag: 'RUC' }
+        // PANEL PRINCIPAL
+        {
+            id: 'panel',
+            titulo: 'Mi Panel SOL',
+            url: '/prueba',
+            desc: 'Vista general de operaciones frecuentes y accesos rápidos',
+            tag: 'Inicio',
+        },
+
+        // CONSULTAR
+        {
+            id: 'consulta-facturas',
+            titulo: 'Consulta de Facturas y Boletas',
+            url: '/facturas/consulta',
+            desc: 'Búsqueda e historial de facturas y boletas emitidas o recibidas',
+            tag: 'Consulta',
+        },
+        {
+            id: 'comprobantes',
+            titulo: 'Consulta de Validez de CPE (y Escáner QR)',
+            url: '/validez-comprobante/consultar',
+            desc: 'Verifica Facturas, Boletas, RHE, GRE y Notas por formulario o cámara QR',
+            tag: 'Consulta',
+        },
+        {
+            id: 'consultar-rhe',
+            titulo: 'Consultar Recibos por Honorarios',
+            url: '/validez-comprobante/consultar',
+            desc: 'Verificación de validez de RHE emitidos y recibidos',
+            tag: 'RHE',
+        },
+
+        // EMITIR
+        {
+            id: 'gre',
+            titulo: 'Emitir Guía de Remisión Electrónica (GRE)',
+            url: '/guias/emitir',
+            desc: 'GRE Remitente y Transportista para traslado legal de bienes',
+            tag: 'GRE',
+        },
+        {
+            id: 'factura',
+            titulo: 'Emitir Factura y Boleta Electrónica',
+            url: '/facturas/emitir',
+            desc: 'Sistema de Emisión Electrónica SOL con vista previa y descarga',
+            tag: 'Facturas',
+        },
+        {
+            id: 'rhe',
+            titulo: 'Emitir Recibo por Honorarios Electrónico (RHE)',
+            url: '/recibos/emitir',
+            desc: 'Cuarta Categoría - Trabajadores Independientes y cálculo de retención',
+            tag: 'RHE',
+        },
+
+        // DECLARAR Y PAGAR
+        {
+            id: 'declarar',
+            titulo: 'Declaración Mensual IGV - Renta (Formulario 621)',
+            url: '/declara/igv-renta-621',
+            desc: 'Presentación de IGV y pago a cuenta mensual de Renta',
+            tag: 'Declaración',
+        },
+        {
+            id: 'pago-tributos',
+            titulo: 'Pago de Tributos Pendientes',
+            url: '/declara/pago-tributos',
+            desc: 'Liquidación y pago en línea de obligaciones tributarias',
+            tag: 'Pagos',
+        },
+        {
+            id: 'historial-pagos',
+            titulo: 'Historial de Pagos y Constancias',
+            url: '/declara/historial-pagos',
+            desc: 'Consulta y descarga de boletas de pago realizadas en SUNAT',
+            tag: 'Pagos',
+        },
+
+        // TRÁMITES Y RECLAMOS
+        {
+            id: 'libro-reclamaciones',
+            titulo: 'Libro de Reclamaciones Virtual',
+            url: '/libro-reclamaciones',
+            desc: 'Registro de quejas y reclamos sobre la atención en canales SUNAT',
+            tag: 'Trámites',
+        },
+        {
+            id: 'ruc',
+            titulo: 'Ficha RUC y Datos del Contribuyente',
+            url: '/perfil#datos',
+            desc: 'Consulta de domicilio fiscal, actividad económica y condición de Habido',
+            tag: 'RUC',
+        },
+        {
+            id: 'deuda',
+            titulo: 'Solicitud de Fraccionamiento (Art. 36)',
+            url: '/tramites/fraccionamiento',
+            desc: 'Consulta de deuda tributaria y solicitud de pago en cuotas',
+            tag: 'Deuda',
+        },
+
+        // AYUDA
+        {
+            id: 'cronograma',
+            titulo: 'Cronograma de Vencimientos Mensuales',
+            url: '/ayuda/cronograma-vencimientos',
+            desc: 'Fechas límite de declaración según el último dígito del RUC',
+            tag: 'Ayuda',
+        },
+        {
+            id: 'guias-ayuda',
+            titulo: 'Guías Explicativas y Video Tutoriales',
+            url: '/ayuda/guias',
+            desc: 'Manuales paso a paso para emisión y trámites en el portal SOL',
+            tag: 'Ayuda',
+        },
+        {
+            id: 'sofia',
+            titulo: 'Asistente Virtual Sofía',
+            url: '/ayuda/sofia',
+            desc: 'Orientación tributaria automatizada en línea las 24 horas',
+            tag: 'Ayuda',
+        },
     ];
 
     // Cargar Favoritos guardados

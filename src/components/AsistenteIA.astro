@@ -1,0 +1,245 @@
+---
+import Icon from './Icon.astro';
+
+const sugerencias = [
+	'¿Cuándo tengo que emitir un recibo por honorarios?',
+	'¿Desde qué monto me retienen el 8 %?',
+	'¿Cómo obtengo mi Clave SOL?',
+	'¿Qué es la UIT de este año y para qué sirve?',
+];
+---
+
+<div id="ia-chat" class="fixed bottom-4 left-4 z-50 md:bottom-6 md:left-6">
+	<button
+		type="button"
+		id="ia-abrir"
+		aria-controls="ia-panel"
+		aria-expanded="false"
+		class="flex items-center gap-2 rounded-full bg-sunat-blue py-2 pl-2 pr-4 text-sm font-bold text-white shadow-xl transition hover:bg-sunat-blue-dark dark:bg-sky-600 dark:hover:bg-sky-700"
+	>
+		<span class="grid h-10 w-10 place-items-center rounded-full bg-white/15"><Icon name="message" size={20} /></span>
+		<span>Pregúntale a Sofía <span class="rounded bg-white/20 px-1.5 py-0.5 text-[10px] uppercase tracking-wider">IA</span></span>
+	</button>
+
+	<section
+		id="ia-panel"
+		hidden
+		aria-labelledby="ia-titulo"
+		class="absolute bottom-0 left-0 flex h-[min(36rem,calc(100dvh-2rem))] w-[min(24rem,calc(100vw-2rem))] flex-col overflow-hidden rounded-2xl border border-slate-200 bg-white shadow-2xl dark:border-slate-700 dark:bg-slate-900"
+	>
+		<header class="flex items-start justify-between gap-2 bg-sunat-blue px-4 py-3 text-white dark:bg-slate-800">
+			<div>
+				<h2 id="ia-titulo" class="flex items-center gap-2 font-bold">
+					<Icon name="message" size={18} />Sofía · Asistente con IA
+				</h2>
+				<p class="mt-0.5 text-xs text-white/80">Responde con información pública de sunat.gob.pe y gob.pe</p>
+			</div>
+			<button type="button" id="ia-cerrar" class="grid h-8 w-8 shrink-0 place-items-center rounded-lg hover:bg-white/15" aria-label="Cerrar asistente">
+				<Icon name="x" size={18} />
+			</button>
+		</header>
+
+		<div id="ia-mensajes" class="flex-1 space-y-3 overflow-y-auto p-4 text-sm" aria-live="polite">
+			<div class="ia-burbuja ia-asistente">
+				¡Hola! Soy Sofía. Pregúntame sobre tributos, trámites o comprobantes y busco la respuesta en las páginas oficiales de la SUNAT.
+			</div>
+			<div id="ia-sugerencias" class="flex flex-wrap gap-2">
+				{sugerencias.map((s) => <button type="button" class="ia-sugerencia" data-pregunta={s}>{s}</button>)}
+			</div>
+		</div>
+
+		<form id="ia-form" class="border-t border-slate-200 p-3 dark:border-slate-700">
+			<div class="flex w-full items-center gap-2">
+				<label for="ia-input" class="sr-only">Escribe tu pregunta</label>
+				<textarea
+					id="ia-input"
+					rows="1"
+					maxlength="1000"
+					placeholder="Escribe tu pregunta…"
+					class="sol-input h-11 min-w-0 flex-1 resize-none py-2.5"
+				></textarea>
+				<button type="submit" id="ia-enviar" class="sol-btn-primary grid h-11 w-11 shrink-0 place-items-center px-0" aria-label="Enviar pregunta">
+					<Icon name="arrow-right" size={18} />
+				</button>
+			</div>
+			<p class="mt-2 text-[11px] leading-snug text-slate-500 dark:text-slate-400">
+				Orientación generada con IA: puede equivocarse. Verifica en la fuente. No escribas tu Clave SOL ni datos sensibles.
+			</p>
+		</form>
+	</section>
+</div>
+
+<style is:global>
+	@reference '../styles/global.css';
+
+	.ia-burbuja {
+		@apply max-w-[90%] rounded-2xl px-3 py-2 leading-relaxed;
+	}
+	.ia-asistente {
+		@apply rounded-tl-sm bg-slate-100 text-slate-800 dark:bg-slate-800 dark:text-slate-100;
+	}
+	.ia-usuario {
+		@apply ml-auto rounded-tr-sm bg-sunat-blue text-white dark:bg-sky-600;
+	}
+	.ia-asistente a {
+		@apply font-semibold text-sunat-blue underline dark:text-sky-300;
+	}
+	.ia-asistente ul,
+	.ia-asistente ol {
+		@apply my-1 space-y-0.5 pl-5;
+	}
+	.ia-asistente ul {
+		list-style: disc;
+	}
+	.ia-asistente ol {
+		list-style: decimal;
+	}
+	.ia-asistente p + p {
+		@apply mt-1.5;
+	}
+	.ia-sugerencia {
+		@apply rounded-full border border-slate-300 bg-white px-3 py-1.5 text-left text-xs font-semibold text-slate-700 transition hover:border-sunat-blue hover:text-sunat-blue dark:border-slate-600 dark:bg-slate-900 dark:text-slate-200 dark:hover:border-sky-400 dark:hover:text-sky-300;
+	}
+	.ia-fuentes {
+		@apply mt-2 border-t border-slate-300 pt-1.5 text-xs dark:border-slate-600;
+	}
+	.ia-pensando::after {
+		content: '…';
+		animation: ia-puntos 1.2s steps(4) infinite;
+		display: inline-block;
+		width: 1ch;
+		overflow: hidden;
+		vertical-align: bottom;
+	}
+	@keyframes ia-puntos {
+		from {
+			width: 0;
+		}
+		to {
+			width: 1.2ch;
+		}
+	}
+</style>
+
+<script>
+	import { markdownSeguro } from '../lib/markdown';
+
+	type Turno = { rol: 'usuario' | 'asistente'; texto: string };
+
+	const $ = <T extends HTMLElement>(id: string) => document.getElementById(id) as T;
+	const abrir = $<HTMLButtonElement>('ia-abrir');
+	const panel = $('ia-panel');
+	const cerrar = $<HTMLButtonElement>('ia-cerrar');
+	const lista = $('ia-mensajes');
+	const form = $<HTMLFormElement>('ia-form');
+	const input = $<HTMLTextAreaElement>('ia-input');
+	const enviarBtn = $<HTMLButtonElement>('ia-enviar');
+
+	const historial: Turno[] = [];
+	let ocupado = false;
+
+	const mostrar = (visible: boolean) => {
+		panel.hidden = !visible;
+		abrir.hidden = visible;
+		abrir.setAttribute('aria-expanded', String(visible));
+		if (visible) input.focus();
+		else abrir.focus();
+	};
+	abrir.addEventListener('click', () => mostrar(true));
+	cerrar.addEventListener('click', () => mostrar(false));
+	panel.addEventListener('keydown', (e) => {
+		if (e.key === 'Escape') mostrar(false);
+	});
+
+	const burbuja = (clase: string, html: string) => {
+		const div = document.createElement('div');
+		div.className = `ia-burbuja ${clase}`;
+		div.innerHTML = html;
+		lista.append(div);
+		lista.scrollTop = lista.scrollHeight;
+		return div;
+	};
+	const escapar = (t: string) => t.replace(/[&<>"']/g, (c) => `&#${c.charCodeAt(0)};`);
+
+	const preguntar = async (pregunta: string) => {
+		if (ocupado || !pregunta.trim()) return;
+		ocupado = true;
+		enviarBtn.disabled = true;
+		document.getElementById('ia-sugerencias')?.remove();
+		historial.push({ rol: 'usuario', texto: pregunta.trim() });
+		burbuja('ia-usuario', escapar(pregunta.trim()));
+		const respuesta = burbuja('ia-asistente', '<span class="ia-pensando">Pensando</span>');
+
+		let texto = '';
+		let fuentes: { url: string; titulo: string }[] = [];
+		let error = '';
+		try {
+			const res = await fetch('/api/chat-sunat', {
+				method: 'POST',
+				headers: { 'Content-Type': 'application/json' },
+				body: JSON.stringify({ historial }),
+			});
+			if (!res.ok || !res.body) {
+				error = (await res.json().catch(() => null))?.error || 'No pudimos conectar con el asistente.';
+			} else {
+				const lector = res.body.pipeThrough(new TextDecoderStream()).getReader();
+				let resto = '';
+				for (;;) {
+					const { value, done } = await lector.read();
+					if (done) break;
+					resto += value;
+					const lineas = resto.split('\n');
+					resto = lineas.pop() ?? '';
+					for (const linea of lineas) {
+						if (!linea.trim()) continue;
+						const ev = JSON.parse(linea);
+						if (ev.t === 'buscando' && !texto) respuesta.innerHTML = '<span class="ia-pensando">Buscando en sunat.gob.pe</span>';
+						if (ev.t === 'texto') {
+							texto += ev.v;
+							respuesta.innerHTML = markdownSeguro(texto);
+						}
+						if (ev.t === 'fuentes') fuentes = ev.v;
+						if (ev.t === 'error') error = ev.v;
+					}
+					lista.scrollTop = lista.scrollHeight;
+				}
+			}
+		} catch {
+			error = 'No pudimos conectar con el asistente. Revisa tu conexión.';
+		}
+
+		if (error && !texto) {
+			respuesta.innerHTML = `<strong>Ups.</strong> ${escapar(error)}`;
+			historial.pop();
+		} else {
+			historial.push({ rol: 'asistente', texto });
+			if (fuentes.length) {
+				const enlaces = fuentes
+					.map((f) => `<li><a href="${escapar(f.url)}" target="_blank" rel="noopener noreferrer">${escapar(f.titulo || f.url)}</a></li>`)
+					.join('');
+				respuesta.insertAdjacentHTML('beforeend', `<div class="ia-fuentes"><strong>Fuentes oficiales:</strong><ul>${enlaces}</ul></div>`);
+			}
+		}
+		lista.scrollTop = lista.scrollHeight;
+		ocupado = false;
+		enviarBtn.disabled = false;
+		input.focus();
+	};
+
+	form.addEventListener('submit', (e) => {
+		e.preventDefault();
+		const pregunta = input.value;
+		input.value = '';
+		preguntar(pregunta);
+	});
+	input.addEventListener('keydown', (e) => {
+		if (e.key === 'Enter' && !e.shiftKey) {
+			e.preventDefault();
+			form.requestSubmit();
+		}
+	});
+	lista.addEventListener('click', (e) => {
+		const boton = e.target instanceof Element ? e.target.closest<HTMLElement>('[data-pregunta]') : null;
+		if (boton) preguntar(boton.dataset.pregunta || '');
+	});
+</script>

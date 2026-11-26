@@ -12,6 +12,7 @@
     "astro": "astro"
   },
   "dependencies": {
+    "@anthropic-ai/sdk": "^1.14.0",
     "@tailwindcss/vite": "^4.3.3",
     "astro": "^7.4.4",
     "html5-qrcode": "^2.3.8",
