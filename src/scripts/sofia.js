@@ -1,4 +1,5 @@
 import { markdownSeguro } from '../lib/markdown';
+import { hablar } from './lectorPantalla.js';
 
 const chatContenedor = document.getElementById('chat-mensajes');
 const formChat = document.getElementById('form-chat-sofia');
@@ -109,6 +110,7 @@ async function preguntarASofia(pregunta) {
 			historial.pop();
 		} else {
 			historial.push({ rol: 'asistente', texto });
+			if (texto) hablar(texto);
 			if (fuentes.length) {
 				const enlaces = fuentes
 					.map(

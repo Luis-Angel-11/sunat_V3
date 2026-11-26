@@ -65,6 +65,16 @@ const navItems: { id: string; label: string; href: string; icon: IconName; badge
 			</nav>
 
 			<div class="ml-auto flex items-center gap-2">
+				<button
+					type="button"
+					data-toggle-lector
+					aria-pressed="false"
+					title="Activar o desactivar lector de pantalla por voz"
+					class="inline-flex h-10 items-center gap-1.5 rounded-lg border border-white/30 bg-white/10 px-2.5 text-xs font-bold text-white transition hover:bg-white/20"
+				>
+					<Icon name="bell" size={17} />
+					<span data-lector-label class="hidden sm:inline">Lector de voz</span>
+				</button>
 				<ThemeToggle compact />
 
 				<div class="relative" data-user-menu>
@@ -311,3 +321,4 @@ const navItems: { id: string; label: string; href: string; icon: IconName; badge
 
 <!-- IMPORTACIÓN DEL SCRIPT EXTERNO -->
 <script src="../../scripts/solHeader.js"></script>
+<script src="../../scripts/lectorPantalla.js"></script>

@@ -667,32 +667,34 @@ document.addEventListener('DOMContentLoaded', () => {
 				esMalicioso: false,
 			})),
 			{
-				titulo: 'Prueba Seguridad (Enlace Externo)',
-				subtitulo: 'Debe ser bloqueado por el lector',
+				titulo: 'Prueba Seguridad (Enlace)',
+				subtitulo: 'Debe ser bloqueado',
 				cadenaQr: 'https://phishing-sunat-falso.com/login',
 				esMalicioso: true,
 			},
 		];
 
 		for (const caso of casosPrueba) {
-			const dataUrl = await QRCode.toDataURL(caso.cadenaQr, { width: 180, margin: 1 });
+			const dataUrl = await QRCode.toDataURL(caso.cadenaQr, { width: 160, margin: 1 });
 			const card = document.createElement('div');
-			card.className = `flex flex-col items-center rounded-2xl border p-4 text-center space-y-2 ${
+			card.className = `flex flex-col items-center justify-between rounded-2xl border p-3 text-center space-y-1.5 ${
 				caso.esMalicioso
 					? 'border-rose-200 bg-rose-50/40 dark:border-rose-900/50 dark:bg-rose-950/20'
 					: 'border-slate-200 bg-slate-50/60 dark:border-slate-800 dark:bg-slate-950/50'
 			}`;
 
 			card.innerHTML = `
-				<span class="text-xs font-extrabold ${caso.esMalicioso ? 'text-rose-700 dark:text-rose-400' : 'text-slate-900 dark:text-white'}">
-					${caso.titulo}
-				</span>
-				<span class="text-[11px] text-slate-500">${caso.subtitulo}</span>
-				<img src="${dataUrl}" alt="QR ${caso.titulo}" class="h-36 w-36 rounded-xl border border-slate-200 bg-white p-1.5 shadow-sm" />
+				<div class="space-y-0.5">
+					<span class="block text-xs font-extrabold leading-tight ${caso.esMalicioso ? 'text-rose-700 dark:text-rose-400' : 'text-slate-900 dark:text-white'}">
+						${caso.titulo}
+					</span>
+					<span class="block text-[10px] text-slate-500">${caso.subtitulo}</span>
+				</div>
+				<img src="${dataUrl}" alt="QR ${caso.titulo}" class="h-28 w-28 rounded-xl border border-slate-200 bg-white p-1 shadow-sm" />
 				<a
 					href="${dataUrl}"
 					download="QR_${caso.titulo.replace(/\s+/g, '_')}.png"
-					class="mt-1 inline-flex items-center gap-1 rounded-lg bg-white border border-slate-300 px-3 py-1 text-[11px] font-bold text-slate-700 hover:bg-slate-100 dark:border-slate-700 dark:bg-slate-800 dark:text-slate-200"
+					class="inline-flex items-center gap-1 rounded-lg bg-white border border-slate-300 px-2.5 py-1 text-[11px] font-bold text-slate-700 hover:bg-slate-100 dark:border-slate-700 dark:bg-slate-800 dark:text-slate-200"
 				>
 					Descargar PNG
 				</a>
@@ -701,6 +703,26 @@ document.addEventListener('DOMContentLoaded', () => {
 		}
 
 		modalQrPrueba?.classList.remove('hidden');
+	});
+
+	btnCerrarQrPrueba?.addEventListener('click', () => modalQrPrueba?.classList.add('hidden'));
+
+	// Cerrar modales al hacer clic fuera del cuadro o presionar Escape
+	modalQrPrueba?.addEventListener('click', (e) => {
+		if (e.target === modalQrPrueba) modalQrPrueba.classList.add('hidden');
+	});
+	modalEscaner?.addEventListener('click', (e) => {
+		if (e.target === modalEscaner) cerrarEscaner();
+	});
+	document.addEventListener('keydown', (e) => {
+		if (e.key === 'Escape') {
+			if (modalQrPrueba && !modalQrPrueba.classList.contains('hidden')) {
+				modalQrPrueba.classList.add('hidden');
+			}
+			if (modalEscaner && !modalEscaner.classList.contains('hidden')) {
+				cerrarEscaner();
+			}
+		}
 	});
 
 	btnCerrarQrPrueba?.addEventListener('click', () => modalQrPrueba?.classList.add('hidden'));

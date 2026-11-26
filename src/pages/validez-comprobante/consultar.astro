@@ -234,16 +234,16 @@ import Icon from '../../components/Icon.astro';
 		</main>
 	</div>
 
-	<!-- ========================================================================= -->
+<!-- ========================================================================= -->
 	<!-- MODAL 1: ESCÁNER DE CÓDIGO QR (CÁMARA + IMAGEN + TARJETA DETECTADA)       -->
 	<!-- ========================================================================= -->
-	<div id="modal-escaner-qr" class="hidden fixed inset-0 z-50 flex items-center justify-center bg-slate-900/75 p-4 backdrop-blur-sm overflow-y-auto">
-		<div class="w-full max-w-lg rounded-3xl border border-slate-200 bg-white p-6 shadow-2xl dark:border-slate-800 dark:bg-slate-900 space-y-4 my-6">
+	<div id="modal-escaner-qr" class="hidden fixed inset-0 z-50 flex items-center justify-center bg-slate-900/75 p-3 sm:p-4 backdrop-blur-sm">
+		<div class="flex max-h-[90dvh] w-full max-w-lg flex-col overflow-hidden rounded-3xl border border-slate-200 bg-white shadow-2xl dark:border-slate-800 dark:bg-slate-900">
 			
-			<!-- Cabecera -->
-			<div class="flex items-center justify-between border-b border-slate-100 pb-3 dark:border-slate-800">
+			<!-- Cabecera fija -->
+			<div class="flex shrink-0 items-center justify-between border-b border-slate-100 px-5 py-3.5 dark:border-slate-800">
 				<div class="flex items-center gap-2.5">
-					<span class="grid h-9 w-9 place-items-center rounded-xl bg-[#003366] text-white dark:bg-sky-600">
+					<span class="grid h-9 w-9 shrink-0 place-items-center rounded-xl bg-[#003366] text-white dark:bg-sky-600">
 						<Icon name="smartphone" size={18} />
 					</span>
 					<div>
@@ -251,162 +251,169 @@ import Icon from '../../components/Icon.astro';
 						<p class="text-[11px] text-slate-500">Enfoca el código QR o sube una imagen del comprobante</p>
 					</div>
 				</div>
-				<button type="button" id="btn-cerrar-escaner-x" class="rounded-lg p-1.5 text-slate-400 hover:bg-slate-100 hover:text-slate-600 dark:hover:bg-slate-800">
+				<button type="button" id="btn-cerrar-escaner-x" aria-label="Cerrar escáner" class="rounded-lg p-1.5 text-slate-400 hover:bg-slate-100 hover:text-slate-600 dark:hover:bg-slate-800">
 					<Icon name="x" size={18} />
 				</button>
 			</div>
 
-			<!-- Pestañas: Cámara vs Imagen -->
-			<div class="grid grid-cols-2 gap-2 rounded-xl bg-slate-100 p-1 dark:bg-slate-800">
-				<button type="button" id="tab-qr-camara" class="rounded-lg bg-white py-2 text-xs font-extrabold text-[#003366] shadow-sm transition dark:bg-slate-900 dark:text-sky-400">
-					Usar Cámara
-				</button>
-				<button type="button" id="tab-qr-imagen" class="rounded-lg py-2 text-xs font-bold text-slate-600 transition hover:text-slate-900 dark:text-slate-400">
-					Subir Imagen QR
-				</button>
-			</div>
-
-			<!-- Vista Cámara -->
-			<div id="panel-qr-camara" class="space-y-3">
-				<div class="relative overflow-hidden rounded-2xl border-2 border-dashed border-slate-300 bg-slate-950 min-h-[240px] flex items-center justify-center dark:border-slate-700">
-					<div id="qr-reader" class="w-full"></div>
-				</div>
-				<p class="text-[11px] text-slate-500 dark:text-slate-400 flex items-center gap-1.5">
-					<Icon name="lock" size={13} />
-					<span>Privacidad: El procesamiento ocurre localmente en tu navegador; no se graban ni envían imágenes.</span>
-				</p>
-			</div>
-
-			<!-- Vista Subir Imagen -->
-			<div id="panel-qr-imagen" class="hidden space-y-3">
-				<label for="input-archivo-qr" class="flex flex-col items-center justify-center gap-2 rounded-2xl border-2 border-dashed border-slate-300 bg-slate-50 p-8 text-center cursor-pointer transition hover:border-[#0877a7] hover:bg-sky-50/40 dark:border-slate-700 dark:bg-slate-950">
-					<span class="grid h-11 w-11 place-items-center rounded-2xl bg-sky-100 text-[#0877a7] dark:bg-sky-950 dark:text-sky-400">
-						<Icon name="file-text" size={22} />
-					</span>
-					<span class="text-xs font-extrabold text-slate-800 dark:text-slate-200">Selecciona una imagen o captura con código QR</span>
-					<span class="text-[11px] text-slate-500">Formatos soportados: PNG, JPG, WEBP</span>
-					<input type="file" id="input-archivo-qr" accept="image/*" class="hidden" />
-				</label>
-				<div id="qr-file-reader" class="hidden"></div>
-			</div>
-
-			<!-- Alerta de Error / Seguridad (QR inválido, enlace malicioso, sin permiso) -->
-			<div id="qr-alerta-error" class="hidden rounded-2xl border border-rose-200 bg-rose-50 p-4 text-xs text-rose-800 dark:border-rose-900 dark:bg-rose-950/60 dark:text-rose-200 space-y-2">
-				<div class="flex items-start gap-2.5">
-					<span class="mt-0.5 text-rose-600 dark:text-rose-400 shrink-0">
-						<Icon name="alert-triangle" size={18} />
-					</span>
-					<div>
-						<p id="qr-error-titulo" class="font-extrabold">No se pudo leer el código QR</p>
-						<p id="qr-error-detalle" class="mt-0.5 text-[11px] leading-relaxed"></p>
-					</div>
-				</div>
-				<div class="flex justify-end gap-2 pt-1">
-					<button type="button" id="btn-qr-reintentar" class="rounded-lg border border-rose-300 bg-white px-3 py-1.5 text-[11px] font-bold text-rose-700 hover:bg-rose-100 dark:border-rose-800 dark:bg-slate-900 dark:text-rose-300">
-						Reintentar escaneo
+			<!-- Cuerpo con scroll interno -->
+			<div class="flex-1 overflow-y-auto p-5 space-y-4">
+				<!-- Pestañas: Cámara vs Imagen -->
+				<div class="grid grid-cols-2 gap-2 rounded-xl bg-slate-100 p-1 dark:bg-slate-800">
+					<button type="button" id="tab-qr-camara" class="rounded-lg bg-white py-2 text-xs font-extrabold text-[#003366] shadow-sm transition dark:bg-slate-900 dark:text-sky-400">
+						Usar Cámara
 					</button>
-					<button type="button" class="btn-qr-manual rounded-lg bg-rose-700 px-3 py-1.5 text-[11px] font-bold text-white hover:bg-rose-800">
-						Ingresar manualmente
+					<button type="button" id="tab-qr-imagen" class="rounded-lg py-2 text-xs font-bold text-slate-600 transition hover:text-slate-900 dark:text-slate-400">
+						Subir Imagen QR
 					</button>
 				</div>
-			</div>
 
-			<!-- TARJETA "DATOS DETECTADOS" (Requerimiento explícito de interacción) -->
-			<div id="tarjeta-datos-detectados" class="hidden rounded-2xl border border-emerald-200 bg-emerald-50/60 p-4 dark:border-emerald-900/60 dark:bg-emerald-950/30 space-y-3">
-				<div class="flex items-center justify-between border-b border-emerald-200/80 pb-2 dark:border-emerald-900/50">
-					<span class="inline-flex items-center gap-1.5 text-xs font-black uppercase text-emerald-800 dark:text-emerald-300">
-						<Icon name="shield-check" size={16} />
-						Datos detectados del QR
-					</span>
-					<span id="qr-badge-modo" class="rounded-full bg-emerald-100 px-2 py-0.5 text-[10px] font-bold text-emerald-800 dark:bg-emerald-900 dark:text-emerald-200">
-						Lectura verificada
-					</span>
+				<!-- Vista Cámara -->
+				<div id="panel-qr-camara" class="space-y-3">
+					<div class="relative overflow-hidden rounded-2xl border-2 border-dashed border-slate-300 bg-slate-950 min-h-[220px] flex items-center justify-center dark:border-slate-700">
+						<div id="qr-reader" class="w-full"></div>
+					</div>
+					<p class="text-[11px] text-slate-500 dark:text-slate-400 flex items-center gap-1.5">
+						<Icon name="lock" size={13} />
+						<span>Privacidad: El procesamiento ocurre localmente en tu navegador; no se graban ni envían imágenes.</span>
+					</p>
 				</div>
 
-				<!-- Campos extraídos (editables si el usuario pulsa "Corregir") -->
-				<div class="grid grid-cols-2 gap-2.5 text-xs">
-					<div>
-						<label class="block text-[10px] font-bold uppercase text-slate-500">RUC Emisor</label>
-						<input type="text" id="det-ruc-emisor" readonly maxlength="11" class="det-input mt-0.5 h-8 w-full rounded-lg border border-slate-200 bg-white/80 px-2.5 font-bold text-slate-900 dark:border-slate-700 dark:bg-slate-900 dark:text-white" />
-					</div>
-					<div>
-						<label class="block text-[10px] font-bold uppercase text-slate-500">Tipo Comprobante</label>
-						<select id="det-tipo-cpe" disabled class="det-input mt-0.5 h-8 w-full rounded-lg border border-slate-200 bg-white/80 px-2 font-bold text-slate-900 dark:border-slate-700 dark:bg-slate-900 dark:text-white">
-							<option value="FACTURA">FACTURA</option>
-							<option value="BOLETA">BOLETA</option>
-							<option value="RHE">RHE</option>
-							<option value="NC">NOTA CRÉDITO</option>
-							<option value="ND">NOTA DÉBITO</option>
-							<option value="GRE">GUÍA REMISIÓN</option>
-						</select>
-					</div>
-					<div>
-						<label class="block text-[10px] font-bold uppercase text-slate-500">Serie</label>
-						<input type="text" id="det-serie" readonly maxlength="4" class="det-input mt-0.5 h-8 w-full rounded-lg border border-slate-200 bg-white/80 px-2.5 font-bold uppercase text-slate-900 dark:border-slate-700 dark:bg-slate-900 dark:text-white" />
-					</div>
-					<div>
-						<label class="block text-[10px] font-bold uppercase text-slate-500">Número</label>
-						<input type="text" id="det-numero" readonly maxlength="8" class="det-input mt-0.5 h-8 w-full rounded-lg border border-slate-200 bg-white/80 px-2.5 font-bold text-slate-900 dark:border-slate-700 dark:bg-slate-900 dark:text-white" />
-					</div>
-					<div>
-						<label class="block text-[10px] font-bold uppercase text-slate-500">Fecha Emisión</label>
-						<input type="date" id="det-fecha" readonly class="det-input mt-0.5 h-8 w-full rounded-lg border border-slate-200 bg-white/80 px-2.5 font-bold text-slate-900 dark:border-slate-700 dark:bg-slate-900 dark:text-white" />
-					</div>
-					<div>
-						<label class="block text-[10px] font-bold uppercase text-slate-500">Importe Total (S/)</label>
-						<input type="number" step="0.01" id="det-monto" readonly class="det-input mt-0.5 h-8 w-full rounded-lg border border-slate-200 bg-white/80 px-2.5 font-bold text-slate-900 dark:border-slate-700 dark:bg-slate-900 dark:text-white" />
-					</div>
-					<div class="col-span-2" id="contenedor-det-receptor">
-						<label class="block text-[10px] font-bold uppercase text-slate-500">Documento Receptor (Tipo - Número)</label>
-						<div class="mt-0.5 flex gap-2">
-							<select id="det-tipo-doc-rec" disabled class="det-input h-8 w-28 rounded-lg border border-slate-200 bg-white/80 px-2 font-bold text-slate-900 dark:border-slate-700 dark:bg-slate-900 dark:text-white">
-								<option value="0">SIN DOC</option>
-								<option value="6">RUC</option>
-								<option value="1">DNI</option>
-								<option value="4">CE</option>
-							</select>
-							<input type="text" id="det-num-doc-rec" readonly placeholder="Sin documento" class="det-input h-8 flex-1 rounded-lg border border-slate-200 bg-white/80 px-2.5 font-bold text-slate-900 dark:border-slate-700 dark:bg-slate-900 dark:text-white" />
+				<!-- Vista Subir Imagen -->
+				<div id="panel-qr-imagen" class="hidden space-y-3">
+					<label for="input-archivo-qr" class="flex flex-col items-center justify-center gap-2 rounded-2xl border-2 border-dashed border-slate-300 bg-slate-50 p-8 text-center cursor-pointer transition hover:border-[#0877a7] hover:bg-sky-50/40 dark:border-slate-700 dark:bg-slate-950">
+						<span class="grid h-11 w-11 place-items-center rounded-2xl bg-sky-100 text-[#0877a7] dark:bg-sky-950 dark:text-sky-400">
+							<Icon name="file-text" size={22} />
+						</span>
+						<span class="text-xs font-extrabold text-slate-800 dark:text-slate-200">Selecciona una imagen o captura con código QR</span>
+						<span class="text-[11px] text-slate-500">Formatos soportados: PNG, JPG, WEBP</span>
+						<input type="file" id="input-archivo-qr" accept="image/*" class="hidden" />
+					</label>
+					<div id="qr-file-reader" class="hidden"></div>
+				</div>
+
+				<!-- Alerta de Error / Seguridad -->
+				<div id="qr-alerta-error" class="hidden rounded-2xl border border-rose-200 bg-rose-50 p-4 text-xs text-rose-800 dark:border-rose-900 dark:bg-rose-950/60 dark:text-rose-200 space-y-2">
+					<div class="flex items-start gap-2.5">
+						<span class="mt-0.5 text-rose-600 dark:text-rose-400 shrink-0">
+							<Icon name="alert-triangle" size={18} />
+						</span>
+						<div>
+							<p id="qr-error-titulo" class="font-extrabold">No se pudo leer el código QR</p>
+							<p id="qr-error-detalle" class="mt-0.5 text-[11px] leading-relaxed"></p>
 						</div>
 					</div>
+					<div class="flex justify-end gap-2 pt-1">
+						<button type="button" id="btn-qr-reintentar" class="rounded-lg border border-rose-300 bg-white px-3 py-1.5 text-[11px] font-bold text-rose-700 hover:bg-rose-100 dark:border-rose-800 dark:bg-slate-900 dark:text-rose-300">
+							Reintentar escaneo
+						</button>
+						<button type="button" class="btn-qr-manual rounded-lg bg-rose-700 px-3 py-1.5 text-[11px] font-bold text-white hover:bg-rose-800">
+							Ingresar manualmente
+						</button>
+					</div>
 				</div>
 
-				<p id="aviso-faltante-qr" class="hidden text-[11px] font-semibold text-amber-700 dark:text-amber-300">
-					* Algunos campos opcionales no estaban codificados en el QR; puedes completarlos si lo deseas.
-				</p>
+				<!-- TARJETA "DATOS DETECTADOS" -->
+				<div id="tarjeta-datos-detectados" class="hidden rounded-2xl border border-emerald-200 bg-emerald-50/60 p-4 dark:border-emerald-900/60 dark:bg-emerald-950/30 space-y-3">
+					<div class="flex items-center justify-between border-b border-emerald-200/80 pb-2 dark:border-emerald-900/50">
+						<span class="inline-flex items-center gap-1.5 text-xs font-black uppercase text-emerald-800 dark:text-emerald-300">
+							<Icon name="shield-check" size={16} />
+							Datos detectados del QR
+						</span>
+						<span id="qr-badge-modo" class="rounded-full bg-emerald-100 px-2 py-0.5 text-[10px] font-bold text-emerald-800 dark:bg-emerald-900 dark:text-emerald-200">
+							Lectura verificada
+						</span>
+					</div>
 
-				<!-- 3 DECISIONES DEL USUARIO -->
-				<div class="grid grid-cols-1 sm:grid-cols-3 gap-2 pt-2 border-t border-emerald-200/80 dark:border-emerald-900/50">
-					<button type="button" id="btn-qr-usar-datos" class="rounded-xl bg-[#003366] px-3 py-2 text-xs font-extrabold text-white shadow-sm hover:bg-[#002244] transition">
-						Usar estos datos
-					</button>
-					<button type="button" id="btn-qr-corregir" class="rounded-xl border border-slate-300 bg-white px-3 py-2 text-xs font-bold text-slate-700 hover:bg-slate-50 dark:border-slate-700 dark:bg-slate-800 dark:text-slate-200 transition">
-						Corregir
-					</button>
-					<button type="button" class="btn-qr-manual rounded-xl border border-slate-300 bg-white px-3 py-2 text-xs font-bold text-slate-600 hover:bg-slate-50 dark:border-slate-700 dark:bg-slate-800 dark:text-slate-400 transition">
-						Ingresar manualmente
-					</button>
+					<div class="grid grid-cols-2 gap-2.5 text-xs">
+						<div>
+							<label class="block text-[10px] font-bold uppercase text-slate-500">RUC Emisor</label>
+							<input type="text" id="det-ruc-emisor" readonly maxlength="11" class="det-input mt-0.5 h-8 w-full rounded-lg border border-slate-200 bg-white/80 px-2.5 font-bold text-slate-900 dark:border-slate-700 dark:bg-slate-900 dark:text-white" />
+						</div>
+						<div>
+							<label class="block text-[10px] font-bold uppercase text-slate-500">Tipo Comprobante</label>
+							<select id="det-tipo-cpe" disabled class="det-input mt-0.5 h-8 w-full rounded-lg border border-slate-200 bg-white/80 px-2 font-bold text-slate-900 dark:border-slate-700 dark:bg-slate-900 dark:text-white">
+								<option value="FACTURA">FACTURA</option>
+								<option value="BOLETA">BOLETA</option>
+								<option value="RHE">RHE</option>
+								<option value="NC">NOTA CRÉDITO</option>
+								<option value="ND">NOTA DÉBITO</option>
+								<option value="GRE">GUÍA REMISIÓN</option>
+							</select>
+						</div>
+						<div>
+							<label class="block text-[10px] font-bold uppercase text-slate-500">Serie</label>
+							<input type="text" id="det-serie" readonly maxlength="4" class="det-input mt-0.5 h-8 w-full rounded-lg border border-slate-200 bg-white/80 px-2.5 font-bold uppercase text-slate-900 dark:border-slate-700 dark:bg-slate-900 dark:text-white" />
+						</div>
+						<div>
+							<label class="block text-[10px] font-bold uppercase text-slate-500">Número</label>
+							<input type="text" id="det-numero" readonly maxlength="8" class="det-input mt-0.5 h-8 w-full rounded-lg border border-slate-200 bg-white/80 px-2.5 font-bold text-slate-900 dark:border-slate-700 dark:bg-slate-900 dark:text-white" />
+						</div>
+						<div>
+							<label class="block text-[10px] font-bold uppercase text-slate-500">Fecha Emisión</label>
+							<input type="date" id="det-fecha" readonly class="det-input mt-0.5 h-8 w-full rounded-lg border border-slate-200 bg-white/80 px-2.5 font-bold text-slate-900 dark:border-slate-700 dark:bg-slate-900 dark:text-white" />
+						</div>
+						<div>
+							<label class="block text-[10px] font-bold uppercase text-slate-500">Importe Total (S/)</label>
+							<input type="number" step="0.01" id="det-monto" readonly class="det-input mt-0.5 h-8 w-full rounded-lg border border-slate-200 bg-white/80 px-2.5 font-bold text-slate-900 dark:border-slate-700 dark:bg-slate-900 dark:text-white" />
+						</div>
+						<div class="col-span-2" id="contenedor-det-receptor">
+							<label class="block text-[10px] font-bold uppercase text-slate-500">Documento Receptor (Tipo - Número)</label>
+							<div class="mt-0.5 flex gap-2">
+								<select id="det-tipo-doc-rec" disabled class="det-input h-8 w-28 rounded-lg border border-slate-200 bg-white/80 px-2 font-bold text-slate-900 dark:border-slate-700 dark:bg-slate-900 dark:text-white">
+									<option value="0">SIN DOC</option>
+									<option value="6">RUC</option>
+									<option value="1">DNI</option>
+									<option value="4">CE</option>
+								</select>
+								<input type="text" id="det-num-doc-rec" readonly placeholder="Sin documento" class="det-input h-8 flex-1 rounded-lg border border-slate-200 bg-white/80 px-2.5 font-bold text-slate-900 dark:border-slate-700 dark:bg-slate-900 dark:text-white" />
+							</div>
+						</div>
+					</div>
+
+					<p id="aviso-faltante-qr" class="hidden text-[11px] font-semibold text-amber-700 dark:text-amber-300">
+						* Algunos campos opcionales no estaban codificados en el QR; puedes completarlos si lo deseas.
+					</p>
+
+					<div class="grid grid-cols-1 sm:grid-cols-3 gap-2 pt-2 border-t border-emerald-200/80 dark:border-emerald-900/50">
+						<button type="button" id="btn-qr-usar-datos" class="rounded-xl bg-[#003366] px-3 py-2 text-xs font-extrabold text-white shadow-sm hover:bg-[#002244] transition">
+							Usar estos datos
+						</button>
+						<button type="button" id="btn-qr-corregir" class="rounded-xl border border-slate-300 bg-white px-3 py-2 text-xs font-bold text-slate-700 hover:bg-slate-50 dark:border-slate-700 dark:bg-slate-800 dark:text-slate-200 transition">
+							Corregir
+						</button>
+						<button type="button" class="btn-qr-manual rounded-xl border border-slate-300 bg-white px-3 py-2 text-xs font-bold text-slate-600 hover:bg-slate-50 dark:border-slate-700 dark:bg-slate-800 dark:text-slate-400 transition">
+							Ingresar manualmente
+						</button>
+					</div>
 				</div>
 			</div>
 		</div>
 	</div>
 
 	<!-- ========================================================================= -->
-	<!-- MODAL 2: GALERÍA DE QR DE PRUEBA (PARA ESCANEAR DESDE TU CELULAR)         -->
+	<!-- MODAL 2: GALERÍA DE QR DE PRUEBA (CABECERA FIJA Y SCROLL INTERNO)         -->
 	<!-- ========================================================================= -->
-	<div id="modal-qr-prueba" class="hidden fixed inset-0 z-50 flex items-center justify-center bg-slate-900/75 p-4 backdrop-blur-sm overflow-y-auto">
-		<div class="w-full max-w-4xl rounded-3xl border border-slate-200 bg-white p-6 shadow-2xl dark:border-slate-800 dark:bg-slate-900 space-y-5 my-6">
-			<div class="flex items-center justify-between border-b border-slate-100 pb-3 dark:border-slate-800">
+	<div id="modal-qr-prueba" class="hidden fixed inset-0 z-50 flex items-center justify-center bg-slate-900/75 p-3 sm:p-4 backdrop-blur-sm">
+		<div class="flex max-h-[88dvh] w-full max-w-4xl flex-col overflow-hidden rounded-3xl border border-slate-200 bg-white shadow-2xl dark:border-slate-800 dark:bg-slate-900">
+			
+			<!-- Cabecera fija siempre visible -->
+			<div class="flex shrink-0 items-center justify-between gap-3 border-b border-slate-100 px-5 py-3.5 dark:border-slate-800">
 				<div>
-					<h3 class="text-base font-black text-slate-900 dark:text-white">Códigos QR de Prueba (Base de Datos SUNAT)</h3>
-					<p class="text-xs text-slate-500">Apunta la cámara de tu celular a cualquiera de estos QR o descárgalos para probar la carga de imagen.</p>
+					<h3 class="text-sm sm:text-base font-black text-slate-900 dark:text-white">Códigos QR de Prueba (Base de Datos SUNAT)</h3>
+					<p class="text-[11px] sm:text-xs text-slate-500">Apunta la cámara de tu celular a cualquiera de estos QR o descárgalos para probar la carga de imagen.</p>
 				</div>
-				<button type="button" id="btn-cerrar-qr-prueba" class="rounded-lg p-1.5 text-slate-400 hover:bg-slate-100 hover:text-slate-600 dark:hover:bg-slate-800">
-					<Icon name="x" size={18} />
+				<button type="button" id="btn-cerrar-qr-prueba" aria-label="Cerrar galería de QR" class="inline-flex shrink-0 items-center gap-1.5 rounded-xl border border-slate-200 bg-slate-50 px-3 py-1.5 text-xs font-bold text-slate-700 hover:bg-slate-100 dark:border-slate-700 dark:bg-slate-800 dark:text-slate-200">
+					<Icon name="x" size={16} />
+					<span>Cerrar</span>
 				</button>
 			</div>
 
-			<div id="grid-qrs-generados" class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4">
-				<!-- Se llena dinámicamente con los QR de Factura, Boleta, RHE, GRE, NC y QR Malicioso -->
+			<!-- Cuadrícula con desplazamiento interno -->
+			<div class="flex-1 overflow-y-auto p-4 sm:p-5">
+				<div id="grid-qrs-generados" class="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-4 gap-3">
+					<!-- Se llena dinámicamente -->
+				</div>
 			</div>
 		</div>
 	</div>
